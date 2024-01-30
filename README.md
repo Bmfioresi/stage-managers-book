@@ -4,6 +4,13 @@
 
 ### Clone repository
 In visual studio code (VSC), open a terminal and run the command `git clone https://github.com/Bmfioresi/stage-managers-book.git`.
+### Add the authentication variables
+To add the authentication variables, create a file called `env.js` in the main directory. In this file, copy the following code:
+```
+const API_KEY = "<API_KEY>";
+const CLIENT_ID = "<CLIENT_ID>";
+```
+But instead of the placeholders, paste the authentication info attached to the Google Workspace account (reach out to Ben Fioresi for those keys). These keys need to be kept private, as that is a security issue. `env.js` is in the `.gitignore` so it will not be uploaded to the repository.
 ### Install python
 If you don't have python installed, you can download it from [Python.org](https://www.python.org/downloads/).
 ### Start the server

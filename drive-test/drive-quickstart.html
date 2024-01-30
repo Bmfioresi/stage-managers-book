@@ -1,3 +1,6 @@
+<!--This is copied almost directly from https://developers.google.com/drive/api/quickstart/js for testing purposes only-->
+<!--To be deleted later-->
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,15 +16,15 @@
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
+    <!--This script tag imports the api key and client id-->
+    <script type="text/javascript" src="../env.js"></script>
+
     <script type="text/javascript">
       /* exported gapiLoaded */
       /* exported gisLoaded */
       /* exported handleAuthClick */
       /* exported handleSignoutClick */
 
-      // TODO(developer): Set to client ID and API key from the Developer Console
-      const CLIENT_ID = '933341791381-ahldt55j2o2t7rvqob536ahub8md0e9e.apps.googleusercontent.com';
-      const API_KEY = 'AIzaSyB1-rYXoZRVPD2qfH1DU_8jAHyQdbv8PBM';
 
       // Discovery doc URL for APIs used by the quickstart
       const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';

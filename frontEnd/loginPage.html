@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .myDiv {
+                border: 5px solid rgb(0, 0, 0);
+                background-color: rgb(161, 34, 34);
+                text-align: center;
+                width: 30%;
+                margin: auto;
+                margin-top: 15%;
+                padding: 10px
+            }
+        </style>
+    </head>
+
+    <body style="background-color: rgb(130, 130, 130)">
+        <div class="myDiv">
+            <h2>Login</h2>
+            <form onsubmit="processForm(); return false">
+                <label for="fname">Username:</label><br>
+                <input type="text" id="username" name="username" value="John"><br>
+                <label for="pword">Password:</label><br>
+                <input type="text" id="pword" name="pword" value="Doe"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+            <script>
+                function processForm() {
+                    var username = document.getElementById('username').value;
+                    var password = document.getElementById('pword').value;
+        
+                    // instead of log, do a query
+                    console.log("Username: " + username);
+                    console.log("Password: " + password);
+        
+                    return false;
+                }
+            </script>
+        </div>
+    </body>
+</html>

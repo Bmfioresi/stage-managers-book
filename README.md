@@ -1,5 +1,7 @@
 # The Stage Manager's Book
 
+## File naming conventions
+For consistency, let's try to name folders and files with the format `folder-name` or `file-name.js`, all lowercase with hyphens to separate words. Definitely avoid using spaces in file names.
 
 ## How to test web app
 

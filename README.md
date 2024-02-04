@@ -1,23 +1,34 @@
 # The Stage Manager's Book
 
+
 ## How to test web app
 
 ### Clone repository
+
 In visual studio code (VSC), open a terminal and run the command `git clone https://github.com/Bmfioresi/stage-managers-book.git`.
-### Add the authentication variables
-To add the authentication variables, create a file called `env.js` in the main directory. In this file, copy the following code:
-```
-const API_KEY = "<API_KEY>";
-const CLIENT_ID = "<CLIENT_ID>";
-```
-But instead of the placeholders, paste the authentication info attached to the Google Workspace account (reach out to Ben Fioresi for those keys). These keys need to be kept private, as that is a security issue. `env.js` is in the `.gitignore` so it will not be uploaded to the repository.
-### Install python
-If you don't have python installed, you can download it from [Python.org](https://www.python.org/downloads/).
-### Start the server
-To start the server, open a VSC terminal, navigate to the directory, and run the command `py -m http.server`. This will start a server on localhost port 8000 to test files.
-### Navigate to localhost
-Open a web browser and navigate to http://localhost:8000/. This will show a list of the files in the directory, and from there you can navigate to the file you want to test.
+
+### Install the dependencies
+Inside both the client and server directories, run the command `npm install` to install the respective dependencies outlined in each `package.json`. This will generate a folder called `node_modules`, which is excluded from the git repository because its size is unnecessarily large and annoying to download/upload with git.
+
+### Start the client and server
+Open two terminals, navigate to the client directory in one, and the server directory in the other.
+#### Client
+In the client terminal, run the command `npm start`. This will start the client on `localhost:3000` and open it in your default browser.
+#### Server
+In the server terminal, run the command `npm run dev`. This will start the server on `localhost:8000` and run it in the background.
 
 ## Subfolders
+
+### client
+Front-end react client
+*Currently contains mostly default files from the react setup process which will be modified later.*
+### server
+Back-end node server
+I followed [this tutorial](https://codedamn.com/news/reactjs/how-to-connect-react-with-node-js) for setting up the react app.
+
 ### drive-test
-This folder contains tests for the Google Drive API.
+Tests for the Google Drive API.
+### figma-items
+Figma resources.
+### front-end
+Tests for the html front-end.

@@ -23,9 +23,11 @@ In the server terminal, run the command `npm run dev`. This will start the serve
 
 ### client
 Front-end react client
+
 *Currently contains mostly default files from the react setup process which will be modified later.*
 ### server
-Back-end node server
+Back-end node server.
+
 I followed [this tutorial](https://codedamn.com/news/reactjs/how-to-connect-react-with-node-js) for setting up the react app.
 
 ### drive-test

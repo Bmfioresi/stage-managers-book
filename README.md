@@ -7,7 +7,10 @@ For consistency, let's try to name folders and files with the format `folder-nam
 
 ### Clone repository
 
-In visual studio code (VSC), open a terminal and run the command `git clone https://github.com/Bmfioresi/stage-managers-book.git`.
+In visual studio code, open a terminal and run the command `git clone https://github.com/Bmfioresi/stage-managers-book.git`.
+
+### Install Node.js and node package manager (npm)
+Follow the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install Node.js and npm.
 
 ### Install the dependencies
 Inside both the client and server directories, run the command `npm install` to install the respective dependencies outlined in each `package.json`. This will generate a folder called `node_modules`, which is excluded from the git repository because its size is unnecessarily large and annoying to download/upload with git.

@@ -16,32 +16,28 @@
 
     <body style="background-color: rgb(130, 130, 130)">
         <div class="myDiv">
-            <h2>Login</h2>
+            <h2>Create Account</h2>
             <form onsubmit="processForm(); return false">
                 <label for="username">Username:</label><br>
                 <input type="text" id="username" name="username"><br><br>
                 <label for="pword">Password:</label><br>
                 <input type="text" id="pword" name="pword"><br><br>
+                <label for="email">Email Address:</label><br>
+                <input type="text" id="email" name="email"><br><br>
                 <input type="submit" value="Submit">
-            </form><br><br>
-            <form onsubmit="navigateToCreateAccount(); return false">  
-                <button>Don't have an account? Click here.</button>
-            </form>
+            </form><br>
             <script>
                 function processForm() {
                     var username = document.getElementById('username').value;
                     var password = document.getElementById('pword').value;
+                    var email = document.getElementById('email').value;
         
-                    // instead of log, do a query
+                    // instead of log, add a new entry to the database
                     console.log("Username: " + username);
                     console.log("Password: " + password);
+                    console.log("Email: " + email);
         
                     return false;
-                }
-
-                function navigateToCreateAccount() {
-                    console.log("navigating");
-                    return false
                 }
             </script>
         </div>

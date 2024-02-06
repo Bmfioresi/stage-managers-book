@@ -18,23 +18,37 @@
         <div class="myDiv">
             <h2>Create Account</h2>
             <form onsubmit="processForm(); return false">
-                <label for="username">Username:</label><br>
-                <input type="text" id="username" name="username"><br><br>
-                <label for="pword">Password:</label><br>
-                <input type="text" id="pword" name="pword"><br><br>
+                <label for="fname">First Name:</label><br>
+                <input type="text" id="fname" name="fname"><br><br>
+                <label for="lname">Last Name:</label><br>
+                <input type="text" id="lname" name="lname"><br><br>
                 <label for="email">Email Address:</label><br>
                 <input type="text" id="email" name="email"><br><br>
+                <label for="pword">Password:</label><br>
+                <input type="text" id="pword" name="pword"><br><br>
+                <label for="confirm-pword">Confirm Password:</label><br>
+                <input type="text" id="confirm-pword" name="confirm-pword"><br><br>
                 <input type="submit" value="Submit">
             </form><br>
             <script>
                 function processForm() {
-                    var username = document.getElementById('username').value;
+                    var fname = document.getElementById('fname').value;
+                    var lname = document.getElementById('lname').value;
                     var password = document.getElementById('pword').value;
+                    var confirmPass = document.getElementById('confirm-pword').value;
                     var email = document.getElementById('email').value;
+
+                    if(password != confirmPass) {
+                        // TO DO: need to display a "Passwords don't match" message on screen
+                        console.log("Passwords do not match.");
+                        return false;
+                    }
         
-                    // instead of log, add a new entry to the database
-                    console.log("Username: " + username);
+                    // TO DO: instead of log, add a new entry to the database
+                    console.log("Fname: " + fname);
+                    console.log("Lname: " + lname);
                     console.log("Password: " + password);
+                    console.log("ConfirmPass: " + confirmPass);
                     console.log("Email: " + email);
         
                     return false;

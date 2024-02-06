@@ -11,6 +11,12 @@
                 margin-top: 20vh;
                 padding: 10px
             }
+
+            .myButton {
+                height: 12px;
+                width: 100px;
+                font-size: 8px;
+            }
         </style>
     </head>
 
@@ -18,30 +24,39 @@
         <div class="myDiv">
             <h2>Login</h2>
             <form onsubmit="processForm(); return false">
-                <label for="username">Username:</label><br>
-                <input type="text" id="username" name="username"><br><br>
+                <label for="email">Email Address:</label><br>
+                <input type="text" id="email" name="email" placeholder="Email Address"><br><br>
                 <label for="pword">Password:</label><br>
-                <input type="text" id="pword" name="pword"><br><br>
+                <input type="text" id="pword" name="pword" placeholder="Password"><br>
+                <button class="myButton" onclick="navigateToForgotPassword(); return false">Forgot password?</button><br><br>
                 <input type="submit" value="Submit">
-            </form><br><br>
+            </form><br>
             <form onsubmit="navigateToCreateAccount(); return false">  
-                <button>Don't have an account? Click here.</button>
+                <button class="myButton">Don't have an account?</button>
             </form>
             <script>
                 function processForm() {
-                    var username = document.getElementById('username').value;
+                    var email = document.getElementById('Email Address').value;
                     var password = document.getElementById('pword').value;
+
+                    if(!email || !password) {
+                        alert("Fields cannot be empty.")
+                    }
         
                     // instead of log, do a query
-                    console.log("Username: " + username);
+                    console.log("Email: " + email);
                     console.log("Password: " + password);
         
                     return false;
                 }
 
                 function navigateToCreateAccount() {
-                    console.log("navigating");
+                    alert("Create account works!");
                     return false
+                }
+
+                function navigateToForgotPassword() {
+                    alert("Forgot password works!");
                 }
             </script>
         </div>

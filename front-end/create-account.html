@@ -19,15 +19,15 @@
             <h2>Create Account</h2>
             <form onsubmit="processForm(); return false">
                 <label for="fname">First Name:</label><br>
-                <input type="text" id="fname" name="fname"><br><br>
+                <input type="text" id="fname" name="fname" placeholder="First Name"><br><br>
                 <label for="lname">Last Name:</label><br>
-                <input type="text" id="lname" name="lname"><br><br>
+                <input type="text" id="lname" name="lname" placeholder="Last Name"><br><br>
                 <label for="email">Email Address:</label><br>
-                <input type="text" id="email" name="email"><br><br>
+                <input type="text" id="email" name="email" placeholder="Email Address"><br><br>
                 <label for="pword">Password:</label><br>
-                <input type="text" id="pword" name="pword"><br><br>
+                <input type="text" id="pword" name="pword" placeholder="Password"><br><br>
                 <label for="confirm-pword">Confirm Password:</label><br>
-                <input type="text" id="confirm-pword" name="confirm-pword"><br><br>
+                <input type="text" id="confirm-pword" name="confirm-pword" placeholder="Confirm Password"><br><br>
                 <input type="submit" value="Submit">
             </form><br>
             <script>
@@ -38,9 +38,18 @@
                     var confirmPass = document.getElementById('confirm-pword').value;
                     var email = document.getElementById('email').value;
 
+                    if(!fname || !lname || !password) {
+                        alert("Error: Fields cannot be empty.");
+                        return false;
+                    }
+            
+                    if(!email.includes("@")) {
+                        alert("Error: Please enter a valid email address.");
+                        return false;
+                    }
+
                     if(password != confirmPass) {
-                        // TO DO: need to display a "Passwords don't match" message on screen
-                        console.log("Passwords do not match.");
+                        alert("Error: Passwords do not match.");
                         return false;
                     }
         

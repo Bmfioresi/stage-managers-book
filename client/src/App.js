@@ -11,7 +11,7 @@ import Home from "./pages";
 import Test from "./pages/test";
 import Search from "./pages/search";
 import Upload from "./pages/upload";
-import Authenticate from './Authenticate.js'
+import Authenticate from './pages/authenticate.js'
 
 function App() {
   return (

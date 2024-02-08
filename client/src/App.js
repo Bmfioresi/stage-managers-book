@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
+import TestFile from './TestFile.js'
+import Authenticate from './Authenticate.js'
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 
 function App() {
-  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    fetch("http://localhost:8000/test")
-    .then((res) => res.json())
-    .then((data) => setMessage(data.message));
-  }, []);
   return (
-    <div className="App">
-      <h1>{message}</h1>
-    </div>
-  );
+    <Router>
+        <Routes>
+            <Route exact path="/" element={<TestFile />} />
+            <Route path="/login" element={<Authenticate />} />
+        </Routes>
+    </Router>
+);
 }
 
 export default App;

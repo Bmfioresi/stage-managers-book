@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
+import axios from 'axios';
 
 function Authenticate() {
     const [formData, setFormData] = useState({
@@ -12,10 +13,19 @@ function Authenticate() {
         setFormData((prevState) => ({ ...prevState, [name]: value }));
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData.email);
         console.log(formData.password)
+
+        const url = 'http://localhost:8000/authenticate';
+        console.log(formData)
+        axios.post(url, formData).then((response) => {
+            console.log("RESPONSE")
+            console.log(response);
+            console.log(response.data);
+        });
+
         console.log("SUBMIT")
     }
 

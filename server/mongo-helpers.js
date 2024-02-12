@@ -1,10 +1,13 @@
+require('dotenv').config();
+
 module.exports = {
     // searches drive for all files
     // id - id of specific file to search for
     authenticateUser: async function (uname, pword) {
 
         const { MongoClient } = require("mongodb");
-        const uri = "mongodb+srv://letucker:Rondout.2003@stagemanagersbook.mv9wrc2.mongodb.net/";
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        console.log(uri)
         const mongoclient = new MongoClient(uri);
 
         try {

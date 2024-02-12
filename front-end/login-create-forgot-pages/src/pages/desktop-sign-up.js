@@ -11,7 +11,6 @@ const DesktopSignUp = () => {
     <div className="desktop-sign-up">
       <div className="social-buttondesktop">
         <img className="google-icon" alt="" src="/google.svg" />
-        <img className="facebook-icon" alt="" />
         <div className="sign-in-with">Sign up with Google</div>
       </div>
       <div className="main-button" onClick={onMainButtonContainerClick}>

@@ -21,6 +21,7 @@ Open two terminals, navigate to the client directory in one, and the server dire
 In the client terminal, run the command `npm start`. This will start the client on `localhost:3000` and open it in your default browser.
 #### Server
 In the server terminal, run the command `npm run dev`. This will start the server on `localhost:8000` and run it in the background.
+You will need to login to MongoDB Atlas and add your computer's IP Address and create a .env file with variables MONGODB_USERNAME and MONGODB_PASSWORD to facilitate the communication between the server and the database.
 
 ## Subfolders
 

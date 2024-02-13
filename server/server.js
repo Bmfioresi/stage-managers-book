@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const helpers = require('./helpers');
+const mongoHelpers = require('./mongo-helpers');
 
 const app = express();
 
@@ -16,6 +17,20 @@ app.get('/search', async (req, res) => {
     const files = await helpers.searchFile();
     res.json({files: files});
 });
+
+app.post('/authenticate', async (req, res) => {
+    console.log("HERE1");
+    console.log(req.body)
+    // console.log(req.email);
+    // console.log(req);
+    const profile = await mongoHelpers.authenticateUser(req.body.email, req.body.password); 
+    if (profile == null) {
+        res.json({ uid: '-1' });
+    }
+    else {
+        res.json({uid: profile.uid});
+    }
+})
 
 app.post('/upload', async (req, res) => {
     // parse out file info from req TODO

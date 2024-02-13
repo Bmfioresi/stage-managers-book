@@ -13,6 +13,7 @@ import Search from "./pages/search";
 import Upload from "./pages/upload";
 import Authenticate from './pages/authenticate.js'
 import Profile from './pages/profileTest.js'
+import Hubs from './pages/hubs.js'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/upload" element={<Upload />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/hubs" element={<Hubs />} />
         </Routes>
       </Router>
     </div>

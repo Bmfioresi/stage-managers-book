@@ -15,8 +15,10 @@ import SignIn from "./pages/desktop-sign-in.js";
 import ForgotPassword from "./pages/desktop-forgot-password.js";
 import SignUp from "./pages/desktop-sign-up.js";
 import Authenticate from './pages/authenticate.js'
-import Profile from './pages/profileTest.js'
+import ProfileForm from './pages/profileForm.js'
 import Hubs from './pages/hubs.js'
+import Profile from './pages/profile.js'
+import Download from './pages/download'
 
 function App() {
   return (
@@ -29,11 +31,13 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="/login" element={<Authenticate />} />
+          <Route path="/createProfile" element={<ProfileForm />} />
+          <Route path="/hubs" element={<Hubs />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/hubs" element={<Hubs />} />
+          <Route path="/download" element={<Download />} />
         </Routes>
       </Router>
     </div>

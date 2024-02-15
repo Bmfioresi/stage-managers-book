@@ -30,25 +30,25 @@ const ProfilePage = () => {
       <h1>User Profile</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
-        <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} /><br />
+        <input type="text" id="name" name="name" value={"First Last"} onChange={handleChange} /><br />
 
         <label htmlFor="bio">Bio:</label>
-        <textarea id="bio" name="bio" rows="4" cols="50" value={formData.bio} onChange={handleChange}></textarea><br />
+        <textarea id="bio" name="bio" rows="4" cols="50" value={"I am very creative"} onChange={handleChange}></textarea><br />
 
         <label htmlFor="contact_info">Contact Info:</label>
-        <input type="text" id="contact_info" name="contact_info" value={formData.contact_info} onChange={handleChange} /><br />
+        <input type="text" id="contact_info" name="contact_info" value={"123-456-7890"} onChange={handleChange} /><br />
 
         <label htmlFor="pronouns">Pronouns:</label>
-        <input type="text" id="pronouns" name="pronouns" value={formData.pronouns} onChange={handleChange} /><br />
+        <input type="text" id="pronouns" name="pronouns" value={"any/all"} onChange={handleChange} /><br />
 
         <label htmlFor="emergency_contact">Emergency Contact:</label>
-        <input type="text" id="emergency_contact" name="emergency_contact" value={formData.emergency_contact} onChange={handleChange} /><br />
+        <input type="text" id="emergency_contact" name="emergency_contact" value={"911"} onChange={handleChange} /><br />
 
         <label htmlFor="roles">Roles:</label>
-        <input type="text" id="roles" name="roles" value={formData.roles} onChange={handleChange} /><br />
+        <input type="text" id="roles" name="roles" value={"Actor"} onChange={handleChange} /><br />
 
         <label htmlFor="resume">Resume:</label>
-        <input type="text" id="resume" name="resume" value={formData.resume} onChange={handleChange} /><br />
+        <input type="text" id="resume" name="resume" value={"resume.com/myresume"} onChange={handleChange} /><br />
 
         <button type="submit">Save Changes</button>
       </form>

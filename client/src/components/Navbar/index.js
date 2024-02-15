@@ -13,11 +13,12 @@ const NavBar = () => {
                     <NavLink to="/search">Search</NavLink>
                     <NavLink to="/upload">Upload</NavLink>
                     <NavLink to="/login">Login</NavLink>
+                    <NavLink to="/createProfile">Create Profile</NavLink>
+                    <NavLink to="/hubs">Hubs</NavLink>
                     <NavLink to="/profile">Profile</NavLink>
                     <NavLink to="/signin">Hannah's Links</NavLink>
                     {/* <NavLink to="/signup">Sign Up</NavLink>
                     <NavLink to="/forgotpassword">Forgot Password</NavLink> */}
-                    <NavLink to="/hubs">Hubs</NavLink>
                 </NavMenu>
             </Nav>
         </>

@@ -1,13 +1,15 @@
 const express = require('express');
 const cors = require('cors');
+const formidable = require('express-formidable');
 
-const helpers = require('./helpers');
+const helpers = require('./drive-helpers');
 const mongoHelpers = require('./mongo-helpers');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(formidable());
 
 app.get('/test', (req, res) => {
     res.json({message: "Test successful"});
@@ -18,18 +20,45 @@ app.get('/search', async (req, res) => {
     res.json({files: files});
 });
 
+app.get('/download-image', async (req, res) => {
+    // does not work, probably going to delete later
+    // search file and get blob back
+    var id = req.body.id;
+    const file = await helpers.downloadFile(id);
+
+    console.log(file.data);
+    var buffer = await file.data.arrayBuffer();
+    buffer = Buffer.from(buffer);
+    console.log(buffer);
+    buffer = buffer.toString('base64');
+    console.log(buffer);
+
+    var mimeType = file.data.type;
+    res.json({tag: `<img src="data:${mimeType};base64,${buffer}" />`});
+});
+
 app.post('/authenticate', async (req, res) => {
     console.log("HERE1");
     console.log(req.body)
     // console.log(req.email);
     // console.log(req);
-    const profile = await mongoHelpers.authenticateUser(req.body.email, req.body.password); 
+    const userId = await mongoHelpers.authenticateUser(req.body.email, req.body.password); 
+    if (userId==null) {
+        userId.uid == '-1';
+    } 
+
+    const profile = await mongoHelpers.getBio(userId);
+    console.log(profile)
+    res.json(profile);
+    // localStorage.setItem("uid", JSON.stringify({uid: profile.uid}))
+    /*
     if (profile == null) {
         res.json({ uid: '-1' });
     }
     else {
-        res.json({uid: profile.uid});
+        res.json({uid: userId.uid});
     }
+    */
 })
 
 app.post('/upload', async (req, res) => {

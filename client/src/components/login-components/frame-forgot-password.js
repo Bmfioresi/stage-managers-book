@@ -7,11 +7,11 @@ const FrameForgotPassword = () => {
   const navigate = useNavigate();
 
   const onMainButtonClick = useCallback(() => {
-    navigate("/");
+    navigate("/signin");
   }, [navigate]);
 
   const onReturnToTheClick = useCallback(() => {
-    navigate("/");
+    navigate("/signin");
   }, [navigate]);
 
   return (
@@ -50,7 +50,8 @@ const FrameForgotPassword = () => {
               propPadding="0px 0px var(--padding-14xl)"
               propDisplay="inline-block"
               propPadding1="var(--padding-base) var(--padding-3xl)"
-              propWidth="167px"
+              propWidth="500px"
+              type="email"
             />
             <button className="main-button2" onClick={onMainButtonClick}>
               <div className="sign-in2">Submit</div>
@@ -74,7 +75,7 @@ const FrameForgotPassword = () => {
           className="the-stage-managers-book-1"
           loading="eager"
           alt=""
-          src="/the-stage-managers-book-1@2x.png"
+          src="/smb-logo.png"
         />
       </div>
     </div>

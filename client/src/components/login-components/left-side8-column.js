@@ -8,7 +8,7 @@ const LeftSide8Column = () => {
   const navigate = useNavigate();
 
   const onForgotPasswordTextClick = useCallback(() => {
-    navigate("/desktop-forgot-password");
+    navigate("/forgotpassword");
   }, [navigate]);
 
   const onMainButtonClick = useCallback(() => {
@@ -16,7 +16,7 @@ const LeftSide8Column = () => {
   }, []);
 
   const onDontYouHaveClick = useCallback(() => {
-    navigate("/desktop-signup");
+    navigate("/signup");
   }, [navigate]);
 
   return (
@@ -44,7 +44,8 @@ const LeftSide8Column = () => {
           <Input
             placeholderPlaceholder="stageManagersBook@email.com"
             propPadding1="var(--padding-base) var(--padding-mid)"
-            propWidth="239px"
+            propWidth="500px"
+            type="email"
           />
           <div className="input3">
             <div className="label1">Password</div>
@@ -53,11 +54,12 @@ const LeftSide8Column = () => {
               <input
                 className="placeholder1"
                 placeholder="Enter Password"
-                type="text"
+                type="password"
                 value={placeholderText1Value}
                 onChange={(event) =>
                   setPlaceholderText1Value(event.target.value)
                 }
+                style={{ width: "500px" }}
               />
             </div>
           </div>
@@ -76,7 +78,6 @@ const LeftSide8Column = () => {
       </div>
       <button className="social-buttondesktop1">
         <img className="google-icon1" alt="" src="/google.svg" />
-        {/* <img className="facebook-icon1" alt="" /> */}
         <div className="sign-in-with1">Sign in with Google</div>
       </button>
       <div className="dont-you-have-container" onClick={onDontYouHaveClick}>
@@ -89,7 +90,7 @@ const LeftSide8Column = () => {
         className="smb-logo-icon"
         loading="eager"
         alt=""
-        src="/smb-logo@2x.png"
+        src="/smb-logo.png"
       />
     </div>
   );

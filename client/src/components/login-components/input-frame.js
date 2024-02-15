@@ -28,92 +28,59 @@ const InputFrame = () => {
                 Today marks a new beginning. It’s your stage. You
               </p>
               <p className="today-marks-a">
-                set the scene. Sign up to start crafting the theatrical
+                set the scene. Sign up to start crafting the theatrical experience.
               </p>
-              <p className="today-marks-a">{`experience. `}</p>
-            </span>
-          </div>
-          <div className="today-marks-a-container1">
-            <span>
-              <p className="today-marks-a">
-                Today marks a new beginning. It’s your stage. You
-              </p>
-              <p className="today-marks-a">
-                set the scene. Sign up to start crafting the theatrical
-              </p>
-              <p className="today-marks-a">{`experience. `}</p>
+              <p className="today-marks-a"></p>
             </span>
           </div>
         </div>
         <div className="button-instance">
           <LineFrame
-            label="Full Name"
-            placeholderPlaceholder="John Smith"
             label1="Full Name"
             placeholderPlaceholder1="John Smith"
-            propWidth="83px"
-            propWidth1="83px"
+            propWidth1="450px"
           />
           <LineFrame
-            label="Email"
-            placeholderPlaceholder="JohnSmith@email.com"
             label1="Email"
             placeholderPlaceholder1="JohnSmith@email.com"
-            propWidth="167px"
-            propWidth1="167px"
+            propWidth1="450px"
+            type="email"
           />
           <LineFrame
-            label="Password"
-            placeholderPlaceholder="at least 8 characters"
             label1="Password"
             placeholderPlaceholder1="at least 8 characters"
-            propWidth="149px"
-            propWidth1="149px"
+            propWidth1="450px"
+            inputType="password"
           />
           <LineFrame
-            label="Re-enter Password"
-            placeholderPlaceholder="Match password"
-            label1="Re-enter Password"
-            placeholderPlaceholder1="Match password"
-            propWidth="121px"
-            propWidth1="121px"
+            label1="Password"
+            placeholderPlaceholder1="Re-enter password"
+            propWidth1="450px"
+            inputType="password"
           />
           <button className="main-button3" onClick={onMainButtonClick}>
             <div className="sign-in3">Sign up</div>
           </button>
         </div>
         <div className="divider-frame">
-          <div className="main-manager">
-            <div className="input-pair" />
-            <div className="input-label1" />
-          </div>
-          <div className="or-button">
-            <div className="or2">Or</div>
-            <div className="or3">Or</div>
-          </div>
-          <div className="main-manager">
-            <div className="input-pair" />
-            <div className="main-manager-item" />
+          <div className="line-frame">
+            <div className="or-text" />
+            <div className="or">Or</div>
+            <div className="or-text" />
           </div>
         </div>
         <button className="social-buttondesktop2">
           <img className="google-icon2" alt="" src="/google.svg" />
-          <img className="facebook-icon2" alt="" />
           <div className="sign-in-with2">Sign up with Google</div>
         </button>
       </form>
       <div className="art-frame">
         <div className="stage-mgr-book">
           <img
-            className="the-stage-managers-book-11"
-            alt=""
-            src="/the-stage-managers-book-1@2x.png"
-          />
-          <img
-            className="the-stage-managers-book-12"
+            className="the-stage-managers-book-logo"
             loading="eager"
             alt=""
-            src="/the-stage-managers-book-1@2x.png"
+            src="/smb-logo.png"
           />
         </div>
       </div>

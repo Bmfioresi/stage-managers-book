@@ -30,6 +30,9 @@ function App() {
           <Route path="/upload" element={<Upload />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/hubs" element={<Hubs />} />
         </Routes>
       </Router>

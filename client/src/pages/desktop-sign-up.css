@@ -88,14 +88,13 @@
   max-width: 100%;
 }
 .art1 {
-  height: 1079px;
-  width: 816px;
+  height: 1160px;
   border-radius: var(--br-5xl);
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  background-image: url("/public/login-art@2x.png");
+  background-image: url("/public/create-account-art.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;

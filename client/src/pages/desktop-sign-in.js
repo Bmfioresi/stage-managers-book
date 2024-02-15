@@ -5,7 +5,7 @@ const DesktopSignIn = () => {
   return (
     <div className="desktop-sign-in">
       <LeftSide8Column />
-      <img className="art-icon" loading="eager" alt="" src="/art@2x.png" />
+      <img className="art-icon" loading="eager" alt="" src="/empty-theatre.png" />
     </div>
   );
 };

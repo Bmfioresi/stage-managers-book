@@ -20,10 +20,7 @@ const DesktopSignUp = () => {
         <InputFrame />
       </div>
       <div className="art1">
-        <img className="login-art1" alt="" src="/login-art@2x.png" />
-        <div className="art2">
-          <img className="login-art1" alt="" src="/login-art@2x.png" />
-        </div>
+        <img className="login-art1" alt="" src="/create-account-art.png" />
       </div>
     </div>
   );

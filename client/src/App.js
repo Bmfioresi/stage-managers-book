@@ -1,7 +1,7 @@
 import React from "react";
 import './App.css';
 
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/index.js";
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,6 +11,9 @@ import Home from "./pages";
 import Test from "./pages/test";
 import Search from "./pages/search";
 import Upload from "./pages/upload";
+import SignIn from "./pages/desktop-sign-in.js";
+import ForgotPassword from "./pages/desktop-forgot-password.js";
+import SignUp from "./pages/desktop-sign-up.js";
 import Authenticate from './pages/authenticate.js'
 import ProfileForm from './pages/profileForm.js'
 import Hubs from './pages/hubs.js'
@@ -31,6 +34,9 @@ function App() {
           <Route path="/createProfile" element={<ProfileForm />} />
           <Route path="/hubs" element={<Hubs />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/download" element={<Download />} />
         </Routes>
       </Router>

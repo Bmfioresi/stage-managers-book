@@ -29,6 +29,10 @@ function Hub() {
   return (
     <div>
       <h1>Hubs</h1>
+      <form>
+        <label for="fname">Join new hub: </label>
+        <input type="text" id="code" name="code" placeholder="Enter access code"></input><br></br>
+      </form>
       <ul>
         {data.map((item, index) => (
           <li key={index}>{item.name}</li>

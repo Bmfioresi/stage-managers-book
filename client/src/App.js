@@ -15,6 +15,7 @@ import Authenticate from './pages/authenticate.js'
 import ProfileForm from './pages/profileForm.js'
 import Hubs from './pages/hubs.js'
 import Profile from './pages/profile.js'
+import Download from './pages/download'
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/createProfile" element={<ProfileForm />} />
           <Route path="/hubs" element={<Hubs />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/download" element={<Download />} />
         </Routes>
       </Router>
     </div>

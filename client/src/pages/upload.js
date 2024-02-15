@@ -14,7 +14,12 @@ const Upload = () => {
         const data = new FormData();
         data.append('file', file);
         data.append('fileName', file.name);
-        axios.post(url, data).then((response) => {
+        const headers = {
+            headers: {
+                'Content-Type': `multipart/form-data; boundary=${data._boundary}`
+            }
+        }
+        axios.post(url, data, headers).then((response) => {
             console.log(response.data);
         });
     };

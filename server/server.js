@@ -1,13 +1,15 @@
 const express = require('express');
 const cors = require('cors');
+const formidable = require('express-formidable');
 
-const helpers = require('./helpers');
+const helpers = require('./drive-helpers');
 const mongoHelpers = require('./mongo-helpers');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(formidable());
 
 app.get('/test', (req, res) => {
     res.json({message: "Test successful"});
@@ -16,6 +18,23 @@ app.get('/test', (req, res) => {
 app.get('/search', async (req, res) => {
     const files = await helpers.searchFile();
     res.json({files: files});
+});
+
+app.get('/download-image', async (req, res) => {
+    // does not work, probably going to delete later
+    // search file and get blob back
+    var id = req.body.id;
+    const file = await helpers.downloadFile(id);
+
+    console.log(file.data);
+    var buffer = await file.data.arrayBuffer();
+    buffer = Buffer.from(buffer);
+    console.log(buffer);
+    buffer = buffer.toString('base64');
+    console.log(buffer);
+
+    var mimeType = file.data.type;
+    res.json({tag: `<img src="data:${mimeType};base64,${buffer}" />`});
 });
 
 app.post('/authenticate', async (req, res) => {

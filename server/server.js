@@ -23,13 +23,23 @@ app.post('/authenticate', async (req, res) => {
     console.log(req.body)
     // console.log(req.email);
     // console.log(req);
-    const profile = await mongoHelpers.authenticateUser(req.body.email, req.body.password); 
+    const userId = await mongoHelpers.authenticateUser(req.body.email, req.body.password); 
+    if (userId==null) {
+        userId.uid == '-1';
+    } 
+
+    const profile = await mongoHelpers.getBio(userId);
+    console.log(profile)
+    res.json(profile);
+    // localStorage.setItem("uid", JSON.stringify({uid: profile.uid}))
+    /*
     if (profile == null) {
         res.json({ uid: '-1' });
     }
     else {
-        res.json({uid: profile.uid});
+        res.json({uid: userId.uid});
     }
+    */
 })
 
 app.post('/upload', async (req, res) => {

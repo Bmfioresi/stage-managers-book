@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Hub() {
-  // State to store the fetched data
-  const [data, setData] = useState([]);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    owner: ""
+  });
+
+  const [name, setName] = useState("Unchanged");
+  const [description, setDescription] = useState("Unchanged");
+  const [owner, setOwner] = useState("Unchanged");
+  const [hids, setHids] = useState([]);
 
   useEffect(() => {
     // Fetch data from the database
@@ -13,14 +23,15 @@ function Hub() {
   const fetchData = async () => {
     try {
       // Make an HTTP request to fetch data
-      const response = await fetch('http://localhost:8000/hubs');
+      const url = await fetch('http://localhost:8000/hubs');
       if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        throw new Error('Server not up silly goose');
       }
-      // Parse the JSON response
-      const jsonData = await response.json();
-      // Update state with the fetched data
-      setData(jsonData);
+      axios.post(url, uid).then((response) => {
+        console.log("RESPONSE ONE")
+        console.log(response.uids);
+        setHids(response.uids);
+    });
     } catch (error) {
       console.error('Error fetching data:', error);
     }

@@ -1,8 +1,6 @@
 require('dotenv').config();
 
 module.exports = {
-    // searches drive for all files
-    // id - id of specific file to search for
     authenticateUser: async function (uname, pword) {
 
         const { MongoClient } = require("mongodb");
@@ -17,7 +15,7 @@ module.exports = {
             console.log(uname);
             console.log(pword);
         
-            // Query for a movie that has the title 'Back to the Future'
+            // query
             const query = { username: uname, password: pword };
             const userProfile = await credentials.findOne(query);
         
@@ -25,7 +23,7 @@ module.exports = {
             console.log(userProfile);
             // console.log(userProfile.uid);
             await mongoclient.close();
-            return userProfile
+            return userProfile;
         
         } catch (err) {
             console.log(err);

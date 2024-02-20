@@ -4,6 +4,7 @@ const formidable = require('express-formidable');
 
 const helpers = require('./drive-helpers');
 const mongoHelpers = require('./mongo-helpers');
+const gridfsHelpers = require('./gridfs-helpers');
 
 const app = express();
 
@@ -37,6 +38,16 @@ app.get('/download-image', async (req, res) => {
     res.json({tag: `<img src="data:${mimeType};base64,${buffer}" />`});
 });
 
+app.get('/gridfs-test', async (req, res) => {
+    const test = await gridfsHelpers.uploadFile({name:"test"});
+    res.json(test);
+});
+
+app.get('/gridfs-download-test', async (req, res) => {
+    const test = await gridfsHelpers.downloadFile("test");
+    res.json(test);
+});
+
 app.get('/hubs', async (req, res) => {
     console.log("waka");
     res.json({message: "Hubs"});
@@ -64,7 +75,7 @@ app.post('/authenticate', async (req, res) => {
         res.json({uid: userId.uid});
     }
     */
-})
+});
 
 app.post('/upload', async (req, res) => {
     // parse out file info from req TODO
@@ -83,7 +94,7 @@ app.delete('/delete', async (req, res) => {
     // const id = await helpers.searchFile(null);
     const response = await helpers.deleteFile();
     res.json({message: response});
-})
+});
 
 app.listen(8000, () => {
     console.log('Server is running on port 8000.');

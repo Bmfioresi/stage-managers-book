@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
 function Hub() {
@@ -20,35 +20,29 @@ function Hub() {
   }, []); // Empty dependency array to fetch data only once when component mounts
 
   // Function to fetch data from the database
-  const fetchData = async () => {
-    try {
-      // Make an HTTP request to fetch data
-      const url = await fetch('http://localhost:8000/hubs');
-      if (!response.ok) {
-        throw new Error('Server not up silly goose');
-      }
-      axios.post(url, uid).then((response) => {
-        console.log("RESPONSE ONE")
-        console.log(response.uids);
-        setHids(response.uids);
+  const fetchData = async (event) => {
+    event.preventDefault();
+    const url = 'http://localhost:8000/authenticate';
+    const uid = "03";
+
+    axios.post(url, formData).then((response) => {
+        console.log("RESPONSE")
+
+
+        console.log("LOCAL STORAGE")
+        // console.log(JSON.parse(localStorage.getItem("uid")))
     });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+
+    console.log("SUBMIT")
+}
 
   return (
     <div>
       <h1>Hubs</h1>
       <form>
-        <label for="fname">Join new hub: </label>
+        <label htmlFor="fname">Join new hub: </label>
         <input type="text" id="code" name="code" placeholder="Enter access code"></input><br></br>
       </form>
-      <ul>
-        {data.map((item, index) => (
-          <li key={index}>{item.name}</li>
-        ))}
-      </ul>
     </div>
   );
 }

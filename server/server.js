@@ -37,6 +37,11 @@ app.get('/download-image', async (req, res) => {
     res.json({tag: `<img src="data:${mimeType};base64,${buffer}" />`});
 });
 
+app.get('/hubs', async (req, res) => {
+    console.log("waka");
+    res.json({message: "Hubs"});
+  });
+
 app.post('/authenticate', async (req, res) => {
     console.log("HERE1");
     console.log(req.body)

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 function Hub() {
 
-  const [formData, setFormData] = useState({
+  const [hubData, setFormData] = useState({
     name: "",
     description: "",
     owner: ""
@@ -21,16 +21,11 @@ function Hub() {
 
   // Function to fetch data from the database
   const fetchData = async (event) => {
-    event.preventDefault();
-    const url = 'http://localhost:8000/authenticate';
+    const url = 'http://localhost:8000/hubs';
     const uid = "03";
 
-    axios.post(url, formData).then((response) => {
-        console.log("RESPONSE")
-
-
-        console.log("LOCAL STORAGE")
-        // console.log(JSON.parse(localStorage.getItem("uid")))
+    axios.get(url).then((response) => {
+      console.log("man")
     });
 
     console.log("SUBMIT")

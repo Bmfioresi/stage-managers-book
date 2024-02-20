@@ -55,10 +55,11 @@ app.get('/hubs', async (req, res) => {
 
 app.post('/authenticate', async (req, res) => {
     console.log("HERE1");
-    console.log(req.body)
-    // console.log(req.email);
-    // console.log(req);
-    const userId = await mongoHelpers.authenticateUser(req.body.email, req.body.password); 
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+
+    console.log(fields.email);
+    console.log(fields.password);
+    const userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
     if (userId==null) {
         userId.uid == '-1';
     } 

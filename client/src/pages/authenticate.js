@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios, { formToJSON } from 'axios';
 
 function Authenticate() {
 
@@ -31,8 +31,9 @@ function Authenticate() {
         console.log(formData.password)
 
         const url = 'http://localhost:8000/authenticate';
-        console.log(formData)
-        axios.post(url, formData).then((response) => {
+        // Converting form to json format
+
+        axios.post(url, JSON.stringify(formData)).then((response) => {
             console.log("RESPONSE")
             console.log(response);
             console.log(response.data);

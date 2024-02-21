@@ -48,7 +48,7 @@ app.get('/gridfs-download-test', async (req, res) => {
     res.json(test);
 });
 
-app.get('/hubs', async (req, res) => {
+app.post('/hubs', async (req, res) => {
     console.log("waka");
     res.json({message: "Hubs"});
   });

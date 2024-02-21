@@ -21,11 +21,13 @@ function Hub() {
 
   // Function to fetch data from the database
   const fetchData = async (event) => {
-    const url = 'http://localhost:8000/hubs';
+    const urlOne = 'http://localhost:8000/hubs';
     const uid = "03";
 
-    axios.get(url).then((response) => {
+    axios.post(urlOne, uid).then((response) => {
       console.log("man")
+      console.log(response);
+      setHids(response);
     });
 
     console.log("SUBMIT")

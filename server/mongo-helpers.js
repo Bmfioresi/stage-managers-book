@@ -74,14 +74,29 @@ module.exports = {
         const mongoclient = new MongoClient(uri);
 
         try {
-            console.log("getting Hids\n");
-        } catch(err) {
-            console.log(err);
-            console.log("HUB ERROR MONGO HELPER");
-            return 0;
-        }
+            const profilesBase = mongoclient.db('profiles');
+            const profiles = profilesBase.collection('profiles');
 
-        return 0;
+            console.log("USER ID");
+            console.log(userId.uid);
+            const query = { uid: userId.uid};
+            const userProfile = await profiles.findOne(query);
+
+            if (userProfile == null) {
+                userProfile = {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
+                'phone_number': "NOT FOUND", 'pronouns': "NOT FOUND", 'roles': "NOT FOUND"};
+            }
+    
+            console.log(userProfile.uid);
+            await mongoclient.close();
+            return userProfile.uid;
+        
+        } catch (err) {
+            console.log(err);
+            console.log("PROFILE NOT FOUND")
+            return {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
+            'phone_number': "NOT FOUND", 'pronouns': "NOT FOUND", 'roles': "NOT FOUND"};
+        } 
     }
 
 

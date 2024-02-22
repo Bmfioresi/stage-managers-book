@@ -53,6 +53,7 @@ app.get('/gridfs-download-test', async (req, res) => {
 
 app.post('/hubs', async (req, res) => {
     console.log("waka");
+    const userId = await mongoHelpers.getHids();
     res.json({message: "Hubs"});
 });
 

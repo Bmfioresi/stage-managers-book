@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import InputFrame from "../components/login-components//input-frame";
 import "./desktop-sign-up.css";
+import "../global.css";
 
 const DesktopSignUp = () => {
   const onMainButtonContainerClick = useCallback(() => {

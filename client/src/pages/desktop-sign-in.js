@@ -1,5 +1,6 @@
 import LeftSide8Column from "../components/login-components/left-side8-column";
 import "./desktop-sign-in.css";
+import "../global.css";
 
 const DesktopSignIn = () => {
   return (

@@ -5,6 +5,11 @@ body {
   margin: 0;
   line-height: normal;
 }
+.App { /* Set the height of the entire page to match the viewport height */
+  height: 100vh;
+  overflow: auto; /* Add scrollbar if content overflows */
+  margin: 0; /* Remove default margin */
+}
 :root {
   /* fonts */
   --font-roboto: Roboto;

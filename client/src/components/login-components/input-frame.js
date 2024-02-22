@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import LineFrame from "./line-frame";
 import "./input-frame.css";
+import "../../global.css";
 
 const InputFrame = () => {
   const onMainButtonClick = useCallback(() => {

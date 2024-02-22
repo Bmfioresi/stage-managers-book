@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import "./line-frame.css";
+import "../../global.css"
 
 const LineFrame = ({
   label1,

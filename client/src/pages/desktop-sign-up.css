@@ -135,16 +135,17 @@
 }
 @media screen and (max-width: 450px) {
   .input-frame {
-    padding-top: var(--padding-78xl);
+    padding-top: var(--padding-70xl);
     box-sizing: border-box;
   }
 
   .art1 {
     min-width: 100%;
+    max-width:fit-content;
   }
 
   .desktop-sign-up {
-    padding-left: 101px;
+    padding-left: 100px;
     box-sizing: border-box;
   }
 }

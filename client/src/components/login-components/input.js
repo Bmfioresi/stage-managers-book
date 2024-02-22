@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import "./input.css";
+import "../../global.css";
 
 const Input = ({
   placeholderPlaceholder,

@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import Input from "./input";
 import { useNavigate } from "react-router-dom";
 import "./left-side8-column.css";
+import "../../global.css";
 
 const LeftSide8Column = () => {
   const [placeholderText1Value, setPlaceholderText1Value] = useState("");

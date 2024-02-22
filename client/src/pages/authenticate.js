@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
 
 function Authenticate() {
@@ -14,6 +14,7 @@ function Authenticate() {
     const [phoneNumber, setPhoneNumber] = useState("PHONE NUMBER");
     const [pronouns, setPronouns] = useState("PRONOUNS");
     const [roles, setRoles] = useState("ROLES");
+    const [loggedIn, setLoggedIn] = useState("FALSE");
 
     const [formData, setFormData] = useState({
         email: "",
@@ -49,16 +50,23 @@ function Authenticate() {
             setPronouns(response.data.pronouns);
             setRoles(response.data.roles);
 
-            console.log("LOCAL STORAGE")
+            localStorage.setItem('uid', response.data.uid);
+
+            console.log("LOCAL STORAGE");
             // console.log(JSON.parse(localStorage.getItem("uid")))
         });
 
-        console.log("SUBMIT")
+        console.log("SUBMIT");
+        setLoggedIn("TRUE");
     }
 
     const dummyFunc = (event) => {
       event.preventDefault();
       console.log("DUMMY FUNC")
+    }
+
+    if (loggedIn == "TRUE") {
+        return <Navigate to='/profile' />;
     }
 
     if (userId != "-2") {

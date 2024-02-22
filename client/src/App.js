@@ -8,17 +8,16 @@ import {
   Route,
 } from "react-router-dom";
 import Home from "./pages";
-import Test from "./pages/test";
-import Search from "./pages/search";
-import Upload from "./pages/upload";
+import Test from "./pages/test.js";
+import UploadImage from "./pages/upload-image.js";
+import DisplayImage from "./pages/display-image.js";
 import SignIn from "./pages/desktop-sign-in.js";
 import ForgotPassword from "./pages/desktop-forgot-password.js";
 import SignUp from "./pages/desktop-sign-up.js";
-import Authenticate from './pages/authenticate.js'
-import ProfileForm from './pages/profileForm.js'
-import Hubs from './pages/hubs.js'
-import Profile from './pages/profile.js'
-import Download from './pages/download'
+import Authenticate from './pages/authenticate.js';
+import ProfileForm from './pages/profileForm.js';
+import Hubs from './pages/hubs.js';
+import Profile from './pages/profile.js';
 
 function App() {
   return (
@@ -28,8 +27,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/test" element={<Test />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/upload" element={<Upload />} />
+          <Route path="/upload-image" element={<UploadImage />} />
+          <Route path="/display-image" element={<DisplayImage />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />
           <Route path="/hubs" element={<Hubs />} />
@@ -37,7 +36,6 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/download" element={<Download />} />
         </Routes>
       </Router>
     </div>

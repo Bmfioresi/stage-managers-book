@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import axios from 'axios';
 
-const Upload = () => {
+const UploadImage = () => {
     const [file, setFile] = useState();
 
     function handleChange(event) {
@@ -10,10 +10,9 @@ const Upload = () => {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        const url = 'http://localhost:8000/upload';
+        const url = 'http://localhost:8000/upload-image';
         const data = new FormData();
         data.append('file', file);
-        data.append('fileName', file.name);
         const headers = {
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${data._boundary}`
@@ -33,4 +32,4 @@ const Upload = () => {
     );
 };
 
-export default Upload;
+export default UploadImage;

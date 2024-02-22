@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const formidable = require('express-formidable');
+const fs = require('fs');
 
-const helpers = require('./drive-helpers');
 const mongoHelpers = require('./mongo-helpers');
 const gridfsHelpers = require('./gridfs-helpers');
 
@@ -16,26 +16,29 @@ app.get('/test', (req, res) => {
     res.json({message: "Test successful"});
 });
 
-app.get('/search', async (req, res) => {
-    const files = await helpers.searchFile();
-    res.json({files: files});
+app.post('/upload-image', async (req, res) => {
+    const file = req.files.file;
+    const name = file.name;
+    const type = file.type;
+    if (type !== 'image/jpeg' && type !== 'image/png') {
+        res.json({message: `Invalid file format ${type}`});
+    } else {
+        const stream = fs.createReadStream(file.path);
+        const ret = await gridfsHelpers.uploadFile(name, stream, 'images');
+        res.json(ret);
+    }
 });
 
-app.get('/download-image', async (req, res) => {
-    // does not work, probably going to delete later
-    // search file and get blob back
-    var id = req.body.id;
-    const file = await helpers.downloadFile(id);
-
-    console.log(file.data);
-    var buffer = await file.data.arrayBuffer();
-    buffer = Buffer.from(buffer);
-    console.log(buffer);
-    buffer = buffer.toString('base64');
-    console.log(buffer);
-
-    var mimeType = file.data.type;
-    res.json({tag: `<img src="data:${mimeType};base64,${buffer}" />`});
+app.get('/display-image/:name', async (req, res) => {
+    const name = req.params.name;
+    var re = /(?:\.([^.]+))?$/;
+    var ext = re.exec(name)[1];
+    if (ext !== 'jpg' && ext !== 'png') {
+        res.json({message: `Invalid file format .${ext}`});
+    } else {
+        const ret = await gridfsHelpers.downloadFile(name, 'images');
+        ret.pipe(res);
+    }
 });
 
 app.get('/gridfs-test', async (req, res) => {
@@ -76,25 +79,6 @@ app.post('/authenticate', async (req, res) => {
         res.json({uid: userId.uid});
     }
     */
-});
-
-app.post('/upload', async (req, res) => {
-    // parse out file info from req TODO
-    // search if file name already exists and add 1 etc at the end if repeat TODO
-    const fileData = {
-        file: null,
-        name: null,
-        mimeType: null,
-    };
-    const id = await helpers.uploadFile(fileData);
-    res.json({uploadConfirm: id});
-});
-
-app.delete('/delete', async (req, res) => {
-    // search for file to delete? TODO
-    // const id = await helpers.searchFile(null);
-    const response = await helpers.deleteFile();
-    res.json({message: response});
 });
 
 app.listen(8000, () => {

@@ -41,15 +41,6 @@ function Authenticate() {
             // setUserId(response.data.uid); // Updating userID
             console.log(userId);
 
-            // Updating data
-            setUserId(response.data.uid);
-            setName(response.data.name);
-            setBio(response.data.bio);
-            setEmail(response.data.email_address);
-            setPhoneNumber(response.data.phone_number);
-            setPronouns(response.data.pronouns);
-            setRoles(response.data.roles);
-
             localStorage.setItem('uid', response.data.uid);
 
             console.log("LOCAL STORAGE");

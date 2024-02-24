@@ -64,21 +64,23 @@ app.post('/authenticate', async (req, res) => {
     console.log(fields.password);
     const userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
     if (userId==null) {
-        userId.uid == '-1';
+        userId = {'uid': '-1'};
     } 
+    res.json(userId);
+});
 
-    const profile = await mongoHelpers.getBio(userId);
-    console.log(profile)
-    res.json(profile);
-    // localStorage.setItem("uid", JSON.stringify({uid: profile.uid}))
-    /*
-    if (profile == null) {
-        res.json({ uid: '-1' });
-    }
-    else {
-        res.json({uid: userId.uid});
-    }
-    */
+app.post('/loadProfile', async (req, res) => {
+    console.log("HERE1");
+    console.log(req);
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    console.log(fields);
+
+    // TODO: Fix NoSQL Injection Concern
+    // TODO: Handle errors
+    const profileData = await mongoHelpers.loadProfile(fields.uid); 
+    console.log(profileData);
+    console.log("ABOUT TO RETURN");
+    res.json(profileData);
 });
 
 app.listen(8000, () => {

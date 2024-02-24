@@ -126,16 +126,32 @@
   padding: 0px 0px var(--padding-mini);
   row-gap: 20px;
 }
-.google-icon2 {
+.social-button-signup {
+  cursor: pointer;
+  border: none;
+  padding: var(--padding-2xs) var(--padding-xl) var(--padding-2xs)
+    var(--padding-2xl);
+  background-color: var(--color-whitesmoke);
+  width: 422px;
+  border-radius: var(--br-xs);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  gap: var(--gap-base);
+  max-width: 100%;
+}
+.social-button-signup img {
   height: 28px;
   width: 28px;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
 }
-.sign-in-with2 {
+.social-button-signup div {
   height: 16px;
-  width: 159px;
+  width: 190px;
   position: relative;
   font-size: var(--font-size-base);
   letter-spacing: 0.01em;
@@ -143,23 +159,7 @@
   font-family: var(--font-roboto);
   color: var(--link);
   text-align: left;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.social-buttondesktop2 {
-  cursor: pointer;
-  border: none;
-  padding: var(--padding-xs) var(--padding-xl);
-  background-color: var(--color-whitesmoke);
-  align-self: stretch;
-  border-radius: var(--br-xs);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: var(--gap-base);
-  z-index: 1;
+  display: inline-block;
 }
 .input-frame3 {
   margin: 0;

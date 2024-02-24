@@ -2,12 +2,26 @@ import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
+import { GoogleLogin } from "react-google-login";
 import Input from "./input";
 import "./left-side8-column.css";
 import "../../global.css";
 
 const LeftSide8Column = () => {
   const navigate = useNavigate();
+
+  const responseGoogle = (response) => {
+    console.log(response);
+    // Send token to server for verification and further processing
+    axios.post('http://localhost:8000/auth/google', { token: response.tokenId })
+      .then((response) => {
+        // Handle the response from your backend
+        // For example, setting loggedIn state, storing user data, etc.
+      })
+      .catch((error) => {
+        console.error('Google Sign-In error:', error);
+      });
+  }
 
   // Used for facilitating login
   const [formData, setFormData] = useState({
@@ -80,7 +94,7 @@ const LeftSide8Column = () => {
             </span>
           </div>
           <div className="input3">
-            <div className="label1">Email Address</div>
+            <div className="label1">Email</div>
             <div className="input4">
               <div className="input5" />
               <input
@@ -127,10 +141,14 @@ const LeftSide8Column = () => {
         <div className="or">Or</div>
         <div className="or-text" />
       </div>
-      <button className="social-buttondesktop1">
-        <img className="google-icon1" alt="" src="/google.svg" />
-        <div className="sign-in-with1">Sign in with Google</div>
-      </button>
+      <GoogleLogin
+        clientId="391303195070-1j9epkem5pktr7ueg1hjhufb9pberau2.apps.googleusercontent.com"
+        buttonText="Sign in with Google"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={'single_host_origin'}
+        className="social-buttondesktop"
+      />
       <div className="dont-you-have-container" onClick={onDontYouHaveClick}>
         <span className="dont-you-have-container1">
           <span>{`Don't you have an account? `}</span>

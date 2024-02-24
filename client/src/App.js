@@ -43,7 +43,7 @@ function App() {
               <Route path="/createProfile" element={<ProfileForm />} />
               <Route path="/hubs" element={<Hubs />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/download" element={<Download />} />
+              {/* <Route path="/download" element={<Download />} /> */}
             </>
           )}
         </Routes>

@@ -1,4 +1,7 @@
 import { useCallback } from "react";
+import axios, { formToJSON } from 'axios';
+import { GoogleLogin } from "react-google-login";
+import googleIcon from "./google.svg";
 import LineFrame from "./line-frame";
 import "./input-frame.css";
 import "../../global.css";
@@ -7,6 +10,19 @@ const InputFrame = () => {
   const onMainButtonClick = useCallback(() => {
     // Please sync "Profile" to the project
   }, []);
+
+  const responseGoogle = (response) => {
+    console.log(response);
+    // Send token to server for verification and further processing
+    axios.post('http://localhost:8000/auth/google', { token: response.tokenId })
+      .then((response) => {
+        // Handle the response from your backend
+        // For example, setting loggedIn state, storing user data, etc.
+      })
+      .catch((error) => {
+        console.error('Google Sign-In error:', error);
+      });
+  }
 
   return (
     <div className="input-frame2">
@@ -70,10 +86,19 @@ const InputFrame = () => {
             <div className="or-text" />
           </div>
         </div>
-        <button className="social-buttondesktop2">
-          <img className="google-icon2" alt="" src="/google.svg" />
-          <div className="sign-in-with2">Sign up with Google</div>
-        </button>
+        <GoogleLogin
+          clientId="391303195070-1j9epkem5pktr7ueg1hjhufb9pberau2.apps.googleusercontent.com"
+          buttonText="Sign up with Google"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
+          render={renderProps => (
+              <button onClick={renderProps.onClick} disabled={renderProps.disabled} className="social-button-signup">
+                <img src={googleIcon} alt="Google sign-in" />
+                <div>Sign Up with Google</div>
+              </button>
+          )}
+        />
       </form>
       <div className="art-frame">
         <div className="stage-mgr-book">

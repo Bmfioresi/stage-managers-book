@@ -187,35 +187,7 @@
   font-size: var(--font-size-base);
   color: var(--color-darkslategray-100);
 }
-.google-icon1 {
-  height: 28px;
-  width: 28px;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.facebook-icon1 {
-  height: 28px;
-  width: 28px;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: none;
-  min-height: 28px;
-}
-.sign-in-with1 {
-  height: 16px;
-  width: 140px;
-  position: relative;
-  font-size: var(--font-size-base);
-  letter-spacing: 0.01em;
-  line-height: 100%;
-  font-family: var(--font-roboto);
-  color: var(--link);
-  text-align: left;
-  display: inline-block;
-}
-.social-buttondesktop1 {
+.social-buttondesktop {
   cursor: pointer;
   border: none;
   padding: var(--padding-2xs) var(--padding-xl) var(--padding-2xs)
@@ -230,6 +202,25 @@
   box-sizing: border-box;
   gap: var(--gap-base);
   max-width: 100%;
+}
+.social-buttondesktop img {
+  height: 28px;
+  width: 28px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.social-buttondesktop div {
+  height: 16px;
+  width: 140px;
+  position: relative;
+  font-size: var(--font-size-base);
+  letter-spacing: 0.01em;
+  line-height: 100%;
+  font-family: var(--font-roboto);
+  color: var(--link);
+  text-align: left;
+  display: inline-block;
 }
 .sign-up {
   color: var(--link);

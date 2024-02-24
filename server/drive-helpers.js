@@ -1,3 +1,5 @@
+// This is all unused, will probably delete later
+
 module.exports = {
     // searches drive for all files
     // id - id of specific file to search for

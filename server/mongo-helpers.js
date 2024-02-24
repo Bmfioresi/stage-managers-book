@@ -57,7 +57,7 @@ module.exports = {
             console.log(userProfile);
             // console.log(userProfile.uid);
             await mongoclient.close();
-            return userProfile
+            return userProfile;
         
         } catch (err) {
             console.log(err);
@@ -65,6 +65,23 @@ module.exports = {
             return {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
             'phone_number': "NOT FOUND", 'pronouns': "NOT FOUND", 'roles': "NOT FOUND"};
         } 
+    },
+
+    getHids: async function (userId) {
+        const { MongoClient } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        console.log(uri)
+        const mongoclient = new MongoClient(uri);
+
+        try {
+            console.log("getting Hids\n");
+        } catch(err) {
+            console.log(err);
+            console.log("HUB ERROR MONGO HELPER");
+            return 0;
+        }
+
+        return 0;
     }
 
 

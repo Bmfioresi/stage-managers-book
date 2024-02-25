@@ -172,7 +172,7 @@
   gap: var(--gap-smi);
 }
 .the-stage-managers-book-logo {
-  height: 133px;
+  height: 200px;
   flex: 1;
   position: relative;
   max-width: 100%;
@@ -181,7 +181,7 @@
   z-index: 1;
 }
 .stage-mgr-book {
-  width: 151px;
+  width: 200px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;

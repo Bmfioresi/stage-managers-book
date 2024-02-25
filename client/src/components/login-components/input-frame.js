@@ -94,7 +94,7 @@ const InputFrame = () => {
           cookiePolicy={'single_host_origin'}
           render={renderProps => (
               <button onClick={renderProps.onClick} disabled={renderProps.disabled} className="social-button-signup">
-                <img src={googleIcon} alt="Google sign-in" />
+                <img src={googleIcon} alt="Google sign-up" />
                 <div>Sign Up with Google</div>
               </button>
           )}

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
 import { GoogleLogin } from "react-google-login";
+import googleIcon from "./google.svg";
 import Input from "./input";
 import "./left-side8-column.css";
 import "../../global.css";
@@ -142,13 +143,18 @@ const LeftSide8Column = () => {
         <div className="or-text" />
       </div>
       <GoogleLogin
-        clientId="391303195070-1j9epkem5pktr7ueg1hjhufb9pberau2.apps.googleusercontent.com"
-        buttonText="Sign in with Google"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy={'single_host_origin'}
-        className="social-buttondesktop"
-      />
+          clientId="391303195070-1j9epkem5pktr7ueg1hjhufb9pberau2.apps.googleusercontent.com"
+          buttonText="Sign in with Google"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
+          render={renderProps => (
+              <button onClick={renderProps.onClick} disabled={renderProps.disabled} className="social-buttondesktop">
+                <img src={googleIcon} alt="Google sign-in" />
+                <div>Sign In with Google</div>
+              </button>
+          )}
+        />
       <div className="dont-you-have-container" onClick={onDontYouHaveClick}>
         <span className="dont-you-have-container1">
           <span>{`Don't you have an account? `}</span>

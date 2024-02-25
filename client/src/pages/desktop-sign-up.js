@@ -14,9 +14,6 @@ const DesktopSignUp = () => {
     <div className="desktop-sign-up">
       <div className="main-button" onClick={onMainButtonContainerClick}>
         <div className="sign-in">Sign up</div>
-          <div className="google-login">
-            <GoogleLogin />
-          </div>
       </div>
       <div className="input-frame">
         <InputFrame />

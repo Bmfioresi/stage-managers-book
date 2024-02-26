@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom/client";
 import axios from 'axios';
 import './profile-page.css';
-import axios from 'axios';
 
 const Profile = () => {
 
@@ -20,7 +19,7 @@ const Profile = () => {
         const url = 'http://localhost:8000/loadProfile';
         // Converting form to json format
 
-        axios.post(url, JSON.stringify({uid: '01'})).then((response) => {
+        axios.post(url, JSON.stringify({uid: uid})).then((response) => {
 
             console.log("BACK TO PROFILE PAGE")
             console.log(response.data);

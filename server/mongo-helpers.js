@@ -74,15 +74,55 @@ module.exports = {
         const mongoclient = new MongoClient(uri);
 
         try {
-            console.log("getting Hids\n");
-        } catch(err) {
+            await mongoclient.connect();
+            const profilesBase = mongoclient.db("profiles");
+            const profiles = profilesBase.collection("profiles");
+            console.log("UID");
+            console.log(userId);
+
+            // query
+            const query = { uid: userId };
+            const userProfile = await profiles.findOne(query);
+        
+            console.log(userProfile.uid);
+            //console.log(userProfile);
+            // console.log(userProfile.uid);
+            await mongoclient.close();
+            return userProfile.hids;
+        
+        } catch (err) {
             console.log(err);
-            console.log("HUB ERROR MONGO HELPER");
-            return 0;
+            console.log("HIDS NOT FOUND")
+            return {'uid': "-1"};
+        } finally {
+            await mongoclient.close();
         }
+    },
 
-        return 0;
+    getHubInfo: async function (hids) {
+        const { MongoClient } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        console.log(uri)
+        const mongoclient = new MongoClient(uri);
+
+        try {
+            await mongoclient.connect();
+            const db = mongoclient.db("hubs");
+            const collection = db.collection("hub_info");
+            var hubInfo = [];
+            for(let i = 0; i < hids.length; i++) {
+                const query = { hid: hids[i] };
+                const hub = await collection.findOne(query);
+                hubInfo.push(hub);
+            }
+            await mongoclient.close();
+            return hubInfo;
+        } catch (err) {
+            console.log(err);
+            console.log("HUB INFO NOT FOUND")
+            return {'uid': "-1"};
+        } finally {
+            await mongoclient.close();
+        }
     }
-
-
 }

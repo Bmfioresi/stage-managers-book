@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom/client";
 import axios from 'axios';
 import './profile-page.css';
+import axios from 'axios';
 
 const Profile = () => {
 

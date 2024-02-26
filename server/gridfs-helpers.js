@@ -41,6 +41,7 @@ module.exports = {
             const db = mongoclient.db('files');
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             const res = bucket.openDownloadStreamByName(name);
+            // add error handling here for invalid ip address and such
             return res;
         } catch (err) {
             console.log(err);

@@ -15,7 +15,6 @@ import SignIn from "./pages/desktop-sign-in.js";
 import ForgotPassword from "./pages/desktop-forgot-password.js";
 import SignUp from "./pages/desktop-sign-up.js";
 import Authenticate from './pages/authenticate.js';
-import ProfileForm from './pages/profileForm.js';
 import Hubs from './pages/hubs.js';
 import Profile from './pages/profile-page.js';
 import CreateProfile from './pages/profile-form.js'

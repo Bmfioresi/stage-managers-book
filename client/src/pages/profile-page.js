@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './profile-page.css';
+import axios from 'axios';
 
 const ProfilePage = () => {
     const [formData, setFormData] = useState({
@@ -18,6 +19,19 @@ const ProfilePage = () => {
             [e.target.name]: e.target.value
         });
     };
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:3000/" + "-1") //api/profile/" + '65da2b9987488cb482688cb0
+            .then((response) => {
+                console.log(response)
+                //setProfileData(response.data); // Assuming the response contains profile data
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }, []); //I need to know the specific id of the user for profile page in order to move forward
+    //also, what route do I need to connect to for the database? 
 
     const handleSubmit = (e) => {
         e.preventDefault();

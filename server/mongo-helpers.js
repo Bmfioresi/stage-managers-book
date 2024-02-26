@@ -74,30 +74,55 @@ module.exports = {
         const mongoclient = new MongoClient(uri);
 
         try {
-            const profilesBase = mongoclient.db('profiles');
-            const profiles = profilesBase.collection('profiles');
+            await mongoclient.connect();
+            const profilesBase = mongoclient.db("profiles");
+            const profiles = profilesBase.collection("profiles");
+            console.log("UID");
+            console.log(userId);
 
-            console.log("USER ID");
-            console.log(userId.uid);
-            const query = { uid: userId.uid};
+            // query
+            const query = { uid: userId };
             const userProfile = await profiles.findOne(query);
-
-            if (userProfile == null) {
-                userProfile = {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
-                'phone_number': "NOT FOUND", 'pronouns': "NOT FOUND", 'roles': "NOT FOUND"};
-            }
-    
+        
             console.log(userProfile.uid);
+            //console.log(userProfile);
+            // console.log(userProfile.uid);
             await mongoclient.close();
-            return userProfile.uid;
+            return userProfile.hids;
         
         } catch (err) {
             console.log(err);
-            console.log("PROFILE NOT FOUND")
-            return {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
-            'phone_number': "NOT FOUND", 'pronouns': "NOT FOUND", 'roles': "NOT FOUND"};
-        } 
+            console.log("HIDS NOT FOUND")
+            return {'uid': "-1"};
+        } finally {
+            await mongoclient.close();
+        }
+    },
+
+    getHubInfo: async function (hids) {
+        const { MongoClient } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        console.log(uri)
+        const mongoclient = new MongoClient(uri);
+
+        try {
+            await mongoclient.connect();
+            const db = mongoclient.db("hubs");
+            const collection = db.collection("hub_info");
+            var hubInfo = [];
+            for(let i = 0; i < hids.length; i++) {
+                const query = { hid: hids[i] };
+                const hub = await collection.findOne(query);
+                hubInfo.push(hub);
+            }
+            await mongoclient.close();
+            return hubInfo;
+        } catch (err) {
+            console.log(err);
+            console.log("HUB INFO NOT FOUND")
+            return {'uid': "-1"};
+        } finally {
+            await mongoclient.close();
+        }
     }
-
-
 }

@@ -17,7 +17,7 @@ import SignUp from "./pages/desktop-sign-up.js";
 import Authenticate from './pages/authenticate.js';
 import ProfileForm from './pages/profileForm.js';
 import Hubs from './pages/hubs.js';
-import Profile from './pages/profile.js';
+import Profile from './pages/profile-page.js';
 
 function App() {
   return (

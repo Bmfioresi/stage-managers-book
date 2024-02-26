@@ -52,9 +52,11 @@ app.get('/gridfs-download-test', async (req, res) => {
 });
 
 app.post('/hubs', async (req, res) => {
-    console.log("waka");
-    const userId = await mongoHelpers.getHids();
-    res.json({message: "Hubs"});
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    console.log(fields.uid);
+    const hids = await mongoHelpers.getHids(fields.uid)
+    const hubInfo = await mongoHelpers.getHubInfo(hids);
+    res.json(hubInfo);
 });
 
 app.post('/authenticate', async (req, res) => {

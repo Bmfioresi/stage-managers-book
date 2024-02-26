@@ -3,35 +3,43 @@ import axios from 'axios';
 
 function Hub() {
 
-  const [hubData, setFormData] = useState({
+  const hub = useState({
     name: "",
     description: "",
     owner: ""
   });
 
-  const [name, setName] = useState("Unchanged");
-  const [description, setDescription] = useState("Unchanged");
-  const [owner, setOwner] = useState("Unchanged");
-  const [hids, setHids] = useState([]);
+  const hubs = [];
+
+  const [isLoading, setLoading] = useState(true);
+
+  const [formData, setFormData] = useState({
+    uid: "03"
+  });
 
   useEffect(() => {
-    // Fetch data from the database
-    fetchData();
-  }, []); // Empty dependency array to fetch data only once when component mounts
+    let ignore = false;
+    if(!ignore) {
+      const url = 'http://localhost:8000/hubs';
 
-  // Function to fetch data from the database
-  const fetchData = async (event) => {
-    const urlOne = 'http://localhost:8000/hubs';
-    const uid = "03";
+      axios.post(url, JSON.stringify(formData)).then((response) => {
+        console.log(response.data);
+        for(let i = 0; i < response.data.length; i++) {
+          hub.name = response.data[i].name;
+          hub.description = response.data[i].description;
+          hub.owner = response.data[i].owner;
+          hubs.push(hub);
+        }
+        setLoading(false);
+      });
+    }
+    return () => { ignore = true }
+  }, []);
 
-    axios.post(urlOne, uid).then((response) => {
-      console.log("man")
-      console.log(response);
-      setHids(response);
-    });
+  if(isLoading) {
+    return <div className="App">Loading...</div>
+  }
 
-    console.log("SUBMIT")
-}
 
   return (
     <div>
@@ -40,6 +48,18 @@ function Hub() {
         <label htmlFor="fname">Join new hub: </label>
         <input type="text" id="code" name="code" placeholder="Enter access code"></input><br></br>
       </form>
+      <div>
+        {hubs.map(function(hub) {
+          return (
+            <div key={hub.name}>
+              <p>Hub Name: {hub.name}</p>
+              <p>Hub description: {hub.description}</p>
+              <p>Hub owner: {hub.owner}</p>
+              <br></br>
+            </div>
+          )
+        })}
+      </div>
     </div>
   );
 }

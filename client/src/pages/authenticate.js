@@ -40,7 +40,9 @@ function Authenticate() {
             console.log(response.data);
             // setUserId(response.data.uid); // Updating userID
             console.log(userId);
-
+            
+            console.log("NEW LOCAL STORAGE UID");
+            console.log(response.data.uid);
             localStorage.setItem('uid', response.data.uid);
 
             console.log("LOCAL STORAGE");

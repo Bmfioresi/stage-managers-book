@@ -12,6 +12,7 @@ const Test = () => {
     return (
         <div>
             <h1>{message}</h1>
+            <h1>{localStorage.getItem('uid')}</h1>
         </div>
     );
 };

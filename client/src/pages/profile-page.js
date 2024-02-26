@@ -19,7 +19,9 @@ const Profile = () => {
         const url = 'http://localhost:8000/loadProfile';
         // Converting form to json format
 
-        axios.post(url, JSON.stringify({uid: uid})).then((response) => {
+        console.log("LOCAL STORAGE.uid");
+        console.log(uid);
+        axios.post(url, JSON.stringify({uid: '01'})).then((response) => {
 
             console.log("BACK TO PROFILE PAGE")
             console.log(response.data);

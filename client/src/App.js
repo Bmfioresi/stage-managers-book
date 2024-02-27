@@ -25,7 +25,7 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<SignIn />} />
           <Route path="/test" element={<Test />} />
           <Route path="/upload-image" element={<UploadImage />} />
           <Route path="/display-image" element={<DisplayImage />} />

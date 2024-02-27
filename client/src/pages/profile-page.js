@@ -41,7 +41,7 @@ const ProfilePage = () => {
         <div className="container">
             <div className="sidebar">
                 {/* Sidebar content */}
-                <img src="path_to_logo_image" alt="Stage Manager Logo" className="logo" />
+                <img src="./smb-logo.png" alt="Stage Manager Logo" className="logo" />
                 <ul className="sidebar-links">
                     <li><a href="#">Profile</a></li>
                     <li>
@@ -60,15 +60,15 @@ const ProfilePage = () => {
                 <h1>User Profile</h1>
                 <div className="profile-info">
                     <div className="profile-details">
-                        <label htmlFor="name">Name: {name}</label>
-                        <label htmlFor="pronouns">Preferred Pronouns:{pronouns} </label>
-                        <label htmlFor="roles">Roles: {roles}</label>
+                        <label htmlFor="name">Name: {name}</label><br/><br/>
+                        <label htmlFor="pronouns">Preferred Pronouns:{pronouns} </label><br/><br/>
+                        <label htmlFor="roles">Roles: {roles}</label><br/><br/>
                     </div>
 
                     <div className="about-me">
-                        <label htmlFor="bio">Bio: {bio}</label>
-                        <label htmlFor="email">Email: {email}</label>
-                        <label htmlFor="phoneNumber">Phone Number: {phoneNumber}</label>
+                        <label htmlFor="bio">Bio: {bio}</label><br/>
+                        <label htmlFor="email">Email: {email}</label><br/>
+                        <label htmlFor="phoneNumber">Phone Number: {phoneNumber}</label><br/>
                     </div>
 
 

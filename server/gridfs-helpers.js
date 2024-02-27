@@ -47,5 +47,29 @@ module.exports = {
             console.log(err);
             return err;
         }
+    },
+
+    getFilenames: async function (bucketName) {
+        const { MongoClient, GridFSBucket } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        const mongoclient = new MongoClient(uri);
+        
+        try {
+            await mongoclient.connect();
+            const db = mongoclient.db('files');
+            const bucket = new GridFSBucket(db, {bucketName: bucketName});
+            const res = bucket.find({});
+            var filenames = [];
+
+            for await (const file of res) {
+                // console.log(file);
+                filenames.push(file.filename);
+            }
+            // console.log(filenames);
+            return filenames;
+        } catch (err) {
+            console.log(err);
+            return err;
+        }
     }
 }

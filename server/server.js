@@ -51,6 +51,11 @@ app.get('/gridfs-download-test', async (req, res) => {
     res.json(test);
 });
 
+app.get('/gridfs-get-filenames', async (req, res) => {
+    const ret = await gridfsHelpers.getFilenames("images");
+    res.json(ret);
+});
+
 app.post('/hubs', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     console.log(fields.uid);

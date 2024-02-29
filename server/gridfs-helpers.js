@@ -52,7 +52,7 @@ module.exports = {
             };
         } catch (err) {
             console.log(err);
-            return err;
+            return null;
         }
     },
 
@@ -67,10 +67,10 @@ module.exports = {
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             let found = await searchName(bucket, name);
             if (found) return bucket.openDownloadStreamByName(name);
-            return null;
+            return {status: 404};
         } catch (err) {
             console.log(err);
-            return err;
+            return null;
         }
     },
 
@@ -94,7 +94,7 @@ module.exports = {
             return filenames;
         } catch (err) {
             console.log(err);
-            return err;
+            return null;
         }
     }
 }

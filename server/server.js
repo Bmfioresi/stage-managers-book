@@ -22,7 +22,8 @@ app.post('/upload-file', async (req, res) => {
     // const type = file.type;
     const stream = fs.createReadStream(file.path);
     const ret = await gridfsHelpers.uploadFile(name, stream, 'test');
-    res.json(ret);
+    if (ret == null) res.json({status: 500});
+    else res.json(ret);
 });
 
 // uploads attached image to database in the images bucket
@@ -35,7 +36,8 @@ app.post('/upload-image', async (req, res) => {
     } else {
         const stream = fs.createReadStream(file.path);
         const ret = await gridfsHelpers.uploadFile(name, stream, 'images');
-        res.json(ret);
+        if (ret == null) res.json({status: 500});
+        else res.json(ret);
     }
 });
 
@@ -51,7 +53,8 @@ app.get('/display-image/:name', async (req, res) => {
         res.json({message: `Invalid file format .${ext}`});
     } else {
         const ret = await gridfsHelpers.downloadFile(name, 'images');
-        if (ret == null) res.json({status: 404});
+        if (ret == {status: 404}) res.json(ret);
+        else if (ret == null) res.json({status: 500});
         else ret.pipe(res);
     }
 });
@@ -61,7 +64,8 @@ app.get('/display-image/:name', async (req, res) => {
 // these filenames can be piped to /display-image/:name to display on a page
 app.get('/gridfs-get-filenames', async (req, res) => {
     const ret = await gridfsHelpers.getFilenames("images");
-    res.json(ret);
+    if (ret == null) res.json({status: 500});
+    else res.json(ret);
 });
 
 app.post('/hubs', async (req, res) => {

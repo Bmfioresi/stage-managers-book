@@ -16,6 +16,16 @@ app.get('/test', (req, res) => {
     res.json({message: "Test successful"});
 });
 
+app.post('/upload-file', async (req, res) => {
+    const file = req.files.file;
+    const name = file.name;
+    // const type = file.type;
+    const stream = fs.createReadStream(file.path);
+    const ret = await gridfsHelpers.uploadFile(name, stream, 'test');
+    res.json(ret);
+});
+
+// uploads attached image to database in the images bucket
 app.post('/upload-image', async (req, res) => {
     const file = req.files.file;
     const name = file.name;
@@ -29,6 +39,10 @@ app.post('/upload-image', async (req, res) => {
     }
 });
 
+// returns file stream of image with given name
+// to access image data in the front end, 
+//  use .blob() and URL.createObjectURL(blob)
+// this will return a URL to use with <img src={url} />
 app.get('/display-image/:name', async (req, res) => {
     const name = req.params.name;
     var re = /(?:\.([^.]+))?$/;
@@ -37,20 +51,14 @@ app.get('/display-image/:name', async (req, res) => {
         res.json({message: `Invalid file format .${ext}`});
     } else {
         const ret = await gridfsHelpers.downloadFile(name, 'images');
-        ret.pipe(res);
+        if (ret == null) res.json({status: 404});
+        else ret.pipe(res);
     }
 });
 
-app.get('/gridfs-test', async (req, res) => {
-    const test = await gridfsHelpers.uploadFile({name:"test"});
-    res.json(test);
-});
-
-app.get('/gridfs-download-test', async (req, res) => {
-    const test = await gridfsHelpers.downloadFile("test");
-    res.json(test);
-});
-
+// returns array of strings with the filenames in a bucket
+// currently just returns images, but can be modified to check other buckets
+// these filenames can be piped to /display-image/:name to display on a page
 app.get('/gridfs-get-filenames', async (req, res) => {
     const ret = await gridfsHelpers.getFilenames("images");
     res.json(ret);

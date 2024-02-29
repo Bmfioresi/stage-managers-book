@@ -1,5 +1,30 @@
 require('dotenv').config();
 
+// searches bucket for file with same name
+const searchName = async function (bucket, name) {
+    let files = bucket.find({});
+    let found = false;
+    for await (const file of files) {
+        if (file.filename == name) found = true;
+    }
+    return found;
+}
+
+// increments a number at the end of the filename until it is unique
+const incrementName = async function (bucket, name) {
+    var re = /(?:\.([^.]+))?$/;
+    var ext = re.exec(name)[0];
+    var basename = name.substring(0, name.length - ext.length);
+    let notunique = true;
+    let ver = 0;
+    var newname;
+    while (notunique) {
+        ver++;
+        newname = basename + ver.toString() + ext;
+        notunique = await searchName(bucket, newname);
+    }
+    return newname;
+}
 
 // https://mongodb.github.io/node-mongodb-native/6.3/classes/GridFSBucket.html
 module.exports = {
@@ -17,14 +42,14 @@ module.exports = {
             await mongoclient.connect();
             const db = mongoclient.db('files');
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
+            let found = await searchName(bucket, name);
+            if (found) name = await incrementName(bucket, name);
             const upstream = bucket.openUploadStream(name);
             const res = stream.pipe(upstream);
-
-            const ret = {
+            return {
                 name: res.filename,
                 id: res.id
-            }
-            return ret;
+            };
         } catch (err) {
             console.log(err);
             return err;
@@ -40,9 +65,9 @@ module.exports = {
             await mongoclient.connect();
             const db = mongoclient.db('files');
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
-            const res = bucket.openDownloadStreamByName(name);
-            // add error handling here for invalid ip address and such
-            return res;
+            let found = await searchName(bucket, name);
+            if (found) return bucket.openDownloadStreamByName(name);
+            return null;
         } catch (err) {
             console.log(err);
             return err;

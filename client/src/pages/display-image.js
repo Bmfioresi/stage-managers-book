@@ -10,9 +10,15 @@ const DisplayImage = () => {
     }
 
     async function getImage(name) {
-        let res = await fetch(`http://localhost:8000/display-image/${name}`);
-        let blob = await res.blob();
-        return URL.createObjectURL(blob);
+        let blob;
+        try {
+            let res = await fetch(`http://localhost:8000/display-image/${name}`);
+            blob = await res.blob();
+            return URL.createObjectURL(blob);
+        } catch (err) {
+            console.log(err);
+        }
+        
     }
 
     return (
@@ -23,7 +29,7 @@ const DisplayImage = () => {
                 <button type="submit">Search</button>
             </form>
             <br></br>
-            <img src={url}/>
+            <img src={url} alt="&nbsp;Not found"/>
         </div>
     );
 };

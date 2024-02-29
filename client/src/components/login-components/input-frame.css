@@ -215,7 +215,7 @@
 @media screen and (max-width: 975px) {
   .create-account {
     font-size: var(--font-size-3xl);
-    line-height: 38px;
+    line-height: 51px;
   }
   
   .today-marks-a-container {
@@ -225,5 +225,37 @@
 
   .divider-frame {
     flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .create-account {
+    font-size: var(--font-size-xl);
+    line-height: 38px;
+  }
+
+  .today-marks-a-container {
+    font-size: var(--font-size-base);
+    line-height: 26px;
+  }
+
+  .input-frame3 {
+    gap: var(--gap-5xl);
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .create-account {
+    font-size: var(--font-size-3xl);
+    line-height: 38px;
+  }
+
+  .today-marks-a-container {
+    font-size: var(--font-size-base);
+    line-height: 26px;
+  }
+
+  .input-frame3 {
+    gap: var(--gap-5xl);
   }
 }

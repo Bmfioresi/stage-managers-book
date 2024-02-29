@@ -95,9 +95,12 @@
 }
 @media screen and (max-width: 700px) {
   .input-frame {
-    padding-top: var(--padding-44xl);
-    box-sizing: border-box;
-    min-width: 100%;
+    width: 100%;
+    padding: var(--padding-md) 0x;
+  }
+
+  .art1 {
+    display: none;
   }
 }
 @media screen and (max-width: 450px) {

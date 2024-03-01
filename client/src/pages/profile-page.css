@@ -1,12 +1,10 @@
 .container {
     font-family: Playfair Display;
     display: flex;
-    max-width: 100px;
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 10px;
-    background-color: #f8f9fa;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
 }
 
 .sidebar {
@@ -14,6 +12,9 @@
     background-color: black;
     color: white;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .logo {
@@ -24,6 +25,8 @@
 .sidebar-links {
     list-style-type: none;
     padding: 0;
+    width: 100%;
+    text-align: center;
 }
 
 .sidebar-links li {
@@ -51,6 +54,11 @@
 .content {
     flex: 1;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(100% - 250px);
+    /* Subtract sidebar width */
 }
 
 h1 {
@@ -62,6 +70,7 @@ h1 {
 .profile-info {
     display: flex;
     gap: 20px;
+    width: 100%;
 }
 
 .profile-details,
@@ -74,6 +83,8 @@ h1 {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    /* Ensure full width */
 }
 
 .about-me label {
@@ -84,6 +95,7 @@ h1 {
 .about-me input[type="text"],
 .about-me textarea {
     width: calc(100% - 20px);
+    /* Adjust for padding */
     padding: 10px;
     border: 1px solid #ced4da;
     border-radius: 5px;
@@ -97,6 +109,7 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 label {
@@ -129,4 +142,5 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    width: 100%;
 }

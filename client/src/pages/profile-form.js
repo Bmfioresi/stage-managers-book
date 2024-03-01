@@ -30,7 +30,7 @@ const ProfileForm = () => {
         <div className="container">
             <div className="sidebar">
                 {/* Sidebar content */}
-                <img src="path_to_logo_image" alt="Stage Manager Logo" className="logo" />
+                <img src="smb-logo.png" alt="Stage Manager Logo" className="logo" />
                 <ul className="sidebar-links">
                     <li><a href="#">Profile</a></li>
                     <li>
@@ -72,7 +72,7 @@ const ProfileForm = () => {
                 </div>
                 <button type="submit" onClick={handleSubmit}>Save Changes</button>
             </div>
-           </div> 
+        </div>
 
 
         // <div class="container">

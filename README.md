@@ -26,17 +26,14 @@ You will need to login to MongoDB Atlas and add your computer's IP Address and c
 ## Subfolders
 
 ### client
-Front-end react client
+Front-end react client.
 
-*Currently contains mostly default files from the react setup process which will be modified later.*
 ### server
 Back-end node server.
 
 I followed [this tutorial](https://codedamn.com/news/reactjs/how-to-connect-react-with-node-js) for setting up the react app.
 
-### drive-test
-Tests for the Google Drive API.
 ### figma-items
 Figma resources.
 ### front-end
-Tests for the html front-end.
+Tests for the front-end.

@@ -3,35 +3,31 @@ import axios from 'axios';
 
 function Hub() {
 
-  const [hubData, setFormData] = useState({
-    name: "",
-    description: "",
-    owner: ""
+  const [name, setName] = useState("Unchanged name");
+  const [description, setDescription] = useState("Unchanged description");
+  const [owner, setOwner] = useState("Unchanged owner");
+  const [hubs, setHubs] = useState([]);
+
+  const [formData, setFormData] = useState({
+    uid: "03"
   });
 
-  const [name, setName] = useState("Unchanged");
-  const [description, setDescription] = useState("Unchanged");
-  const [owner, setOwner] = useState("Unchanged");
-  const [hids, setHids] = useState([]);
+  async function getHubs() {
+    const url = 'http://localhost:8000/hubs';
+    axios.post(url, JSON.stringify(formData)).then((response) => {
+      const hubTemp = [];
+      console.log(response.data);
+      for(let i = 0; i < response.data.length; i++) {
+        console.log(response.data[i].name);
+        hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner});
+      }
+      setHubs(hubTemp);
+    });
+  }
 
   useEffect(() => {
-    // Fetch data from the database
-    fetchData();
-  }, []); // Empty dependency array to fetch data only once when component mounts
-
-  // Function to fetch data from the database
-  const fetchData = async (event) => {
-    const urlOne = 'http://localhost:8000/hubs';
-    const uid = "03";
-
-    axios.post(urlOne, uid).then((response) => {
-      console.log("man")
-      console.log(response);
-      setHids(response);
-    });
-
-    console.log("SUBMIT")
-}
+    getHubs().then();
+  }, []);
 
   return (
     <div>
@@ -40,6 +36,10 @@ function Hub() {
         <label htmlFor="fname">Join new hub: </label>
         <input type="text" id="code" name="code" placeholder="Enter access code"></input><br></br>
       </form>
+      <h2>Hub list:</h2>
+      <div>
+        {hubs.map(hub => <button>{hub.name}<br></br>{hub.owner}<br></br>{hub.description}<br></br><br></br></button>)}
+      </div>
     </div>
   );
 }

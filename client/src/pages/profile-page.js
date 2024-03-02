@@ -1,57 +1,97 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactDOM from "react-dom/client";
+import axios from 'axios';
 import './profile-page.css';
 
 const ProfilePage = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        bio: '',
-        contact_info: '',
-        pronouns: '',
-        emergency_contact: '',
-        roles: '',
-        resume: ''
-    });
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
+    const [name, setName] = useState("NAME");
+    const [bio, setBio] = useState("BIO TEXT");
+    const [email, setEmail] = useState("EMAIL ADDRESS");
+    const [phoneNumber, setPhoneNumber] = useState("PHONE NUMBER");
+    const [pronouns, setPronouns] = useState("PRONOUNS");
+    const [roles, setRoles] = useState("ROLES");
+    const [uid, setUid] = useState("-1");
+
+    useEffect(() => {
+        setUid(localStorage.uid);
+
+        const url = 'http://localhost:8000/loadProfile';
+        // Converting form to json format
+
+        console.log("LOCAL STORAGE.uid");
+        console.log(uid);
+        axios.post(url, JSON.stringify({ uid: '01' })).then((response) => {
+
+            console.log("BACK TO PROFILE PAGE")
+            console.log(response.data);
+
+            // Updating data
+            setName(response.data.name);
+            setBio(response.data.bio);
+            setEmail(response.data.email_address);
+            setPhoneNumber(response.data.phone_number);
+            setPronouns(response.data.pronouns);
+            setRoles(response.data.roles);
         });
-    };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add code to handle form submission (e.g., save data to MongoDB)
-        console.log(formData); // For demonstration purposes
-    };
+    }, []);
 
     return (
-        <div class="container">
-            <h1>User Profile</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="name">Name:</label>
-                <input type="text" id="name" name="name" value={"First Last"} onChange={handleChange} /><br />
+        <div className="container">
+            <div className="sidebar">
+                {/* Sidebar content */}
+                <img src="smb-logo.png" alt="Stage Manager Logo" className="logo" />
+                <ul className="sidebar-links">
+                    <li><a href="#">Profile</a></li>
+                    <li>
+                        <a href="#">Productions</a>
+                        <ul className="dropdown">
+                            <li><a href="#">Play 1</a></li>
+                            <li><a href="#">Play 2</a></li>
+                            <li><a href="#">Play 3</a></li>
+                            <li><a href="#">Play 4</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Calendar</a></li>
+                </ul>
+            </div>
+            <div className="content">
+                <h1>User Profile</h1>
+                <div className="profile-info">
+                    <div className="profile-details">
+                        <label htmlFor="name">Name: {name}</label><br /><br />
+                        <label htmlFor="pronouns">Preferred Pronouns:{pronouns} </label><br /><br />
+                        <label htmlFor="roles">Roles: {roles}</label><br /><br />
+                    </div>
 
-                <label htmlFor="bio">Bio:</label>
-                <textarea id="bio" name="bio" rows="4" cols="50" value={"I am very creative"} onChange={handleChange}></textarea><br />
+                    <div className="about-me">
+                        <label htmlFor="bio">Bio: {bio}</label><br />
+                        <label htmlFor="email">Email: {email}</label><br />
+                        <label htmlFor="phoneNumber">Phone Number: {phoneNumber}</label><br />
+                    </div>
 
-                <label htmlFor="contact_info">Contact Info:</label>
-                <input type="text" id="contact_info" name="contact_info" value={"123-456-7890"} onChange={handleChange} /><br />
 
-                <label htmlFor="pronouns">Pronouns:</label>
-                <input type="text" id="pronouns" name="pronouns" value={"any/all"} onChange={handleChange} /><br />
+                    {/* <label htmlFor="name">Name: </label>
+                    <span>{name}</span> <br /> */}
 
-                <label htmlFor="emergency_contact">Emergency Contact:</label>
-                <input type="text" id="emergency_contact" name="emergency_contact" value={"911"} onChange={handleChange} /><br />
+                    {/* <label htmlFor="bio">Bio: </label>
+                    <span>{bio}</span> <br /> */}
 
-                <label htmlFor="roles">Roles:</label>
-                <input type="text" id="roles" name="roles" value={"Actor"} onChange={handleChange} /><br />
+                    {/* <label htmlFor="email">Email Address: </label>
+                    <span>{email}</span> <br /> */}
 
-                <label htmlFor="resume">Resume:</label>
-                <input type="text" id="resume" name="resume" value={"resume.com/myresume"} onChange={handleChange} /><br />
+                    {/* <label htmlFor="phoneNumber">Phone Number: </label>
+                    <span>{phoneNumber}</span> <br /> */}
 
-                <button type="submit">Save Changes</button>
-            </form>
+                    {/* <label htmlFor="pronouns">Preferred Pronouns: </label>
+                    <span>{pronouns}</span> <br /> */}
+
+                    {/* <label htmlFor="roles">Roles: </label>
+                    <span>{roles}</span> <br /> */}
+
+                </div>
+            </div>
         </div>
     );
 };

@@ -16,6 +16,17 @@ app.get('/test', (req, res) => {
     res.json({message: "Test successful"});
 });
 
+app.post('/upload-file', async (req, res) => {
+    const file = req.files.file;
+    const name = file.name;
+    // const type = file.type;
+    const stream = fs.createReadStream(file.path);
+    const ret = await gridfsHelpers.uploadFile(name, stream, 'test');
+    if (ret == null) res.json({status: 500});
+    else res.json(ret);
+});
+
+// uploads attached image to database in the images bucket
 app.post('/upload-image', async (req, res) => {
     const file = req.files.file;
     const name = file.name;
@@ -25,10 +36,15 @@ app.post('/upload-image', async (req, res) => {
     } else {
         const stream = fs.createReadStream(file.path);
         const ret = await gridfsHelpers.uploadFile(name, stream, 'images');
-        res.json(ret);
+        if (ret == null) res.json({status: 500});
+        else res.json(ret);
     }
 });
 
+// returns file stream of image with given name
+// to access image data in the front end, 
+//  use .blob() and URL.createObjectURL(blob)
+// this will return a URL to use with <img src={url} />
 app.get('/display-image/:name', async (req, res) => {
     const name = req.params.name;
     var re = /(?:\.([^.]+))?$/;
@@ -37,23 +53,27 @@ app.get('/display-image/:name', async (req, res) => {
         res.json({message: `Invalid file format .${ext}`});
     } else {
         const ret = await gridfsHelpers.downloadFile(name, 'images');
-        ret.pipe(res);
+        if (ret == {status: 404}) res.json(ret);
+        else if (ret == null) res.json({status: 500});
+        else ret.pipe(res);
     }
 });
 
-app.get('/gridfs-test', async (req, res) => {
-    const test = await gridfsHelpers.uploadFile({name:"test"});
-    res.json(test);
-});
-
-app.get('/gridfs-download-test', async (req, res) => {
-    const test = await gridfsHelpers.downloadFile("test");
-    res.json(test);
+// returns array of strings with the filenames in a bucket
+// currently just returns images, but can be modified to check other buckets
+// these filenames can be piped to /display-image/:name to display on a page
+app.get('/gridfs-get-filenames', async (req, res) => {
+    const ret = await gridfsHelpers.getFilenames("images");
+    if (ret == null) res.json({status: 500});
+    else res.json(ret);
 });
 
 app.post('/hubs', async (req, res) => {
-    console.log("waka");
-    res.json({message: "Hubs"});
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    console.log(fields.uid);
+    const hids = await mongoHelpers.getHids(fields.uid)
+    const hubInfo = await mongoHelpers.getHubInfo(hids);
+    res.json(hubInfo);
 });
 
 app.post('/authenticate', async (req, res) => {
@@ -64,21 +84,23 @@ app.post('/authenticate', async (req, res) => {
     console.log(fields.password);
     const userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
     if (userId==null) {
-        userId.uid == '-1';
+        userId = {'uid': '-1'};
     } 
+    res.json(userId);
+});
 
-    const profile = await mongoHelpers.getBio(userId);
-    console.log(profile)
-    res.json(profile);
-    // localStorage.setItem("uid", JSON.stringify({uid: profile.uid}))
-    /*
-    if (profile == null) {
-        res.json({ uid: '-1' });
-    }
-    else {
-        res.json({uid: userId.uid});
-    }
-    */
+app.post('/loadProfile', async (req, res) => {
+    console.log("HERE1");
+    console.log(req);
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    console.log(fields);
+
+    // TODO: Fix NoSQL Injection Concern
+    // TODO: Handle errors
+    const profileData = await mongoHelpers.loadProfile(fields.uid); 
+    console.log(profileData);
+    console.log("ABOUT TO RETURN");
+    res.json(profileData);
 });
 
 app.listen(8000, () => {

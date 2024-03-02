@@ -72,16 +72,13 @@ const LeftSide8Column = () => {
 }
 
   return (
-    <div className="left-side-8-column">
-      <div className="left-side-8-column-child" />
-      <div className="input-frame1">
+    <div className="left-side-column">
+      <div className="left-side-column-child" />
+      <div className="welcome-back-container">
         <div className="welcome-back">
           <span>
             <span>Welcome Back</span>
             <span className="span">{` `}</span>
-          </span>
-          <span className="span">
-            <span>{` `}</span>
           </span>
         </div>
         <form className="input-label" onSubmit={handleLoginSubmit} method="POST">
@@ -93,16 +90,13 @@ const LeftSide8Column = () => {
               </p>
             </span>
           </div>
-          <div className="input3">
-            <div className="label1">Email</div>
+          <div className="email-pass-input">
+            <div className="label">Email</div>
             <div className="input4">
               <div className="input5" />
               <input
-                className="placeholder1"
-                // placeholderPlaceholder="stageManagersBook@email.com"
+                className="placeholder"
                 placeholder="stageManagersBook@email.com"
-                // propPadding1="var(--padding-base) var(--padding-mid)"
-                // propWidth="500px"
                 type="email"
                 name="email"
                 id="email"
@@ -112,12 +106,12 @@ const LeftSide8Column = () => {
               />
             </div>
           </div>
-          <div className="input3">
-            <div className="label1">Password</div>
+          <div className="email-pass-input">
+            <div className="label">Password</div>
             <div className="input4">
               <div className="input5" />
               <input
-                className="placeholder1"
+                className="placeholder"
                 placeholder="Enter Password"
                 type="password"
                 name="password"

@@ -100,7 +100,7 @@
   }
 
   .art1 {
-    display: none;
+    display: none; /* hide the image */
   }
 }
 @media screen and (max-width: 450px) {

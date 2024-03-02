@@ -123,7 +123,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 0px 0px var(--padding-mini);
+  padding: 0px 0px var(--padding-md);
   row-gap: 20px;
 }
 .social-button-signup {
@@ -214,7 +214,7 @@
 
 @media screen and (max-width: 975px) {
   .create-account {
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-md);
     line-height: 51px;
   }
   
@@ -230,29 +230,31 @@
 
 @media screen and (max-width: 700px) {
   .create-account {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-md);
     line-height: 38px;
   }
 
   .today-marks-a-container {
-    font-size: var(--font-size-base);
-    line-height: 26px;
+    font-size: var(--font-size-xl);
+    padding-right: var(--padding-2xl);
+    line-height: 22px;
   }
 
   .input-frame3 {
-    gap: var(--gap-5xl);
+    gap: var(--gap-md); /* Adjust the gap to a moderate size */
   }
 }
 
 @media screen and (max-width: 450px) {
   .create-account {
-    font-size: var(--font-size-3xl);
+    font-size: var(--font-size-md);
     line-height: 38px;
   }
 
   .today-marks-a-container {
-    font-size: var(--font-size-base);
-    line-height: 26px;
+    font-size: var(--font-size-xl);
+    padding-right: var(--padding-2xl);
+    line-height: 22px;
   }
 
   .input-frame3 {

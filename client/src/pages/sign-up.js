@@ -1,11 +1,11 @@
 import { useCallback } from "react";
 import axios, { formToJSON } from 'axios';
 import { GoogleLogin } from "react-google-login";
-import InputFrame from "../components/login-components//input-frame";
-import "./desktop-sign-up.css";
+import InputFrame from "../components/login-components/sign-up-input-frame";
+import "./sign-up.css";
 import "../global.css";
 
-const DesktopSignUp = () => {
+const SignUp = () => {
   const onMainButtonContainerClick = useCallback(() => {
     // Please sync "Profile" to the project
   }, []);
@@ -25,4 +25,4 @@ const DesktopSignUp = () => {
   );
 };
 
-export default DesktopSignUp;
+export default SignUp;

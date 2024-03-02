@@ -6,9 +6,9 @@ import Test from "./pages/test.js";
 import UploadImage from "./pages/upload-image.js";
 import DisplayImage from "./pages/display-image.js";
 import DisplayImages from "./pages/display-images.js";
-import SignIn from "./pages/desktop-sign-in.js";
-import ForgotPassword from "./pages/desktop-forgot-password.js";
-import SignUp from "./pages/desktop-sign-up.js";
+import SignIn from "./pages/sign-in.js";
+import ForgotPassword from "./pages/forgot-password.js";
+import SignUp from "./pages/sign-up.js";
 import Authenticate from './pages/authenticate.js';
 import Hubs from './pages/hubs.js';
 import ProfilePage from './pages/profile-page.js';
@@ -45,7 +45,7 @@ function App() {
             <>
               <Route path="/createProfile" element={<ProfileForm />} />
               <Route path="/hubs" element={<Hubs />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<ProfilePage />} />
               {/* <Route path="/download" element={<Download />} /> */}
             </>
           )}

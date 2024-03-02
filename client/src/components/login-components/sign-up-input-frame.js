@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import axios, { formToJSON } from 'axios';
 import { GoogleLogin } from "react-google-login";
 import googleIcon from "./google.svg";
-import LineFrame from "./line-frame";
-import "./input-frame.css";
+import LineFrame from "./sign-up-form-frame";
+import "./sign-up-input-frame.css";
 import "../../global.css";
 
 const InputFrame = () => {

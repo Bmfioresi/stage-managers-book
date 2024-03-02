@@ -4,8 +4,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
 import { GoogleLogin } from "react-google-login";
 import googleIcon from "./google.svg";
-import Input from "./input";
-import "./left-side8-column.css";
+import "./sign-in-left-frame.css";
 import "../../global.css";
 
 const LeftSide8Column = () => {

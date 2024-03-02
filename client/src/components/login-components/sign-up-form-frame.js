@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import "./line-frame.css";
+import "./sign-up-form-frame.css";
 import "../../global.css"
 
 const LineFrame = ({

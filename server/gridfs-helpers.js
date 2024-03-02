@@ -5,6 +5,7 @@ const searchName = async function (bucket, name) {
     let files = bucket.find({});
     let found = false;
     for await (const file of files) {
+        console.log("checking " + file.filename + " with " + name);
         if (file.filename == name) found = true;
     }
     return found;
@@ -20,7 +21,7 @@ const incrementName = async function (bucket, name) {
     var newname;
     while (notunique) {
         ver++;
-        newname = basename + ver.toString() + ext;
+        newname = basename + ' (' + ver.toString() + ')' + ext;
         notunique = await searchName(bucket, newname);
     }
     return newname;

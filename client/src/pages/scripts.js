@@ -1,50 +1,32 @@
-import React, { useEffect, useState } from 'react';
-//import './App.css'; // Assuming you have some CSS for styling
+import React, { useEffect } from 'react';
+import * as pdfjs from 'pdfjs-dist';
+//const pdfjs = require('pdfjs-dist');
 
-const App = () => {
-    const [pdfUrl, setPdfUrl] = useState(null);
-
+const PDFViewer = () => {
     useEffect(() => {
-        // Load PDF when component mounts
-        loadPdf();
+        const url = 'https://uca.edu/cwc/files/2017/11/Film-Script.pdf';
+        const canvas = document.getElementById('pdf-viewer');
+        //pdfjs.GlobalWorkerOptions.workerSrc = '/client/node_modules/pdfjs-dist/build/pdf.worker.mjs';
+        pdfjs.GlobalWorkerOptions.workerSrc = './pdf.worker.mjs';
+
+        pdfjs.getDocument(url).promise.then(pdf => {
+            pdf.getPage(1).then(page => {
+                const viewport = page.getViewport({ scale: 1.5 });
+                const context = canvas.getContext('2d');
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+
+                page.render(renderContext);
+            });
+        });
     }, []);
 
-    const loadPdf = async () => {
-        // Fetch PDF URL from your backend or another source
-        const url = 'https://uca.edu/cwc/files/2017/11/Film-Script.pdf';
-        setPdfUrl(url);
-    };
-
-    return (
-        <div className="app">
-            <header className="app-header">
-                <h1>Stage Manager PDF Annotation</h1>
-            </header>
-            <main className="app-main">
-                {pdfUrl ? (
-                    <PdfViewer pdfUrl={pdfUrl} />
-                ) : (
-                    <p>Loading PDF...</p>
-                )}
-            </main>
-            <footer className="app-footer">
-                <p>Stage Manager PDF Annotation App</p>
-            </footer>
-        </div>
-    );
+    return <canvas id="pdf-viewer"></canvas>;
 };
 
-const PdfViewer = ({ pdfUrl }) => {
-    // Implement PDF.js rendering and annotation tools here
-    // This component will handle rendering the PDF and enabling annotation capabilities
-    // You'll need to include PDF.js scripts and initialize the viewer
-    // Refer to the PDFJsAnnotations repository for guidance on how to implement this
-    return (
-        <div className="pdf-viewer">
-            {/* PDF viewer content */}
-            <iframe src={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${pdfUrl}`} title="PDF Viewer" width="100%" height="600px" />
-        </div>
-    );
-};
-
-export default App;
+export default PDFViewer;

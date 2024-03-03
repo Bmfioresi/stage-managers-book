@@ -70,7 +70,7 @@ const InputFrame = () => {
             inputType="password"
           />
           <LineFrame
-            label1="Password"
+            label1="Verify Password"
             placeholderPlaceholder1="Re-enter password"
             propWidth1="450px"
             inputType="password"

@@ -22,6 +22,7 @@ import Hubs from './pages/hubs.js';
 import ProfilePage from './pages/profile-page.js';
 import ProfileForm from './pages/profile-form.js';
 import ProfilePageDemo from './pages/profile-page-demo.js';
+import Script from './pages/scripts.js';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="./script" element={<Script />} />
         </Routes>
       </Router>
     </div>

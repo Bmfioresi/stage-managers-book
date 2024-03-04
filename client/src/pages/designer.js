@@ -33,13 +33,15 @@ const Designer = () => {
     }
 
     async function getFileLinks() {
-        const bucket = "test" + '-' + 'designer';
+        // get bucket from page
+        const bucket = "test" + '-designer';
 
         let filenames = await fetch(`http://localhost:8000/get-filenames?bucket=${bucket}`);
         filenames = await filenames.json();
 
-        var links = []
+        var links = [];
         for (let i = 0; i < filenames.length; i++) {
+            // TODO - add spinner while it's loading
             let res = await fetch(`http://localhost:8000/download-file?name=${filenames[i]}&bucket=${bucket}`);
             let blob = await res.blob();
             let url = URL.createObjectURL(blob);

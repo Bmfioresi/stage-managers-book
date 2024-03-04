@@ -5,7 +5,6 @@ const searchName = async function (bucket, name) {
     let files = bucket.find({});
     let found = false;
     for await (const file of files) {
-        console.log("checking " + file.filename + " with " + name);
         if (file.filename == name) found = true;
     }
     return found;

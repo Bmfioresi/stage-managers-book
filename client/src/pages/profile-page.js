@@ -21,7 +21,7 @@ const ProfilePage = () => {
 
         console.log("LOCAL STORAGE.uid");
         console.log(uid);
-        axios.post(url, JSON.stringify({ uid: '01' })).then((response) => {
+        axios.post(url, JSON.stringify({ uid: uid })).then((response) => {
 
             console.log("BACK TO PROFILE PAGE")
             console.log(response.data);

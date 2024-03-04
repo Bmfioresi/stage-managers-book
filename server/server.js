@@ -82,7 +82,24 @@ app.post('/authenticate', async (req, res) => {
 
     console.log(fields.email);
     console.log(fields.password);
+
+    //TODO: Sanitize input
     const userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
+    if (userId==null) {
+        userId = {'uid': '-1'};
+    } 
+    res.json(userId);
+});
+
+app.post('/createProfile', async (req, res) => {
+    console.log("Inside of Create Profile pathway");
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+
+    console.log(fields.email);
+
+    //TODO: Sanitize input
+    //TODO: Handle Errors
+    const userId = await mongoHelpers.createProfile(fields); 
     if (userId==null) {
         userId = {'uid': '-1'};
     } 
@@ -95,7 +112,7 @@ app.post('/loadProfile', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     console.log(fields);
 
-    // TODO: Fix NoSQL Injection Concern
+    //TODO: Sanitize input
     // TODO: Handle errors
     const profileData = await mongoHelpers.loadProfile(fields.uid); 
     console.log(profileData);

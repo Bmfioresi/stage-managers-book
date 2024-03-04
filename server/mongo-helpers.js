@@ -96,6 +96,52 @@ module.exports = {
         } 
     },
 
+    createProfile: async function (f) {
+
+        // Connecting to MongoDB
+        const { MongoClient } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        const mongoclient = new MongoClient(uri);
+
+        try {
+
+            // Connecting to current Database
+            const credentialsBase = mongoclient.db('credentials');
+            const credentials = credentialsBase.collection('credentials');
+
+            // Getting next UserID
+            var thisUID = -1;
+            const countQuery = { username : "UNIQUE_COUNT_DOCUMENT_IDENTIFIER", password : "UNIQUE_COUNT_DOCUMENT_IDENTIFIER"};
+            const countResult = await credentials.findOneAndUpdate(
+                countQuery,
+                { $inc: { count : 1 } }
+            );
+            console.log("COUNT RESULT");
+            console.log(countResult);
+            thisUID = countResult.count;
+
+            // Connecting to profiles database
+            const profilesBase = mongoclient.db('profiles');
+            const profiles = profilesBase.collection('profiles');
+
+            const doc = { uid: thisUID, name: f.name, bio: f.bio, phone_number: f.phoneNumber,
+                          email_address: f.email, pronouns: f.pronouns, roles: f.roles};
+            const result = await profiles.insertOne(doc);
+
+            // TODO: Error handling if "result" is not created properly
+        
+            // console.log(userProfile.uid);
+            console.log(result);
+            await mongoclient.close();
+            return {'uid': thisUID};
+        
+        } catch (err) {
+            console.log(err);
+            console.log("COULD NOT CREATE PROFILE");
+            return {'uid': "-1"};
+        } 
+    },
+
     getHids: async function (userId) {
         const { MongoClient } = require("mongodb");
         const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";

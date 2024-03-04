@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Designer = () => {
     const [file, setFile] = useState();
     const [fileLinks, setFileLinks] = useState();
+    const [loading, setLoading] = useState(true);
 
     function handleChange(event) {
         setFile(event.target.files[0]);
@@ -28,7 +30,8 @@ const Designer = () => {
             }
         };
         axios.post(url, data, headers).then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
+            alert(`Successfully uploaded ${response.data.name}`);
         });
     }
 
@@ -48,6 +51,7 @@ const Designer = () => {
             links.push(<li key={i}><a href={url} download={filenames[i]}>{filenames[i]}</a></li>);
         }
         await setFileLinks(links);
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -62,7 +66,7 @@ const Designer = () => {
                 <li>Photos (.jpg, .png)</li>
                 <li>Videos (.mov, .mp4)</li>
                 <li>PDF (.pdf)</li>
-                <li>Vectorworks (.dwg, .dxf, .dwf, and more I think?)</li>
+                <li>Vectorworks (.dwg, .dxf, .dwf)</li>
                 <li>AutoCAD (.dwg)</li>
             </ul>
             <form onSubmit={handleSubmit}>
@@ -71,6 +75,7 @@ const Designer = () => {
                 <button type="submit">Upload</button>
             </form>
             <h2>Download file</h2>
+            <ClipLoader loading={loading}></ClipLoader>
             <ul>
                 {fileLinks}
             </ul>

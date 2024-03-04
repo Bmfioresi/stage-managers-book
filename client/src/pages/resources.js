@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Resources = () => {
     const [file, setFile] = useState();
     const [fileLinks, setFileLinks] = useState();
+    const [loading, setLoading] = useState(true);
 
     function handleChange(event) {
         setFile(event.target.files[0]);
@@ -28,7 +30,8 @@ const Resources = () => {
             }
         };
         axios.post(url, data, headers).then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
+            alert(`Successfully uploaded ${response.data.name}`);
         });
     }
 
@@ -48,6 +51,7 @@ const Resources = () => {
             links.push(<li key={i}><a href={url} download={filenames[i]}>{filenames[i]}</a></li>);
         }
         await setFileLinks(links);
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -69,6 +73,7 @@ const Resources = () => {
                 <button type="submit">Upload</button>
             </form>
             <h2>Download file</h2>
+            <ClipLoader loading={loading}></ClipLoader>
             <ul>
                 {fileLinks}
             </ul>

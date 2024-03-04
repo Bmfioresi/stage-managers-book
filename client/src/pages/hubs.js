@@ -3,9 +3,6 @@ import axios from 'axios';
 
 function Hub() {
 
-  const [name, setName] = useState("Unchanged name");
-  const [description, setDescription] = useState("Unchanged description");
-  const [owner, setOwner] = useState("Unchanged owner");
   const [hubs, setHubs] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -13,6 +10,7 @@ function Hub() {
   });
 
   async function getHubs() {
+    console.log(formData);
     const url = 'http://localhost:8000/hubs';
     axios.post(url, JSON.stringify(formData)).then((response) => {
       const hubTemp = [];
@@ -29,17 +27,23 @@ function Hub() {
     getHubs().then();
   }, []);
 
+  async function dummyFunc() {
+    console.log("ebic");
+  }
+
   return (
-    <div>
+    <div key={hubs.name}>
       <h1>Hubs</h1>
       <form>
         <label htmlFor="fname">Join new hub: </label>
         <input type="text" id="code" name="code" placeholder="Enter access code"></input><br></br>
       </form>
       <h2>Hub list:</h2>
-      <div>
-        {hubs.map(hub => <button>{hub.name}<br></br>{hub.owner}<br></br>{hub.description}<br></br><br></br></button>)}
-      </div>
+      <li>
+        {hubs.map((hub) => (
+          <button onClick={dummyFunc} key={hub.name}>{hub.name}<br></br>{hub.owner}<br></br>{hub.description}<br></br></button>
+        ))}
+      </li>
     </div>
   );
 }

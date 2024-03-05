@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -9,6 +10,7 @@ const Designer = () => {
     const [file, setFile] = useState();
     const [fileLinks, setFileLinks] = useState();
     const [loading, setLoading] = useState(true);
+    const params = useParams();
 
     function handleChange(event) {
         setFile(event.target.files[0]);
@@ -18,7 +20,7 @@ const Designer = () => {
         event.preventDefault();
 
         if (file == null) {
-            console.log("make sure to select a file");
+            alert("Make sure to select a file");
             return;
         }
 
@@ -38,33 +40,33 @@ const Designer = () => {
         });
     }
 
-    useEffect(() => {
-        async function getFileLinks() {
-            // get bucket from page
-            const bucket = `${hub}-designer`;
-    
-            let filenames = await fetch(`${baseUrl}/get-filenames?bucket=${bucket}`);
-            filenames = await filenames.json();
-    
-            var links = [];
-            for (let i = 0; i < filenames.length; i++) {
-                let res = await fetch(`${baseUrl}/download-file?name=${filenames[i]}&bucket=${bucket}`);
-                let blob = await res.blob();
-                let url = URL.createObjectURL(blob);
-                links.push(<li key={i}><a href={url} download={filenames[i]}>{filenames[i]}</a></li>);
-            }
-            await setFileLinks(links);
-            setLoading(false);
-        }
+    const getFileLinks = useCallback(async () => {
+        // get bucket from page
+        const bucket = `${hub}-designer`;
 
+        let filenames = await fetch(`${baseUrl}/get-filenames?bucket=${bucket}`);
+        filenames = await filenames.json();
+
+        var links = [];
+        for (let i = 0; i < filenames.length; i++) {
+            let res = await fetch(`${baseUrl}/download-file?name=${filenames[i]}&bucket=${bucket}`);
+            let blob = await res.blob();
+            let url = URL.createObjectURL(blob);
+            links.push(<li key={i}><a href={url} download={filenames[i]}>{filenames[i]}</a></li>);
+        }
+        await setFileLinks(links);
+        setLoading(false);
+    }, [hub] );
+
+
+    useEffect(() => {
         // get hub from url
-        var url = window.location.href;
-        var hub = url.substring(baseUrl.length + 1, url.length - '/designer'.length);
+        var hub = params.hub;
         // search for hub in system, if hub does not exist, display 404 error or something
         setHub(hub);
 
         getFileLinks();
-    }, [] );
+    }, [getFileLinks, params] );
 
     return (
         <div>

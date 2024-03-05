@@ -2,7 +2,10 @@ import React, {useState, useEffect} from "react";
 import axios from 'axios';
 import ClipLoader from "react-spinners/ClipLoader";
 
+const baseUrl = 'http://localhost:8000';
+
 const Resources = () => {
+    const [hub, setHub] = useState("");
     const [file, setFile] = useState();
     const [fileLinks, setFileLinks] = useState();
     const [loading, setLoading] = useState(true);
@@ -19,11 +22,11 @@ const Resources = () => {
             return;
         }
 
-        const url = 'http://localhost:8000/upload-file';
+        const url = `${baseUrl}/upload-file`;
         const data = new FormData();
         data.append('file', file);
         data.append('bucket', 'resources');
-        data.append('hub', 'test'); // replace with variable hub name from specific url when that is implemented
+        data.append('hub', hub);
         const headers = {
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${data._boundary}`
@@ -35,26 +38,31 @@ const Resources = () => {
         });
     }
 
-    async function getFileLinks() {
-        // get bucket from page
-        const bucket = "test" + '-resources';
-
-        let filenames = await fetch(`http://localhost:8000/get-filenames?bucket=${bucket}`);
-        filenames = await filenames.json();
-
-        var links = [];
-        for (let i = 0; i < filenames.length; i++) {
-            // TODO - add spinner while it's loading
-            let res = await fetch(`http://localhost:8000/download-file?name=${filenames[i]}&bucket=${bucket}`);
-            let blob = await res.blob();
-            let url = URL.createObjectURL(blob);
-            links.push(<li key={i}><a href={url} download={filenames[i]}>{filenames[i]}</a></li>);
-        }
-        await setFileLinks(links);
-        setLoading(false);
-    }
-
     useEffect(() => {
+        async function getFileLinks() {
+            // get bucket from page
+            const bucket = `${hub}-resources`;
+    
+            let filenames = await fetch(`${baseUrl}/get-filenames?bucket=${bucket}`);
+            filenames = await filenames.json();
+    
+            var links = [];
+            for (let i = 0; i < filenames.length; i++) {
+                let res = await fetch(`${baseUrl}/download-file?name=${filenames[i]}&bucket=${bucket}`);
+                let blob = await res.blob();
+                let url = URL.createObjectURL(blob);
+                links.push(<li key={i}><a href={url} download={filenames[i]}>{filenames[i]}</a></li>);
+            }
+            await setFileLinks(links);
+            setLoading(false);
+        }
+
+        // get hub from url
+        var url = window.location.href;
+        var hub = url.substring(baseUrl.length + 1, url.length - '/resources'.length);
+        // search for hub in system, if hub does not exist, display 404 error or something
+        setHub(hub);
+
         getFileLinks();
     }, [] );
 

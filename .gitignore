@@ -4,3 +4,4 @@ auth.json
 client/package.json
 client/package-lock.json
 server/package-lock.json
+server/package-lock.json

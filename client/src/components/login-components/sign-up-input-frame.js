@@ -56,12 +56,13 @@ const InputFrame = () => {
             label1="Full Name"
             placeholderPlaceholder1="John Smith"
             propWidth1="450px"
+            inputType="text"
           />
           <LineFrame
             label1="Email"
             placeholderPlaceholder1="JohnSmith@email.com"
             propWidth1="450px"
-            type="email"
+            inputType="email"
           />
           <LineFrame
             label1="Password"

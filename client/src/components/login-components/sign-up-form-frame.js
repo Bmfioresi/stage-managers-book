@@ -6,7 +6,7 @@ const LineFrame = ({
   label1,
   placeholderPlaceholder1: placeholder,
   propWidth1,
-  inputType = "text",
+  type: inputType,
 }) => {
   const [placeholderText4Value, setPlaceholderText4Value] = useState("");
 

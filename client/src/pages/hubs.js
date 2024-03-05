@@ -28,7 +28,7 @@ function Hub() {
   }, []);
 
   async function dummyFunc() {
-    console.log("ebic");
+    return <Navigate to='/hubIndividual' />;
   }
 
   return (

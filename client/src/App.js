@@ -19,6 +19,7 @@ import ForgotPassword from "./pages/desktop-forgot-password.js";
 import SignUp from "./pages/desktop-sign-up.js";
 import Authenticate from './pages/authenticate.js';
 import Hubs from './pages/hubs.js';
+import HubIndividual from './pages/hub-individual.js';
 import ProfilePage from './pages/profile-page.js';
 import ProfileForm from './pages/profile-form.js';
 import ProfilePageDemo from './pages/profile-page-demo.js';
@@ -45,6 +46,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/script" element={<Script />} />
+          <Route path="/hubIndividual" element={<HubIndividual />} />
         </Routes>
       </Router>
     </div>

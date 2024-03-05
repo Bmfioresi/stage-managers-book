@@ -199,5 +199,30 @@ module.exports = {
         } finally {
             await mongoclient.close();
         }
+    },
+
+    getIndividualHubInfo: async function (hid) {
+        const { MongoClient } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        console.log(uri)
+        const mongoclient = new MongoClient(uri);
+
+        try {
+            await mongoclient.connect();
+            const db = mongoclient.db("hubs");
+            const collection = db.collection("hub_info");
+            var hubInfo = [];
+            const query = { hid: hid };
+            const hub = await collection.findOne(query);
+            hubInfo.push(hub);
+            await mongoclient.close();
+            return hubInfo;
+        } catch (err) {
+            console.log(err);
+            console.log("HUB INFO NOT FOUND")
+            return {'uid': "-1"};
+        } finally {
+            await mongoclient.close();
+        }
     }
 }

@@ -37,11 +37,26 @@ const Resources = () => {
         axios.post(url, data, headers).then((response) => {
             // console.log(response.data);
             alert(`Successfully uploaded ${response.data.name}`);
+            getFileLinks();
         });
     }
 
     const getFileLinks = useCallback(async () => {
-        // get bucket from page
+        async function deleteFile(name) { // function for deleting files displayed
+            const bucket = `${hub}-resources`;
+            try {
+                let res = await fetch(`http://localhost:8000/delete-file?name=${name}&bucket=${bucket}`);
+                res = await res.json();
+                if (res.status === 200) alert("File " + name + " deleted");
+                else throw res;
+                getFileLinks();
+            } catch (err) {
+                console.log(err);
+                alert("Something went wrong");
+            }
+        };
+
+        setLoading(true);
         const bucket = `${hub}-resources`;
 
         let filenames = await fetch(`${baseUrl}/get-filenames?bucket=${bucket}`);
@@ -52,16 +67,20 @@ const Resources = () => {
             let res = await fetch(`${baseUrl}/download-file?name=${filenames[i]}&bucket=${bucket}`);
             let blob = await res.blob();
             let url = URL.createObjectURL(blob);
-            links.push(<li key={i}><a href={url} download={filenames[i]}>{filenames[i]}</a></li>);
+            links.push(
+            <tr key={i}>
+                <td><a href={url} download={filenames[i]}>{filenames[i]}</a></td>
+                <td><button type="button" onClick={() => deleteFile(filenames[i])}>Delete</button></td>
+            </tr>
+            );
         }
         await setFileLinks(links);
         setLoading(false);
     }, [hub] );
 
     useEffect(() => {
-        // get hub from url
         var hub = params.hub;
-        // search for hub in system, if hub does not exist, display 404 error or something
+        // search for hub in system, if hub does not exist, display 404 error or something TODO
         setHub(hub);
 
         getFileLinks();
@@ -83,9 +102,9 @@ const Resources = () => {
             </form>
             <h2>Download file</h2>
             <ClipLoader loading={loading}></ClipLoader>
-            <ul>
-                {fileLinks}
-            </ul>
+            <table>
+                {!loading && fileLinks}
+            </table>
         </div>
     )
 }

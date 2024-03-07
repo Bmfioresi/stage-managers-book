@@ -6,9 +6,7 @@ function HubIndividual() {
     const [description, setDescription] = useState("");
     const [owner, setOwner] = useState("");
 
-    const [formData, setFormData] = useState({
-        hid: "01"
-      });
+    const [formData, setFormData] = useState({hid: "01"});
 
     async function getHubInfo() {
         console.log(formData);

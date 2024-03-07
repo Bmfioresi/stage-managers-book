@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import axios from 'axios';
 
 function Hub() {
 
   const [hubs, setHubs] = useState([]);
 
-  const [formData, setFormData] = useState({
-    uid: "03"
-  });
+  const [formData, setFormData] = useState({uid: "03"});
 
   const [redirect, setRedirect] = useState("FALSE");
 
@@ -35,8 +33,8 @@ function Hub() {
     setRedirect("TRUE")
   }
 
-  if(redirect == "TRUE") {
-    return <Navigate to='/hub-individual' />;
+  if(redirect === "TRUE") {
+    return <Navigate to='/:hub/hub-individual' />;
   }
 
   return (

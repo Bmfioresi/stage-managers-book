@@ -46,7 +46,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/script" element={<Script />} />
-          <Route path="/hub-individual" element={<HubIndividual />} />
+          <Route path="/:hub/hub-individual" element={<HubIndividual />} />
         </Routes>
       </Router>
     </div>

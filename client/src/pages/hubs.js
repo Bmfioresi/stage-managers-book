@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import axios from 'axios';
 
 function Hub() {
 
+  let navigate = useNavigate();
   const [hubs, setHubs] = useState([]);
 
   const [formData, setFormData] = useState({uid: "03"});
 
   const [redirect, setRedirect] = useState("FALSE");
+
+  async function routeChange(hid) { 
+    let path = `/${hid}`; 
+    navigate(path);
+    console.log("wtf lmfao");
+  }
 
   async function getHubs() {
     console.log(formData);
@@ -18,7 +25,7 @@ function Hub() {
       console.log(response.data);
       for(let i = 0; i < response.data.length; i++) {
         console.log(response.data[i].name);
-        hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner});
+        hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner, hid: response.data[i].hid});
       }
       setHubs(hubTemp);
     });
@@ -27,15 +34,6 @@ function Hub() {
   useEffect(() => {
     getHubs().then();
   }, []);
-
-  async function dummyFunc() {
-    console.log("ebic");
-    setRedirect("TRUE")
-  }
-
-  if(redirect === "TRUE") {
-    return <Navigate to='/:hub/hub-individual' />;
-  }
 
   return (
     <div key={hubs.name}>
@@ -47,7 +45,7 @@ function Hub() {
       <h2>Hub list:</h2>
       <li>
         {hubs.map((hub) => (
-          <button onClick={dummyFunc} key={hub.name}>{hub.name}<br></br>{hub.owner}<br></br>{hub.description}<br></br></button>
+          <button onClick={routeChange(hub.hid)}>{hub.name}<br></br>{hub.owner}<br></br>{hub.description}<br></br></button>
         ))}
       </li>
     </div>

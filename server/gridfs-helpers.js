@@ -5,6 +5,7 @@ const searchName = async function (bucket, name) {
     let files = bucket.find({});
     let found = false;
     for await (const file of files) {
+        // console.log("checking " + file.filename + " with " + name);
         if (file.filename == name) found = true;
     }
     return found;
@@ -67,6 +68,39 @@ module.exports = {
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             let found = await searchName(bucket, name);
             if (found) return bucket.openDownloadStreamByName(name);
+            return {status: 404};
+        } catch (err) {
+            console.log(err);
+            return null;
+        }
+    },
+
+    deleteFile: async function (name, bucketName) {
+        const { MongoClient, GridFSBucket } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        const mongoclient = new MongoClient(uri);
+
+        try {
+            await mongoclient.connect();
+            const db = mongoclient.db('files');
+            const bucket = new GridFSBucket(db, {bucketName: bucketName});
+            let files = bucket.find({});
+            let numFiles = 0;
+            let deleted = false;
+            for await (const file of files) {
+                numFiles++;
+                if (file.filename == name) {
+                    bucket.delete(file._id);
+                    deleted = true;
+                }
+            }
+            
+            if (deleted) {
+                if (numFiles == 1) { // check if last file in bucket
+                    bucket.drop(); // if so, delete bucket
+                }
+                return {status: 200};
+            }
             return {status: 404};
         } catch (err) {
             console.log(err);

@@ -54,6 +54,14 @@ app.get('/download-file', async (req, res) => {
     else ret.pipe(res);
 });
 
+app.get('/delete-file', async (req, res) => {
+    const name = req.query.name;
+    const bucket = req.query.bucket;
+    const ret = await gridfsHelpers.deleteFile(name, bucket);
+    if (ret == null) res.json({status: 500});
+    else res.json(ret);
+})
+
 // uploads attached image to database in the images bucket
 app.post('/upload-image', async (req, res) => {
     const file = req.files.file;

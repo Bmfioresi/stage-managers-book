@@ -10,6 +10,8 @@ function Hub() {
   const [formData, setFormData] = useState({uid: "03"});
 
   const [redirect, setRedirect] = useState("FALSE");
+  
+  //const formData = useState({uid:"03"});
 
   async function routeChange(hid) { 
     let path = `/${hid}`; 
@@ -45,7 +47,7 @@ function Hub() {
       <h2>Hub list:</h2>
       <li>
         {hubs.map((hub) => (
-          <button onClick={routeChange(hub.hid)}>{hub.name}<br></br>{hub.owner}<br></br>{hub.description}<br></br></button>
+          <button key={hub.hid} onClick={() => routeChange(hub.hid)}>{hub.name}<br></br>{hub.owner}<br></br>{hub.description}<br></br></button>
         ))}
       </li>
     </div>

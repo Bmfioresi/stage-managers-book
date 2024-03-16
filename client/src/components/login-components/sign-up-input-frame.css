@@ -154,7 +154,7 @@
   width: 190px;
   position: relative;
   font-size: var(--font-size-base);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.07em;
   line-height: 100%;
   font-family: var(--font-roboto);
   color: var(--color-white);

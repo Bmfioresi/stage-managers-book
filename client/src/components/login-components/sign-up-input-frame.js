@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import axios, { formToJSON } from 'axios';
-import { GoogleLogin } from "react-google-login";
+// import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import googleIcon from "./google.svg";
 import LineFrame from "./sign-up-form-frame";
 import "./sign-up-input-frame.css";
@@ -11,18 +11,19 @@ const InputFrame = () => {
     // Please sync "Profile" to the project
   }, []);
 
-  const responseGoogle = (response) => {
-    console.log(response);
-    // Send token to server for verification and further processing
-    axios.post('http://localhost:8000/auth/google', { token: response.tokenId })
-      .then((response) => {
-        // Handle the response from your backend
-        // For example, setting loggedIn state, storing user data, etc.
-      })
-      .catch((error) => {
-        console.error('Google Sign-In error:', error);
-      });
-  }
+  // const responseGoogle = (response) => {
+  //   console.log(response);
+  //   // Send token to server for verification and further processing
+  //   axios.post('http://localhost:8000/auth/google', { token: response.tokenId })
+  //     .then((response) => {
+  //       console.log(response);
+  //       // Handle the response from your backend
+  //       // For example, setting loggedIn state, storing user data, etc.
+  //     })
+  //     .catch((error) => {
+  //       console.error('Google Sign-In error:', error);
+  //     });
+  // }
 
   return (
     <div className="input-frame2">
@@ -56,12 +57,13 @@ const InputFrame = () => {
             label1="Full Name"
             placeholderPlaceholder1="John Smith"
             propWidth1="450px"
+            inputType="text"
           />
           <LineFrame
             label1="Email"
             placeholderPlaceholder1="JohnSmith@email.com"
             propWidth1="450px"
-            type="email"
+            inputType="email"
           />
           <LineFrame
             label1="Password"
@@ -86,19 +88,19 @@ const InputFrame = () => {
             <div className="or-text" />
           </div>
         </div>
-        <GoogleLogin
-          clientId="391303195070-1j9epkem5pktr7ueg1hjhufb9pberau2.apps.googleusercontent.com"
-          buttonText="Sign up with Google"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={'single_host_origin'}
-          render={renderProps => (
-              <button onClick={renderProps.onClick} disabled={renderProps.disabled} className="social-button-signup">
-                <img src={googleIcon} alt="Google sign-up" />
-                <div>Sign Up with Google</div>
-              </button>
-          )}
-        />
+          {/* <GoogleLogin
+            clientId="933341791381-nadvkll3fcr60dv19p4paljj4d2hq603.apps.googleusercontent.com"
+            buttonText="Sign up with Google"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={'none'}
+            render={renderProps => (
+                <button onClick={renderProps.onClick} disabled={renderProps.disabled} className="social-button-signup">
+                  <img src={googleIcon} alt="Google sign-up" />
+                  <div>Sign Up with Google</div>
+                </button>
+            )}
+          /> */}
       </form>
       <div className="art-frame">
         <div className="stage-mgr-book">

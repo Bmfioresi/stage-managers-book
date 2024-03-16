@@ -1,18 +1,17 @@
 import { useCallback } from "react";
-import InputFrame from "../components/login-components//input-frame";
-import "./desktop-sign-up.css";
+import axios, { formToJSON } from 'axios';
+import { GoogleLogin } from "react-google-login";
+import InputFrame from "../components/login-components/sign-up-input-frame";
+import "./sign-up.css";
+import "../global.css";
 
-const DesktopSignUp = () => {
+const SignUp = () => {
   const onMainButtonContainerClick = useCallback(() => {
     // Please sync "Profile" to the project
   }, []);
 
   return (
     <div className="desktop-sign-up">
-      <div className="social-buttondesktop">
-        <img className="google-icon" alt="" src="/google.svg" />
-        <div className="sign-in-with">Sign up with Google</div>
-      </div>
       <div className="main-button" onClick={onMainButtonContainerClick}>
         <div className="sign-in">Sign up</div>
       </div>
@@ -26,4 +25,4 @@ const DesktopSignUp = () => {
   );
 };
 
-export default DesktopSignUp;
+export default SignUp;

@@ -43,7 +43,6 @@ const Input = ({
         <input
           className="placeholder"
           placeholder={placeholderPlaceholder}
-          type="text"
           value={placeholderTextValue}
           onChange={(event) => setPlaceholderTextValue(event.target.value)}
           style={placeholderStyle}

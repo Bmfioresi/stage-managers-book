@@ -12,6 +12,7 @@ const ProfileForm = () => {
         email: '',
         roles: '',
     });
+    const [toProfile, setToProfile] = useState("FALSE");
 
     const handleChange = (e) => {
         setFormData({
@@ -26,19 +27,20 @@ const ProfileForm = () => {
         console.log(formData);
 
         const url = 'http://localhost:8000/createProfile';
-        // Converting form to json format
 
+        // Sending POST request to create profile
         axios.post(url, JSON.stringify(formData)).then((response) => {
             
+            // Updating current userID
             console.log("NEW LOCAL STORAGE UID");
             console.log(response.data.uid);
             localStorage.setItem('uid', response.data.uid);
-
-            console.log("LOCAL STORAGE");
-            // console.log(JSON.parse(localStorage.getItem("uid")))
+            setToProfile("TRUE");
         });
-        return <Navigate to='/profile' />;
+    }
 
+    if (toProfile == "TRUE") {
+        return <Navigate to='/profile' />;
     }
 
     return (

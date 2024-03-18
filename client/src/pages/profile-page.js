@@ -13,17 +13,29 @@ const ProfilePage = () => {
     const [roles, setRoles] = useState("ROLES");
     const [uid, setUid] = useState("-1");
 
+    const [formData, setFormData] = useState({
+        uid: "-3"
+    });
+
     useEffect(() => {
-        setUid(localStorage.uid);
+        // setUid(localStorage.uid);
 
         const url = 'http://localhost:8000/loadProfile';
         // Converting form to json format
 
         console.log("LOCAL STORAGE.uid");
-        console.log(uid);
-        axios.post(url, JSON.stringify({ uid: uid })).then((response) => {
+        console.log(localStorage.getItem("uid"));
 
-            console.log("BACK TO PROFILE PAGE")
+        // Preparing data to send to axios
+        console.log("profile-page sending axios post");
+        setFormData({ ...formData, uid: localStorage.getItem("uid") });
+        console.log("LOCAL STORAGE UID");
+        console.log(localStorage.getItem("uid"));
+
+        axios.post(url, JSON.stringify({"uid": localStorage.getItem("uid")})).then((response) => {
+
+            console.log("BACK TO PROFILE PAGE");
+            console.log(response);
             console.log(response.data);
 
             // Updating data

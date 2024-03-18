@@ -23,6 +23,7 @@ import ProfilePage from './pages/profile-page.js';
 import ProfileForm from './pages/profile-form.js';
 import ProfilePageDemo from './pages/profile-page-demo.js';
 import Script from './pages/scripts.js';
+import ProfileEdit from './pages/profile-edit.js';
 
 function App() {
   return (
@@ -39,8 +40,9 @@ function App() {
           <Route path="/designer" element={<Designer />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />
+          <Route path="/editProfile" element={<ProfileEdit />} />
           <Route path="/hubs" element={<Hubs />} />
-          <Route path="/profile" element={<ProfilePageDemo />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />

@@ -105,15 +105,18 @@ app.post('/hubs', async (req, res) => {
     res.json(hubInfo);
 });
 
+// Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned
 app.post('/authenticate', async (req, res) => {
-    console.log("HERE1");
+    // Converting req into readable format
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-
+    console.log("User/Pass");
     console.log(fields.email);
     console.log(fields.password);
 
     //TODO: Sanitize input
     const userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
+    console.log("Back from autneticateUser");
+    console.log(userId);
     if (userId==null) {
         userId = {'uid': '-1'};
     } 
@@ -121,10 +124,8 @@ app.post('/authenticate', async (req, res) => {
 });
 
 app.post('/createProfile', async (req, res) => {
-    console.log("Inside of Create Profile pathway");
+    // Converting req into readable format
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-
-    console.log(fields.email);
 
     //TODO: Sanitize input
     //TODO: Handle Errors
@@ -135,10 +136,27 @@ app.post('/createProfile', async (req, res) => {
     res.json(userId);
 });
 
-app.post('/loadProfile', async (req, res) => {
-    console.log("HERE1");
-    console.log(req);
+// Returns dictionary of authenticated user; 'uid' is the only attribute definitely returnde
+app.post('/updateProfile', async (req, res) => {
+    // Converting req into readable format
     const fields = JSON.parse(Object.keys(req.fields)[0]);
+
+    //TODO: Sanitize input
+    //TODO: Handle Errors
+    const userId = await mongoHelpers.updateProfile(fields); 
+    console.log("Got back from updateProfile");
+    console.log(userId);
+    if (userId==null) {
+        userId = {'uid': '-1'};
+    } 
+    res.json(userId);
+});
+
+app.post('/loadProfile', async (req, res) => {
+    console.log("Just entered loadProfile");
+    // console.log(req);
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    console.log("Loading profile with UID");
     console.log(fields);
 
     //TODO: Sanitize input

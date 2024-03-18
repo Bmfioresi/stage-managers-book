@@ -8,12 +8,6 @@ function Authenticate() {
     const [userId, setUserId] = useState("-2");
     const navigate = useNavigate();
 
-    const [name, setName] = useState("NAME");
-    const [bio, setBio] = useState("BIO TEXT");
-    const [email, setEmail] = useState("EMAIL ADDRESS");
-    const [phoneNumber, setPhoneNumber] = useState("PHONE NUMBER");
-    const [pronouns, setPronouns] = useState("PRONOUNS");
-    const [roles, setRoles] = useState("ROLES");
     const [loggedIn, setLoggedIn] = useState("FALSE");
 
     const [formData, setFormData] = useState({
@@ -45,8 +39,9 @@ function Authenticate() {
             console.log(response.data.uid);
             localStorage.setItem('uid', response.data.uid);
 
-            console.log("LOCAL STORAGE");
+            console.log("GETTING LOCAL STORAGE");
             // console.log(JSON.parse(localStorage.getItem("uid")))
+            console.log(localStorage.getItem("uid"));
         });
 
         console.log("SUBMIT");
@@ -60,33 +55,6 @@ function Authenticate() {
 
     if (loggedIn == "TRUE") {
         return <Navigate to='/profile' />;
-    }
-
-    if (userId != "-2") {
-        return (
-            <div>
-                <h1>User Profile</h1>
-
-                <label htmlFor="name">Name: </label>
-                <span>{name}</span> <br />
-    
-                <label htmlFor="bio">Bio: </label>
-                <span>{bio}</span> <br />
-    
-                <label htmlFor="email">Email Address: </label>
-                <span>{email}</span> <br />
-    
-                <label htmlFor="phoneNumber">Phone Number: </label>
-                <span>{phoneNumber}</span> <br />
-    
-                <label htmlFor="pronouns">Preferred Pronouns: </label>
-                <span>{pronouns}</span> <br />
-    
-                <label htmlFor="roles">Roles: </label>
-                <span>{roles}</span> <br />
-    
-            </div>
-        );
     }
 
     return (

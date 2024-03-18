@@ -14,6 +14,7 @@ const NavBar = () => {
                     <NavLink to="/display-image">Display Image</NavLink>
                     <NavLink to="/login">Login</NavLink>
                     <NavLink to="/createProfile">Create Profile</NavLink>
+                    <NavLink to="/editProfile">Edit Profile</NavLink>
                     <NavLink to="/hubs">Hubs</NavLink>
                     <NavLink to="/profile">Profile</NavLink>
                     <NavLink to="/script">Display Script</NavLink>

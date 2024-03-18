@@ -45,13 +45,21 @@ module.exports = {
         
             // query
             const query = { uid: userId};
+            console.log("Getting user profile with this query:");
+            console.log(query);
             const userProfile = await profiles.findOne(query);
         
             // console.log(userProfile.uid);
+            console.log("GOT USER PROFILE!!");
             console.log(userProfile);
             // console.log(userProfile.uid);
             await mongoclient.close();
-            console.log("GOT PROFILE");
+            console.log("CLOSED MONGOCLIENT");
+            if (userProfile == null) {
+                console.log("USER PROFILE IS NULL.");
+                userProfile = {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
+                'phone_number': "NOT FOUND", 'pronouns': "NOT FOUND", 'roles': "NOT FOUND"};
+            }
             return userProfile;
         
         } catch (err) {
@@ -134,6 +142,49 @@ module.exports = {
             console.log(result);
             await mongoclient.close();
             return {'uid': thisUID};
+        
+        } catch (err) {
+            console.log(err);
+            console.log("COULD NOT CREATE PROFILE");
+            return {'uid': "-1"};
+        } 
+    },
+
+    updateProfile: async function (f) {
+
+        // Connecting to MongoDB
+        const { MongoClient } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        const mongoclient = new MongoClient(uri);
+
+        try {
+
+            // Connecting to profiles database
+            const profilesBase = mongoclient.db('profiles');
+            const profiles = profilesBase.collection('profiles');
+
+            // Updating record
+            const result = await profiles.updateOne(
+                { uid: f.uid },
+                {
+                    $set: {
+                        name: f.name,
+                        bio: f.bio,
+                        phone_number: f.phoneNumber,
+                        email_address: f.email,
+                        pronouns: f.pronouns,
+                        roles: f.roles
+                    }
+                }
+            );
+
+            // TODO: Error handling if "result" is not created properly
+        
+            // console.log(userProfile.uid);
+            console.log(result);
+            await mongoclient.close();
+            console.log("UPDATE PROFILE ABOUT TO RETURN");
+            return {'uid': f.uid};
         
         } catch (err) {
             console.log(err);

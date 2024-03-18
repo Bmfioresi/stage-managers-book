@@ -54,6 +54,14 @@ app.get('/download-file', async (req, res) => {
     else ret.pipe(res);
 });
 
+app.get('/delete-file', async (req, res) => {
+    const name = req.query.name;
+    const bucket = req.query.bucket;
+    const ret = await gridfsHelpers.deleteFile(name, bucket);
+    if (ret == null) res.json({status: 500});
+    else res.json(ret);
+})
+
 // uploads attached image to database in the images bucket
 app.post('/upload-image', async (req, res) => {
     const file = req.files.file;
@@ -97,11 +105,20 @@ app.get('/get-filenames', async (req, res) => {
     else res.json(ret);
 });
 
+// returns a list of hub info to load into buttons in hubs.js
 app.post('/hubs', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     console.log(fields.uid);
     const hids = await mongoHelpers.getHids(fields.uid)
     const hubInfo = await mongoHelpers.getHubInfo(hids);
+    res.json(hubInfo);
+});
+
+// returns a single collection of hub info to load into a page hub-individual.js
+app.post('/hub-individual', async (req, res) => {
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    console.log(fields.hid);
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(fields.hid);
     res.json(hubInfo);
 });
 

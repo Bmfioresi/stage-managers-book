@@ -1,11 +1,29 @@
 import { useCallback } from "react";
-import LineFrame from "./line-frame";
-import "./input-frame.css";
+import axios, { formToJSON } from 'axios';
+// import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import googleIcon from "./google.svg";
+import LineFrame from "./sign-up-form-frame";
+import "./sign-up-input-frame.css";
+import "../../global.css";
 
 const InputFrame = () => {
   const onMainButtonClick = useCallback(() => {
     // Please sync "Profile" to the project
   }, []);
+
+  // const responseGoogle = (response) => {
+  //   console.log(response);
+  //   // Send token to server for verification and further processing
+  //   axios.post('http://localhost:8000/auth/google', { token: response.tokenId })
+  //     .then((response) => {
+  //       console.log(response);
+  //       // Handle the response from your backend
+  //       // For example, setting loggedIn state, storing user data, etc.
+  //     })
+  //     .catch((error) => {
+  //       console.error('Google Sign-In error:', error);
+  //     });
+  // }
 
   return (
     <div className="input-frame2">
@@ -39,12 +57,13 @@ const InputFrame = () => {
             label1="Full Name"
             placeholderPlaceholder1="John Smith"
             propWidth1="450px"
+            inputType="text"
           />
           <LineFrame
             label1="Email"
             placeholderPlaceholder1="JohnSmith@email.com"
             propWidth1="450px"
-            type="email"
+            inputType="email"
           />
           <LineFrame
             label1="Password"
@@ -53,7 +72,7 @@ const InputFrame = () => {
             inputType="password"
           />
           <LineFrame
-            label1="Password"
+            label1="Verify Password"
             placeholderPlaceholder1="Re-enter password"
             propWidth1="450px"
             inputType="password"
@@ -69,10 +88,19 @@ const InputFrame = () => {
             <div className="or-text" />
           </div>
         </div>
-        <button className="social-buttondesktop2">
-          <img className="google-icon2" alt="" src="/google.svg" />
-          <div className="sign-in-with2">Sign up with Google</div>
-        </button>
+          {/* <GoogleLogin
+            clientId="933341791381-nadvkll3fcr60dv19p4paljj4d2hq603.apps.googleusercontent.com"
+            buttonText="Sign up with Google"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={'none'}
+            render={renderProps => (
+                <button onClick={renderProps.onClick} disabled={renderProps.disabled} className="social-button-signup">
+                  <img src={googleIcon} alt="Google sign-up" />
+                  <div>Sign Up with Google</div>
+                </button>
+            )}
+          /> */}
       </form>
       <div className="art-frame">
         <div className="stage-mgr-book">

@@ -4,9 +4,9 @@ const DeleteFile = () => {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        let bucket = "test-resources";
+        let bucket = "resources";
         try {
-            let res = await fetch(`http://localhost:8000/delete-file?name=${event.target[0].value}&bucket=${bucket}`);
+            let res = await fetch(`http://localhost:8000/delete-file?name=${event.target[0].value}&hub=test&bucket=${bucket}`);
             res = await res.json();
             if (res.status == 404) alert("File not found");
             else if (res.status == 200) alert("File deleted");

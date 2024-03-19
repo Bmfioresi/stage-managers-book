@@ -20,6 +20,7 @@ export const Nav = styled.nav`
 export const NavLink = styled(Link)`
     color: #eeeee4;
     display: flex;
+    font-family: var(--font-zen-kaku-gothic-antique);
     align-items: center;
     text-decoration: none;
     ${'' /* padding: 0 1rem; */}

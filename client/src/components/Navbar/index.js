@@ -8,7 +8,14 @@ const NavBar = () => {
         <>
             <Nav>
                 <NavMenu>
-                    <NavLink to="/">Home</NavLink>
+                    <NavLink to="/"><img
+                        className="sideBarImg"
+                        loading="eager"
+                        alt=""
+                        src="/smb-logo.png"
+                        height={100}
+                        width={100}
+                    /></NavLink>
                     {/* <NavLink to="/test">Test</NavLink> */}
                     <NavLink to="/upload-image">Upload Image</NavLink>
                     <NavLink to="/display-image">Display Image</NavLink>

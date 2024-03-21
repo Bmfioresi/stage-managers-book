@@ -12,6 +12,8 @@
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.2.19",
     "axios": "^1.6.7",
+    "gapi-script": "^1.2.0",
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-google-login": "^5.2.2",

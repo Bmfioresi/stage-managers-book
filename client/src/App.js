@@ -1,6 +1,6 @@
 import React from "react";
 import './App.css';
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
 
 import Navbar from "./components/Navbar/index.js";
 import {
@@ -27,7 +27,6 @@ import ProfileForm from './pages/profile-form.js';
 import ProfilePageDemo from './pages/profile-page-demo.js';
 import Script from './pages/scripts.js';
 import ProfileEdit from './pages/profile-edit.js';
-import UnitTests from './pages/unit-tests.js';
 
 function App() {
   return (
@@ -40,11 +39,9 @@ function App() {
           <Route path="/upload-image" element={<UploadImage />} />
           <Route path="/display-image" element={<DisplayImage />} />
           <Route path="/display-images" element={<DisplayImages />} />
-
           <Route path="/hubs/:hub/resources" element={<Resources />} />
           <Route path="/hubs/:hub/designer" element={<Designer />} />
           <Route path="/delete-file" element={<DeleteFile />} />
-
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />
           <Route path="/editProfile" element={<ProfileEdit />} />
@@ -55,7 +52,6 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/script" element={<Script />} />
           <Route path="/hubs/:hub" element={<HubIndividual />} />
-          <Route path="/unit-tests" element={<UnitTests />} />
         </Routes>
       </Router>
     </div>

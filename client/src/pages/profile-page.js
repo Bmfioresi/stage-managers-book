@@ -32,7 +32,7 @@ const ProfilePage = () => {
         console.log("LOCAL STORAGE UID");
         console.log(localStorage.getItem("uid"));
 
-        axios.post(url, JSON.stringify({"uid": localStorage.getItem("uid")})).then((response) => {
+        axios.post(url, JSON.stringify({ "uid": localStorage.getItem("uid") })).then((response) => {
 
             console.log("BACK TO PROFILE PAGE");
             console.log(response);
@@ -51,23 +51,6 @@ const ProfilePage = () => {
 
     return (
         <div className="container">
-            <div className="sidebar">
-                {/* Sidebar content */}
-                <img src="smb-logo.png" alt="Stage Manager Logo" className="logo" />
-                <ul className="sidebar-links">
-                    <li><a href="#">Profile</a></li>
-                    <li>
-                        <a href="#">Productions</a>
-                        <ul className="dropdown">
-                            <li><a href="#">Play 1</a></li>
-                            <li><a href="#">Play 2</a></li>
-                            <li><a href="#">Play 3</a></li>
-                            <li><a href="#">Play 4</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Calendar</a></li>
-                </ul>
-            </div>
             <div className="content">
                 <h1>User Profile</h1>
                 <div className="profile-info">

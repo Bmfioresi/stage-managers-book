@@ -3,12 +3,20 @@ import ReactDOM from "react-dom/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
 import { GoogleLogin } from 'react-google-login';
+import { jwtDecode } from "jwt-decode";
+import { gapi } from 'gapi-script'; // to help with COOP errors
 import googleIcon from "./google.svg";
 import "./sign-in-left-frame.css";
 import "../../global.css";
 
 const LeftSide8Column = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    gapi.load("client:auth2", () => {
+      gapi.auth2.init({ client_id: "933341791381-nadvkll3fcr60dv19p4paljj4d2hq603.apps.googleusercontent.com" });
+    });
+  }, []);
 
   const responseGoogle = (response) => {
     console.log(response);

@@ -1,6 +1,6 @@
-const userSchema = require('mongoose');
+import userSchema from 'mongoose';
 
-const userSchema = new MongoKerberosError.Schema({
+const userSchema = new mongoose.Schema({
     googleId: {
         type: String,
         required: true,
@@ -20,4 +20,4 @@ const userSchema = new MongoKerberosError.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User;

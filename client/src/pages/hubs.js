@@ -19,6 +19,7 @@ function Hub() {
     console.log("wtf lmfao");
   }
 
+
   async function getHubs() {
     console.log(formData);
     const url = 'http://localhost:8000/hubs';
@@ -31,6 +32,11 @@ function Hub() {
       }
       setHubs(hubTemp);
     });
+  }
+
+  async function routeChange(hid) { 
+    let path = `/hubs/${hid}`; 
+    navigate(path);
   }
 
   useEffect(() => {

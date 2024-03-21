@@ -7,11 +7,7 @@ function Hub() {
   let navigate = useNavigate();
   const [hubs, setHubs] = useState([]);
 
-  const [formData, setFormData] = useState({
-    uid: "03"
-  });
-
-  const [redirect, setRedirect] = useState("FALSE");
+  const [formData, setFormData] = useState({uid: "03"});
 
   async function getHubs() {
     console.log(formData);
@@ -21,31 +17,20 @@ function Hub() {
       console.log(response.data);
       for(let i = 0; i < response.data.length; i++) {
         console.log(response.data[i].name);
-        hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner});
+        hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner, hid: response.data[i].hid});
       }
       setHubs(hubTemp);
     });
   }
 
   async function routeChange(hid) { 
-    console.log(hid);
     let path = `/hubs/${hid}`; 
     navigate(path);
-    console.log("wtf lmfao");
   }
 
   useEffect(() => {
     getHubs().then();
   }, []);
-
-  async function dummyFunc() {
-    console.log("ebic");
-    setRedirect("TRUE")
-  }
-
-  if(redirect == "TRUE") {
-    return <Navigate to='/hubs/hid' />;
-  }
 
   return (
     <div key={hubs.name}>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import {useParams} from 'react-router-dom';
+import { useNavigate, Navigate } from "react-router-dom";
 
 function HubIndividual() {
+    let navigate = useNavigate();
     const params = useParams();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -25,6 +27,11 @@ function HubIndividual() {
         });
     }
 
+    async function routeChange(destination) { 
+      let path = `/hubs/${formData.hid}/${destination}`; 
+      navigate(path);
+    }
+
     useEffect(() => {
         getHubInfo().then();
     }, []);
@@ -34,6 +41,8 @@ function HubIndividual() {
           <h1>Name: {name}</h1>
           <p>Owner: {owner}</p><br></br>
           <p>Description: {description}</p>
+          <button onClick={() => routeChange("resources")}>Resources</button>
+          <button onClick={() => routeChange("designer")}>Designer</button>
         </div>
     );
 }

@@ -34,14 +34,14 @@ module.exports = {
     stream - file stream to upload to mongodb
     bucketName - name of bucket to store file in
     */
-    uploadFile: async function (name, stream, bucketName) {
+    uploadFile: async function (name, stream, hubName, bucketName) {
         const { MongoClient, GridFSBucket } = require("mongodb");
         const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
         const mongoclient = new MongoClient(uri);
 
         try {
             await mongoclient.connect();
-            const db = mongoclient.db('files');
+            const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             let found = await searchName(bucket, name);
             if (found) name = await incrementName(bucket, name);
@@ -57,14 +57,14 @@ module.exports = {
         }
     },
 
-    downloadFile: async function (name, bucketName) {
+    downloadFile: async function (name, hubName, bucketName) {
         const { MongoClient, GridFSBucket } = require("mongodb");
         const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
         const mongoclient = new MongoClient(uri);
 
         try {
             await mongoclient.connect();
-            const db = mongoclient.db('files');
+            const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             let found = await searchName(bucket, name);
             if (found) return bucket.openDownloadStreamByName(name);
@@ -75,14 +75,14 @@ module.exports = {
         }
     },
 
-    deleteFile: async function (name, bucketName) {
+    deleteFile: async function (name, hubName, bucketName) {
         const { MongoClient, GridFSBucket } = require("mongodb");
         const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
         const mongoclient = new MongoClient(uri);
 
         try {
             await mongoclient.connect();
-            const db = mongoclient.db('files');
+            const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             let files = bucket.find({});
             let numFiles = 0;
@@ -108,14 +108,14 @@ module.exports = {
         }
     },
 
-    getFilenames: async function (bucketName) {
+    getFilenames: async function (hubName, bucketName) {
         const { MongoClient, GridFSBucket } = require("mongodb");
         const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
         const mongoclient = new MongoClient(uri);
         
         try {
             await mongoclient.connect();
-            const db = mongoclient.db('files');
+            const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             const res = bucket.find({});
             var filenames = [];

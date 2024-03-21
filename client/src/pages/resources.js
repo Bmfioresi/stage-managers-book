@@ -27,8 +27,8 @@ const Resources = () => {
         const url = `${baseUrl}/upload-file`;
         const data = new FormData();
         data.append('file', file);
-        data.append('bucket', 'resources');
         data.append('hub', hub);
+        data.append('bucket', 'resources');
         const headers = {
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${data._boundary}`
@@ -43,9 +43,9 @@ const Resources = () => {
 
     const getFileLinks = useCallback(async () => {
         async function deleteFile(name) { // function for deleting files displayed
-            const bucket = `${hub}-resources`;
+            const bucket = "resources";
             try {
-                let res = await fetch(`http://localhost:8000/delete-file?name=${name}&bucket=${bucket}`);
+                let res = await fetch(`http://localhost:8000/delete-file?name=${name}&hub=${hub}&bucket=${bucket}`);
                 res = await res.json();
                 if (res.status === 200) alert("File " + name + " deleted");
                 else throw res;
@@ -57,14 +57,14 @@ const Resources = () => {
         };
 
         setLoading(true);
-        const bucket = `${hub}-resources`;
+        const bucket = "resources";
 
-        let filenames = await fetch(`${baseUrl}/get-filenames?bucket=${bucket}`);
+        let filenames = await fetch(`${baseUrl}/get-filenames?hub=${hub}&bucket=${bucket}`);
         filenames = await filenames.json();
 
         var links = [];
         for (let i = 0; i < filenames.length; i++) {
-            let res = await fetch(`${baseUrl}/download-file?name=${filenames[i]}&bucket=${bucket}`);
+            let res = await fetch(`${baseUrl}/download-file?name=${filenames[i]}&hub=${hub}&bucket=${bucket}`);
             let blob = await res.blob();
             let url = URL.createObjectURL(blob);
             links.push(

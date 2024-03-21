@@ -27,6 +27,7 @@ import ProfileForm from './pages/profile-form.js';
 import ProfilePageDemo from './pages/profile-page-demo.js';
 import Script from './pages/scripts.js';
 import ProfileEdit from './pages/profile-edit.js';
+import UnitTests from './pages/unit-tests.js';
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/script" element={<Script />} />
           <Route path="/:hub" element={<HubIndividual />} />
+          <Route path="/unit-tests" element={<UnitTests />} />
         </Routes>
       </Router>
     </div>

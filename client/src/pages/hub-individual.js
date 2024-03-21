@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import {useParams} from 'react-router-dom';
 
 function HubIndividual() {
+    const params = useParams();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [owner, setOwner] = useState("");
 
-    const [formData, setFormData] = useState({
-        hid: "01"
-      });
+    // const [formData, setFormData] = useState({
+    //   hid: "01"
+    // });
+
+    const formData = {hid: params.hub};
 
     async function getHubInfo() {
         console.log(formData);

@@ -13,7 +13,7 @@ export const Nav = styled.nav`
     height: 100%;
     ${'' /* display: flex; */}
     ${'' /* justify-content: space-between; */}
-    padding: 1%;
+    padding: 1rem;
     z-index: 12;
 `;
 
@@ -23,7 +23,7 @@ export const NavLink = styled(Link)`
     font-family: var(--font-zen-kaku-gothic-antique);
     align-items: center;
     text-decoration: none;
-    ${'' /* padding: 0 1rem; */}
+    padding: 0 1rem;
     height: 50px;
     cursor: pointer;
     &.active {

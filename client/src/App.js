@@ -36,8 +36,8 @@ function App() {
           <Route path="/upload-image" element={<UploadImage />} />
           <Route path="/display-image" element={<DisplayImage />} />
           <Route path="/display-images" element={<DisplayImages />} />
-          <Route path="/resources" element={<Resources />} />
-          <Route path="/designer" element={<Designer />} />
+          <Route path="/hubs/:hub/resources" element={<Resources />} />
+          <Route path="/hubs/:hub/designer" element={<Designer />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />
           <Route path="/hubs" element={<Hubs />} />
@@ -46,7 +46,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/script" element={<Script />} />
-          <Route path="/hub-individual" element={<HubIndividual />} />
+          <Route path="/hubs/:hub" element={<HubIndividual />} />
         </Routes>
       </Router>
     </div>

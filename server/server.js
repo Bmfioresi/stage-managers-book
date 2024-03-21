@@ -8,9 +8,22 @@ const gridfsHelpers = require('./gridfs-helpers');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true, // for cookies
+    optionsSuccessStatus: 200,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(formidable());
+
+app.use((req, res, next) => {
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    next();
+  });  
 
 app.get('/test', (req, res) => {
     res.json({message: "Test successful"});

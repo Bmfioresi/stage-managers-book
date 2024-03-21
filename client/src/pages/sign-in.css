@@ -21,8 +21,15 @@
     gap: 10px;
     letter-spacing: normal;
   }
+
+  @media screen and (max-width: 1100px) {
+    .art-icon {
+      height: 100%;
+      min-width: 100%;
+    }
+  }
   
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 1050px) {
     .art-icon {
       display: none; 
     }
@@ -30,5 +37,9 @@
   @media screen and (max-width: 450px) {
     .desktop-sign-in {
       gap: var(--gap-base);
+    }
+
+    .art-icon {
+      display: none; 
     }
   }

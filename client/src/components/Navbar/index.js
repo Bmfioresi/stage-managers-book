@@ -21,10 +21,11 @@ const NavBar = () => {
                     <NavLink to="/display-image">Display Image</NavLink>
                     <NavLink to="/login">Login</NavLink>
                     <NavLink to="/createProfile">Create Profile</NavLink>
+                    <NavLink to="/editProfile">Edit Profile</NavLink>
                     <NavLink to="/hubs">Hubs</NavLink>
                     <NavLink to="/profile">Profile</NavLink>
                     <NavLink to="/script">Display Script</NavLink>
-                    <NavLink to="/signin">Hannah's Links</NavLink>
+                    {/* <NavLink to="/signin">Hannah's Links</NavLink> */}
                     {/* <NavLink to="/signup">Sign Up</NavLink>
                     <NavLink to="/forgotpassword">Forgot Password</NavLink> */}
                 </NavMenu>

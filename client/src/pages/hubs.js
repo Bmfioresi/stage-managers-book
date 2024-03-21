@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import axios from 'axios';
 
 function Hub() {
@@ -8,6 +8,17 @@ function Hub() {
   const [hubs, setHubs] = useState([]);
 
   const [formData, setFormData] = useState({uid: "03"});
+
+  const [redirect, setRedirect] = useState("FALSE");
+  
+  //const formData = useState({uid:"03"});
+
+  async function routeChange(hid) { 
+    let path = `/${hid}`; 
+    navigate(path);
+    console.log("wtf lmfao");
+  }
+
 
   async function getHubs() {
     console.log(formData);

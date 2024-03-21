@@ -1,11 +1,16 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import ClipLoader from "react-spinners/ClipLoader";
 
+const baseUrl = 'http://localhost:8000';
+
 const Designer = () => {
+    const [hub, setHub] = useState("");
     const [file, setFile] = useState();
     const [fileLinks, setFileLinks] = useState();
     const [loading, setLoading] = useState(true);
+    const params = useParams();
 
     function handleChange(event) {
         setFile(event.target.files[0]);
@@ -15,15 +20,15 @@ const Designer = () => {
         event.preventDefault();
 
         if (file == null) {
-            console.log("make sure to select a file");
+            alert("Make sure to select a file");
             return;
         }
 
-        const url = 'http://localhost:8000/upload-file';
+        const url = `${baseUrl}/upload-file`;
         const data = new FormData();
         data.append('file', file);
+        data.append('hub', hub);
         data.append('bucket', 'designer');
-        data.append('hub', 'test'); // replace with variable hub name from specific url when that is implemented
         const headers = {
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${data._boundary}`
@@ -32,31 +37,55 @@ const Designer = () => {
         axios.post(url, data, headers).then((response) => {
             // console.log(response.data);
             alert(`Successfully uploaded ${response.data.name}`);
+            getFileLinks();
         });
     }
 
-    async function getFileLinks() {
-        // get bucket from page
-        const bucket = "test" + '-designer';
+    const getFileLinks = useCallback(async () => {
+        async function deleteFile(name) { // function for deleting files displayed
+            const bucket = "designer";
+            try {
+                let res = await fetch(`http://localhost:8000/delete-file?name=${name}&hub=${hub}&bucket=${bucket}`);
+                res = await res.json();
+                if (res.status === 200) alert("File " + name + " deleted");
+                else throw res;
+                getFileLinks();
+            } catch (err) {
+                console.log(err);
+                alert("Something went wrong");
+            }
+        };
 
-        let filenames = await fetch(`http://localhost:8000/get-filenames?bucket=${bucket}`);
+        setLoading(true);
+        const bucket = "designer";
+
+        let filenames = await fetch(`${baseUrl}/get-filenames?hub=${hub}&bucket=${bucket}`);
         filenames = await filenames.json();
 
         var links = [];
         for (let i = 0; i < filenames.length; i++) {
-            // TODO - add spinner while it's loading
-            let res = await fetch(`http://localhost:8000/download-file?name=${filenames[i]}&bucket=${bucket}`);
+            let res = await fetch(`${baseUrl}/download-file?name=${filenames[i]}&hub=${hub}&bucket=${bucket}`);
             let blob = await res.blob();
             let url = URL.createObjectURL(blob);
-            links.push(<li key={i}><a href={url} download={filenames[i]}>{filenames[i]}</a></li>);
+            links.push(
+                <tr key={i}>
+                    <td><a href={url} download={filenames[i]}>{filenames[i]}</a></td>
+                    <td><button type="button" onClick={() => deleteFile(filenames[i])}>Delete</button></td>
+                </tr>
+            );
         }
         await setFileLinks(links);
         setLoading(false);
-    }
+    }, [hub] );
+
 
     useEffect(() => {
+        var hub = params.hub;
+        // search for hub in system, if hub does not exist, display 404 error or something TODO
+        setHub(hub);
+
         getFileLinks();
-    }, [] );
+    }, [getFileLinks, params] );
 
     return (
         <div>
@@ -76,9 +105,9 @@ const Designer = () => {
             </form>
             <h2>Download file</h2>
             <ClipLoader loading={loading}></ClipLoader>
-            <ul>
-                {fileLinks}
-            </ul>
+            <table>
+                {!loading && fileLinks}
+            </table>
         </div>
     )
 }

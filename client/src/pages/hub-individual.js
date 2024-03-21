@@ -37,7 +37,7 @@ function HubIndividual() {
     }, []);
 
     return (
-        <div class="container">
+        <div>
           <h1>Name: {name}</h1>
           <p>Owner: {owner}</p><br></br>
           <p>Description: {description}</p>

@@ -1,38 +1,37 @@
-import React, { useEffect } from 'react';
-import * as pdfjs from 'pdfjs-dist';
-//const pdfjs = require('pdfjs-dist');
-
-//import workerSrc from 'pdfjs-dist/build/pdf.worker.mjs';
-
-//pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
+import React from 'react';
 
 const PDFViewer = () => {
-    useEffect(() => {
-        const url = 'https://uca.edu/cwc/files/2017/11/Film-Script.pdf';
-        // const canvas = document.getElementById('pdf-viewer');
-        // pdfjs.GlobalWorkerOptions.workerSrc = '../../../client/node_modules/pdfjs-dist/build/pdf.worker.min.js';
-        // //pdfjs.GlobalWorkerOptions.workerSrc = './pdf.worker.mjs';
-        // //I keep getting errors regarding either "failed to fetch dynamically imported module" so I've had to
-        // //keep changing the import, const pdfjs and workerSrc line with no success -_-
-        // pdfjs.getDocument(url).promise.then(pdf => {
-        //     console.log(pdf)
-        //     pdf.getPage(1).then(page => {
-        //         const viewport = page.getViewport({ scale: 1.5 });
-        //         const context = canvas.getContext('2d');
-        //         canvas.height = viewport.height;
-        //         canvas.width = viewport.width;
+    const pdfURL = 'https://uca.edu/cwc/files/2017/11/Film-Script.pdf';
+    return (
+        <div style={styles.container}>
+            <iframe
+                title="pdf-viewer"
+                src={pdfURL}
+                width="100%"
+                height="600px"
+                style={styles.iframe}
+            />
+        </div>
+    );
+};
 
-        //         const renderContext = {
-        //             canvasContext: context,
-        //             viewport: viewport
-        //         };
-
-        //         page.render(renderContext);
-        //     });
-        // });
-    }, []);
-
-    return <canvas id="pdf-viewer"></canvas>;
+const styles = {
+    container: {
+        width: '80%',
+        margin: 'auto',
+        marginTop: '50px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '70vh', // Setting minimum height for the container
+    },
+    iframe: {
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+        maxWidth: '100%',
+        maxHeight: '600px',
+    },
 };
 
 export default PDFViewer;

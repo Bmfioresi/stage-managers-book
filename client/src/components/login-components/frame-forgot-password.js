@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import Input from "./input";
 import { useNavigate } from "react-router-dom";
 import "./frame-forgot-password.css";
+import "../../global.css";
 
 const FrameForgotPassword = () => {
   const navigate = useNavigate();
@@ -47,9 +48,8 @@ const FrameForgotPassword = () => {
           <div className="frame-help">
             <Input
               placeholderPlaceholder="JohnSmith@email.com"
-              propPadding="0px 0px var(--padding-14xl)"
+              propPadding="0px 0px var(--padding-10xl)"
               propDisplay="inline-block"
-              propPadding1="var(--padding-base) var(--padding-3xl)"
               propWidth="500px"
               type="email"
             />

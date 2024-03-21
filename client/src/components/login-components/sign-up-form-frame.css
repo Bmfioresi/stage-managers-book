@@ -1,5 +1,5 @@
 .label2 {
-  width: 74px;
+  width: 120px;
   height: 16px;
   position: relative;
   letter-spacing: 0.01em;
@@ -10,13 +10,12 @@
   height: 100%;
   width: 100%;
   position: absolute;
-  margin: 0 !important;
+  margin: auto;
   top: 0px;
   right: -2.3px;
   bottom: -2px;
   left: 0px;
   border-radius: var(--br-xs);
-  background-color: var(--color-ghostwhite);
   border: 1px solid var(--color-lightgray);
   box-sizing: border-box;
 }
@@ -33,6 +32,7 @@
   line-height: 100%;
   background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), #8897ad;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: left;
   display: flex;
@@ -47,14 +47,6 @@
   justify-content: flex-start;
   padding: var(--padding-base) var(--padding-lgi);
   position: relative;
-}
-.input6 {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: var(--gap-5xs);
 }
 .input9 {
   align-self: stretch;

@@ -1,11 +1,12 @@
 import { useState, useMemo } from "react";
-import "./line-frame.css";
+import "./sign-up-form-frame.css";
+import "../../global.css"
 
 const LineFrame = ({
   label1,
-  placeholderPlaceholder1,
+  placeholderPlaceholder1: placeholder,
   propWidth1,
-  inputType = "text",
+  type: inputType,
 }) => {
   const [placeholderText4Value, setPlaceholderText4Value] = useState("");
 
@@ -23,7 +24,7 @@ const LineFrame = ({
           <div className="input8" />
           <input
             className="placeholder2"
-            placeholder={placeholderPlaceholder1}
+            placeholder={placeholder}
             type={inputType}
             value={placeholderText4Value}
             onChange={(event) => setPlaceholderText4Value(event.target.value)}

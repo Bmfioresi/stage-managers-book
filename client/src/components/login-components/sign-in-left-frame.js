@@ -2,11 +2,26 @@ import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
-import Input from "./input";
-import "./left-side8-column.css";
+import { GoogleLogin } from 'react-google-login';
+import googleIcon from "./google.svg";
+import "./sign-in-left-frame.css";
+import "../../global.css";
 
 const LeftSide8Column = () => {
   const navigate = useNavigate();
+
+  const responseGoogle = (response) => {
+    console.log(response);
+    // Send token to server for verification and further processing
+    axios.post('http://localhost:8000/auth/google', { token: response.tokenId })
+      .then((response) => {
+        // Handle the response from backend
+        setLoggedIn("TRUE");
+      })
+      .catch((error) => {
+        console.error('Google Sign-In error:', error);
+      });
+  }
 
   // Used for facilitating login
   const [formData, setFormData] = useState({
@@ -57,16 +72,13 @@ const LeftSide8Column = () => {
 }
 
   return (
-    <div className="left-side-8-column">
-      <div className="left-side-8-column-child" />
-      <div className="input-frame1">
+    <div className="left-side-column">
+      <div className="left-side-column-child" />
+      <div className="welcome-back-container">
         <div className="welcome-back">
           <span>
             <span>Welcome Back</span>
             <span className="span">{` `}</span>
-          </span>
-          <span className="span">
-            <span>{` `}</span>
           </span>
         </div>
         <form className="input-label" onSubmit={handleLoginSubmit} method="POST">
@@ -78,16 +90,13 @@ const LeftSide8Column = () => {
               </p>
             </span>
           </div>
-          <div className="input3">
-            <div className="label1">Email Address</div>
+          <div className="email-pass-input">
+            <div className="label">Email</div>
             <div className="input4">
               <div className="input5" />
               <input
-                className="placeholder1"
-                // placeholderPlaceholder="stageManagersBook@email.com"
+                className="placeholder"
                 placeholder="stageManagersBook@email.com"
-                // propPadding1="var(--padding-base) var(--padding-mid)"
-                // propWidth="500px"
                 type="email"
                 name="email"
                 id="email"
@@ -97,12 +106,12 @@ const LeftSide8Column = () => {
               />
             </div>
           </div>
-          <div className="input3">
-            <div className="label1">Password</div>
+          <div className="email-pass-input">
+            <div className="label">Password</div>
             <div className="input4">
               <div className="input5" />
               <input
-                className="placeholder1"
+                className="placeholder"
                 placeholder="Enter Password"
                 type="password"
                 name="password"
@@ -126,10 +135,19 @@ const LeftSide8Column = () => {
         <div className="or">Or</div>
         <div className="or-text" />
       </div>
-      <button className="social-buttondesktop1">
-        <img className="google-icon1" alt="" src="/google.svg" />
-        <div className="sign-in-with1">Sign in with Google</div>
-      </button>
+      <GoogleLogin
+          clientId="933341791381-nadvkll3fcr60dv19p4paljj4d2hq603.apps.googleusercontent.com"
+          buttonText="Sign in with Google"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
+          render={renderProps => (
+              <button onClick={renderProps.onClick} disabled={renderProps.disabled} className="social-buttondesktop">
+                <img src={googleIcon} alt="Google sign-in" />
+                <div>Sign In with Google</div>
+              </button>
+          )}
+        />
       <div className="dont-you-have-container" onClick={onDontYouHaveClick}>
         <span className="dont-you-have-container1">
           <span>{`Don't you have an account? `}</span>

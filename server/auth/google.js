@@ -1,6 +1,6 @@
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("933341791381-nadvkll3fcr60dv19p4paljj4d2hq603.apps.googleusercontent.com");
-const User = require('../user-model-schema');
+const User = require('../user-model-schema').default;
 
 app.post('/api/v1/auth/google', async (req, res) => {
     const { token }  = req.body;

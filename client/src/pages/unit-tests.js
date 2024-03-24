@@ -14,6 +14,8 @@ const UnitTests = () => {
     const [downloadLoading, setDownloadLoading] = useState(false);
     const [deleteStatus, setDeleteStatus] = useState("");
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const [authenticateStatus, setAuthenticateStatus] = useState("");
+    const [authenticateLoading, setAuthenticateLoading] = useState(false);
 
     async function serverConnect() {
         setConnectLoading(true);
@@ -97,10 +99,39 @@ const UnitTests = () => {
         }
     }
 
+    const [formData, setFormData] = useState({
+        email: "example@gmail.com",
+        password: "Pass1Word",
+    });
+
+    async function authenticateUser() {
+        setAuthenticateLoading(true);
+        const url = `${baseUrl}/authenticate`;
+
+        // Converting form to json format
+        try {
+            await axios.post(url, JSON.stringify(formData)).then((response) => {
+                if (response.data.uid == "101") {
+                    setAuthenticateStatus(<p>&#10003;</p>);
+                    setAuthenticateLoading(false);
+                } else {
+                    setAuthenticateStatus(<p>&#10005;</p>);
+                    setAuthenticateLoading(false);
+                    throw Error("Did not find proper user");
+                }
+            })
+        } catch (err) {
+            setAuthenticateStatus(<p>&#10005;</p>);
+            console.log(err);
+            setAuthenticateLoading(false);
+        }
+    }
+
     async function testAll() {
         serverConnect();
         fileUploadDelete();
         fileDownload();
+        authenticateUser();
     }
 
     return (
@@ -108,28 +139,34 @@ const UnitTests = () => {
             <button type="button" onClick={() => testAll()}>Test All</button>
             <table>
                 <tr>
-                    <td>Server Connect</td>
+                    <td>******************************** Test 1: Server Connect</td>
                     <td><button type="button" onClick={() => serverConnect()}>Test</button></td>
                     <td><ClipLoader loading={connectLoading}></ClipLoader></td>
                     <td>{!connectLoading && connectStatus}</td>
                 </tr>
                 <tr>
-                    <td>File Upload</td>
+                    <td>******************************** Test 2: File Upload</td>
                     <td><button type="button" onClick={() => fileUploadDelete()}>Test</button></td>
                     <td><ClipLoader loading={uploadLoading}></ClipLoader></td>
                     <td>{!uploadLoading && uploadStatus}</td>
                 </tr>
                 <tr>
-                    <td>File Delete</td>
+                    <td>******************************** Test 3: File Delete</td>
                     <td><button type="button" onClick={() => fileUploadDelete()}>Test</button></td>
                     <td><ClipLoader loading={deleteLoading}></ClipLoader></td>
                     <td>{!deleteLoading && deleteStatus}</td>
                 </tr>
                 <tr>
-                    <td>File Download</td>
+                    <td>******************************** Test 4: File Download</td>
                     <td><button type="button" onClick={() => fileDownload()}>Test</button></td>
                     <td><ClipLoader loading={downloadLoading}></ClipLoader></td>
                     <td>{!downloadLoading && downloadStatus}</td>
+                </tr>
+                <tr>
+                    <td>******************************** Test 5: AuthenticateUser</td>
+                    <td><button type="button" onClick={() => authenticateUser()}>Test</button></td>
+                    <td><ClipLoader loading={authenticateLoading}></ClipLoader></td>
+                    <td>{!authenticateLoading && authenticateStatus}</td>
                 </tr>
             </table>
         </div>

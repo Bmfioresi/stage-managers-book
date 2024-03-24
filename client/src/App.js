@@ -24,7 +24,7 @@ import Hubs from './pages/hubs.js';
 import HubIndividual from './pages/hub-individual.js';
 import ProfilePage from './pages/profile-page.js';
 import ProfileForm from './pages/profile-form.js';
-import ProfilePageDemo from './pages/profile-page-demo.js';
+//import ProfilePageDemo from './pages/profile-page-demo.js';
 import Script from './pages/scripts.js';
 import ProfileEdit from './pages/profile-edit.js';
 

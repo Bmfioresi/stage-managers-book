@@ -33,11 +33,19 @@ const corsOptions = {
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
 };
 
+
+// router.post('/google', async (req, res) => {
+//     console.log("Google Auth");
+//     console.log(req.body);
+//     res.json({message: 'Google Auth'}); 
+// })
+
 router.post('/google', async (req, res) => {
     console.log("Google Auth");
     console.log(req.body);
     res.json({message: 'Google Auth'}); 
 })
+
 
 app.get('/', (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');

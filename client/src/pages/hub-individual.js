@@ -70,6 +70,7 @@ function HubIndividual() {
             <h1 className="cat-header">Links</h1>
             <button className="hubs-button" onClick={() => routeChange("resources")}>Resources</button>
             <button className="hubs-button" onClick={() => routeChange("designer")}>Designer</button>
+            <button className="hubs-button" onClick={() => routeChange("stage-manager")}>Stage Manager Access</button>
           </div>
           <div className="schedule">
             <h1 className="cat-header">Schedule</h1>

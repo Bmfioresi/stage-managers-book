@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const formidable = require('express-formidable');
@@ -5,8 +7,24 @@ const fs = require('fs');
 
 const mongoHelpers = require('./mongo-helpers');
 const gridfsHelpers = require('./gridfs-helpers');
+const session = require('express-session');
+const MongoStore = require('connect-mongo'); // May need to change to const MongoStore = require('connect-mongo')(session);
 
 const app = express();
+
+const thisMongoStore = new MongoStore({
+    mongoUrl: "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/",
+    collectionName: 'sessions',
+    ttl: 14 * 24 * 60 * 60,
+    autoRemove: 'native'
+});
+
+app.use(session({
+    secret: 'SECRET KEY',
+    resave: false,
+    saveUninitialized: true,
+    store: thisMongoStore
+}));
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -157,13 +175,19 @@ app.post('/authenticate', async (req, res) => {
     console.log(fields.password);
 
     //TODO: Sanitize input
-    const userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
+    var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
     console.log("Back from autneticateUser");
     console.log(userId);
     if (userId==null) {
-        userId = {'uid': '-1'};
-    } 
-    res.json(userId);
+        res.json("NOT AUTHENTICATED");
+    } else {
+        req.session.isLoggedIn = true;
+        req.session.userId = userId.uid;
+        console.log("USER's SESSION ID");
+        console.log(res.req.sessionID); // Newly Created SessionID
+        // res.json(userId);
+        res.json(res.req.sessionID);
+    }
 });
 
 app.post('/createProfile', async (req, res) => {
@@ -199,12 +223,20 @@ app.post('/loadProfile', async (req, res) => {
     console.log("Just entered loadProfile");
     // console.log(req);
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-    console.log("Loading profile with UID");
+    console.log("SessionID");
     console.log(fields);
+    console.log(fields.sessionID);
 
     //TODO: Sanitize input
     // TODO: Handle errors
-    const profileData = await mongoHelpers.loadProfile(fields.uid); 
+    const userIDResponse = await mongoHelpers.getUserID(fields.sessionID);
+    const userID = userIDResponse.userId;
+    console.log("JUST GOT USERID FROM SESSIONS DB");
+    console.log(userID);
+    if (userID == "-1") {
+        console.log("Could not verify user's identity.");
+    }
+    const profileData = await mongoHelpers.loadProfile(userID); 
     console.log(profileData);
     console.log("ABOUT TO RETURN");
     res.json(profileData);

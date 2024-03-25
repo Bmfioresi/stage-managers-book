@@ -28,20 +28,15 @@ function Authenticate() {
         const url = 'http://localhost:8000/authenticate';
         // Converting form to json format
 
-        axios.post(url, JSON.stringify(formData)).then((response) => {
+        await axios.post(url, JSON.stringify(formData)).then((response) => {
             console.log("RESPONSE")
             console.log(response);
-            console.log(response.data);
-            // setUserId(response.data.uid); // Updating userID
-            console.log(userId);
             
-            console.log("NEW LOCAL STORAGE UID");
-            console.log(response.data.uid);
-            localStorage.setItem('uid', response.data.uid);
-
-            console.log("GETTING LOCAL STORAGE");
-            // console.log(JSON.parse(localStorage.getItem("uid")))
-            console.log(localStorage.getItem("uid"));
+            console.log("NEW Session ID");
+            console.log(response.data);
+            localStorage.setItem('sessionID', response.data);
+            console.log("WROTE SESSION ID TO LOCAL STORAGE");
+            console.log(localStorage.getItem('sessionID'));
         });
 
         console.log("SUBMIT");

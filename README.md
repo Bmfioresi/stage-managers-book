@@ -13,7 +13,7 @@ In visual studio code, open a terminal and run the command `git clone https://gi
 Follow the instructions [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install Node.js and npm.
 
 ### Install the dependencies
-Inside both the client and server directories, run the command `npm install` to install the respective dependencies outlined in each `package.json`. This will generate a folder called `node_modules`, which is excluded from the git repository because its size is unnecessarily large and annoying to download/upload with git.
+Inside both the client and server directories, run the command `npm install` to install the respective dependencies outlined in each `package.json`. This will generate a folder called `node_modules`, which is excluded from the git repository because its size is unnecessarily large and annoying to download/upload with git. In case of dependency errors, try the command `npm install --save --legacy-peer-deps`; this makes the installation less restrictive.
 
 ### Start the client and server
 Open two terminals, navigate to the client directory in one, and the server directory in the other.

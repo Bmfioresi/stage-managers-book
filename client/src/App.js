@@ -28,6 +28,7 @@ import ProfilePageDemo from './pages/profile-page-demo.js';
 import Script from './pages/scripts.js';
 import ProfileEdit from './pages/profile-edit.js';
 import UnitTests from './pages/unit-tests.js';
+import InputFrame from "./components/login-components/sign-up-input-frame.js";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/delete-file" element={<DeleteFile />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />
+          <Route path="/createAccount" element={<InputFrame />} />
           <Route path="/editProfile" element={<ProfileEdit />} />
           <Route path="/hubs" element={<Hubs />} />
           <Route path="/profile" element={<ProfilePage />} />

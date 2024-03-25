@@ -61,7 +61,7 @@
     /* Subtract sidebar width */
 }
 
-h1 {
+.profile-h1 {
     text-align: center;
     color: #343a40;
     margin-bottom: 30px;
@@ -134,7 +134,7 @@ textarea {
     resize: vertical;
 }
 
-button {
+.profile-button {
     background: linear-gradient(180deg, #720D17 0%, #BE2722 100%);
     color: white;
     padding: 10px 20px;

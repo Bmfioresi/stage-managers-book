@@ -48,7 +48,7 @@ const ProfileForm = () => {
         <div className="container">
             <div className="content">
                 {/* Main content */}
-                <h1>User Profile</h1>
+                <h1 className="profile-h1">User Profile</h1>
                 <div className="profile-info">
                     <div className="profile-details">
                         <h2>Basic Information</h2>
@@ -71,7 +71,7 @@ const ProfileForm = () => {
                         <input type="text" id="resume" name="resume" value={formData.resume} onChange={handleChange} /> */}
                     </div>
                 </div>
-                <button type="submit" onClick={handleSubmit}>Save Changes</button>
+                <button type="submit" onClick={handleSubmit} className="profile-button">Save Changes</button>
             </div>
         </div>
 

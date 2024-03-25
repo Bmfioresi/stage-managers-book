@@ -1,6 +1,6 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import './App.css';
-import { GoogleLogin } from '@react-oauth/google';
 
 import Navbar from "./components/Navbar/index.js";
 import {
@@ -27,8 +27,31 @@ import ProfileForm from './pages/profile-form.js';
 //import ProfilePageDemo from './pages/profile-page-demo.js';
 import Script from './pages/scripts.js';
 import ProfileEdit from './pages/profile-edit.js';
+import UnitTests from './pages/unit-tests.js';
+import InputFrame from "./components/login-components/sign-up-input-frame.js";
 
 function App() {
+  const makeAPICall = async () => {
+    try {
+      const response = await fetch("http://localhost:3000", { mode: 'cors' });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      if (response.headers.get("content-type").includes("application/json")) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.log("Not a JSON response");
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }  
+
+  useEffect(() => {
+    makeAPICall();
+  }, []);
+
   return (
     <div className="App">
       <Router>
@@ -44,6 +67,7 @@ function App() {
           <Route path="/delete-file" element={<DeleteFile />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />
+          <Route path="/createAccount" element={<InputFrame />} />
           <Route path="/editProfile" element={<ProfileEdit />} />
           <Route path="/hubs" element={<Hubs />} />
           <Route path="/profile" element={<ProfilePage />} />
@@ -52,6 +76,7 @@ function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/script" element={<Script />} />
           <Route path="/hubs/:hub" element={<HubIndividual />} />
+          <Route path="/unit-tests" element={<UnitTests />} />
         </Routes>
       </Router>
     </div>

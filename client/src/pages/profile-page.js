@@ -14,7 +14,7 @@ const ProfilePage = () => {
     const [uid, setUid] = useState("-1");
 
     const [formData, setFormData] = useState({
-        uid: "-3"
+        sessionID: "-1"
     });
 
     useEffect(() => {
@@ -23,16 +23,13 @@ const ProfilePage = () => {
         const url = 'http://localhost:8000/loadProfile';
         // Converting form to json format
 
-        console.log("LOCAL STORAGE.uid");
-        console.log(localStorage.getItem("uid"));
-
         // Preparing data to send to axios
         console.log("profile-page sending axios post");
-        setFormData({ ...formData, uid: localStorage.getItem("uid") });
-        console.log("LOCAL STORAGE UID");
-        console.log(localStorage.getItem("uid"));
+        setFormData({ ...formData, sessionID: localStorage.getItem("sessionID") });
+        console.log("SessionID");
+        console.log(localStorage.getItem("sessionID"));
 
-        axios.post(url, JSON.stringify({ "uid": localStorage.getItem("uid") })).then((response) => {
+        axios.post(url, JSON.stringify({ "sessionID": localStorage.getItem("sessionID") })).then((response) => {
 
             console.log("BACK TO PROFILE PAGE");
             console.log(response);
@@ -52,7 +49,7 @@ const ProfilePage = () => {
     return (
         <div className="container">
             <div className="content">
-                <h1>User Profile</h1>
+                <h1 className="profile-h1">User Profile</h1>
                 <div className="profile-info">
                     <div className="profile-details">
                         <label htmlFor="name">Name: {name}</label><br /><br />

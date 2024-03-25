@@ -1,6 +1,42 @@
 require('dotenv').config();
 
 module.exports = {
+
+    getUserID: async function (sessionID) {
+
+        const { MongoClient } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        console.log(uri)
+        const mongoclient = new MongoClient(uri);
+
+        try {
+            const testBase = mongoclient.db('test');
+            const sessions = testBase.collection('sessions');
+        
+            // query
+            const query = { _id: sessionID};
+            const response = await sessions.findOne(query);
+
+            if (!response) {
+                return {'uid': "-1"};
+            }
+        
+            console.log("ACCESSED SESSION IDs from DATABASE");
+            console.log(response.session);
+            const userData = JSON.parse(response.session);
+            console.log("Getting userID");
+            console.log(userData);
+            console.log(userData.userId);
+            return userData;
+        
+        } catch (err) {
+            console.log(err);
+            console.log("PROFILE NOT FOUND")
+            return {'uid': "-1"};
+        } 
+    },
+
+
     authenticateUser: async function (uname, pword) {
 
         const { MongoClient } = require("mongodb");

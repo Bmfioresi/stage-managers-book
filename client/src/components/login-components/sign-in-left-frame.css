@@ -211,7 +211,7 @@
     flex-shrink: 0;
   }
   .social-buttondesktop div {
-    height: 16px;
+    height: 20px;
     width: 140px;
     position: relative;
     font-size: var(--font-size-base);

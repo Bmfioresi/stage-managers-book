@@ -20,16 +20,39 @@ const LeftSide8Column = () => {
 
   const responseGoogle = (response) => {
     console.log(response);
-    // Send token to server for verification and further processing
-    axios.post('http://localhost:8000/auth/google', { token: response.tokenId })
-      .then((response) => {
-        // Handle the response from backend
-        setLoggedIn("TRUE");
+  
+    // Extract the access token
+    const accessToken = response.accessToken;
+  
+    // Use the access token to make requests to the Google API
+    axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${accessToken}` }  // Corrected this line
+    })
+    .then((apiResponse) => {
+      console.log(apiResponse.data);
+  
+      // Send user info to backend (optional)
+      axios.post('http://localhost:8000/auth/google', {
+        token: accessToken,
+        userData: apiResponse.data
       })
-      .catch((error) => {
-        console.error('Google Sign-In error:', error);
+      .then((backendResponse) => {
+        // Handle backend response
+        if (backendResponse.status === 200) {
+          setLoggedIn("TRUE");
+          // Additional handling, like redirecting the user or storing data in state
+        }
+      })
+      .catch((backendError) => {
+        console.error('Backend error:', backendError);
+        // Handle backend error
       });
-  }
+    })
+    .catch((apiError) => {
+      console.error('Error fetching user data from Google:', apiError);
+      // Handle error from Google API
+    });
+  }  
 
   // Used for facilitating login
   const [formData, setFormData] = useState({

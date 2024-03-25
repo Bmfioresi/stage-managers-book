@@ -15,10 +15,6 @@ const corsOptions = {
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
 };
 
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use(formidable());
-
 router.post('/google', async (req, res) => {
     console.log("Google Auth");
     console.log(req.body);
@@ -26,18 +22,22 @@ router.post('/google', async (req, res) => {
 })
 
 app.get('/', (req, res) => {
-    res.set('Access-Control-Allow-Origin', '*');
-    res.send({message: 'CORS enabled'});
+    res.header('Access-Control-Allow-Origin', '*');
+    res.send({ "msg": "This has CORS enabled"});
 })
 
 const response = await fetch('http://localhost:8000', {mode: 'cors'});
+
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(formidable());
 
 app.use(express.json());
 app.use(formidable());
 
 app.use((req, res, next) => {
-    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    res.header('Cross-Origin-Opener-Policy', 'same-origin');
+    res.header('Cross-Origin-Embedder-Policy', 'require-corp');
     next();
 });  
 

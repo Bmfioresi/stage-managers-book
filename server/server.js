@@ -19,11 +19,27 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(formidable());
 
+router.post('/google', async (req, res) => {
+    console.log("Google Auth");
+    console.log(req.body);
+    res.json({message: 'Google Auth'}); 
+})
+
+app.get('/', (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.send({message: 'CORS enabled'});
+})
+
+const response = await fetch('http://localhost:8000', {mode: 'cors'});
+
+app.use(express.json());
+app.use(formidable());
+
 app.use((req, res, next) => {
     res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
     res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
     next();
-  });  
+});  
 
 app.get('/test', (req, res) => {
     res.json({message: "Test successful"});

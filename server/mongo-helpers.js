@@ -311,5 +311,33 @@ module.exports = {
         } finally {
             await mongoclient.close();
         }
+    },
+
+    retrieveMembers : async function (whitelist) {
+        const { MongoClient } = require("mongodb");
+        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+        console.log(uri)
+        const mongoclient = new MongoClient(uri);
+        console.log(whitelist)
+
+        try {
+            await mongoclient.connect();
+            const db = mongoclient.db("profiles");
+            const collection = db.collection("profiles");
+            var members = [];
+            for(let i = 0; i < whitelist.length; i++) {
+                const query = { uid: whitelist[i] };
+                const member = await collection.findOne(query);
+                members.push(member);
+            }
+            await mongoclient.close();
+            return members;
+        } catch (err) {
+            console.log(err);
+            console.log("MEMBER ERROR")
+            return {'uid': "-1"};
+        } finally {
+            await mongoclient.close();
+        }
     }
 }

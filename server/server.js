@@ -33,15 +33,31 @@ const corsOptions = {
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
 };
 
+router.post('/google', async (req, res) => {
+    console.log("Google Auth");
+    console.log(req.body);
+    res.json({message: 'Google Auth'}); 
+})
+
+app.get('/', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.send({ "msg": "This has CORS enabled"});
+})
+
+const response = await fetch('http://localhost:8000', {mode: 'cors'});
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(formidable());
 
+app.use(express.json());
+app.use(formidable());
+
 app.use((req, res, next) => {
-    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    res.header('Cross-Origin-Opener-Policy', 'same-origin');
+    res.header('Cross-Origin-Embedder-Policy', 'require-corp');
     next();
-  });  
+});  
 
 app.get('/test', (req, res) => {
     res.json({message: "Test successful"});
@@ -164,6 +180,14 @@ app.post('/hub-individual', async (req, res) => {
     console.log(fields.hid);
     const hubInfo = await mongoHelpers.getIndividualHubInfo(fields.hid);
     res.json(hubInfo);
+});
+
+app.post('/retrieve-members', async (req, res) => {
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    console.log("here");
+    console.log(fields);
+    const members = await mongoHelpers.retrieveMembers(fields);
+    res.json(members);
 });
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned

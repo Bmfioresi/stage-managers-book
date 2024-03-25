@@ -52,7 +52,7 @@ const ProfilePage = () => {
     return (
         <div className="container">
             <div className="content">
-                <h1>User Profile</h1>
+                <h1 className="profile-h1">User Profile</h1>
                 <div className="profile-info">
                     <div className="profile-details">
                         <label htmlFor="name">Name: {name}</label><br /><br />

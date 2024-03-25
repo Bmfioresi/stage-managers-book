@@ -15,6 +15,19 @@ const corsOptions = {
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
 };
 
+// router.post('/google', async (req, res) => {
+//     console.log("Google Auth");
+//     console.log(req.body);
+//     res.json({message: 'Google Auth'}); 
+// })
+
+app.get('/', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.send({ "msg": "This has CORS enabled"});
+})
+
+//const response = await fetch('http://localhost:8000', {mode: 'cors'});
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(formidable());

@@ -164,6 +164,14 @@ app.post('/hub-individual', async (req, res) => {
     res.json(hubInfo);
 });
 
+app.post('/retrieve-members', async (req, res) => {
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    console.log("here");
+    console.log(fields);
+    const members = await mongoHelpers.retrieveMembers(fields);
+    res.json(members);
+});
+
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned
 app.post('/authenticate', async (req, res) => {
     // Converting req into readable format

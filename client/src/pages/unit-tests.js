@@ -50,6 +50,13 @@ const UnitTests = () => {
             }
         };
         try {
+            // check for file (in case of accidental upload/error) and delete it to avoid errors
+            let names = await axios.get(`${baseUrl}/get-filenames?hub=unit-tests&bucket=unit-tests`);
+            for (let name in names) {
+                if (name === "unit-test-file.jpg") {
+                    axios.get(`${baseUrl}/delete-file?name=unit-test-file.jpg&hub=unit-tests&bucket=unit-tests`);
+                }
+            }
             axios.post(url, data, headers).then((response) => {
                 if (response == null || response.data == null) {
                     throw Error("Data not received properly");

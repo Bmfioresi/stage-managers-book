@@ -157,31 +157,31 @@ const UnitTests = () => {
             <button type="button" onClick={() => testAll()}>Test All</button>
             <table>
                 <tr>
-                    <td>******************************** Test 1: Server Connect</td>
+                    <td>Test 1: Server Connect</td>
                     <td><button type="button" onClick={() => serverConnect()}>Test</button></td>
                     <td><ClipLoader loading={connectLoading}></ClipLoader></td>
                     <td>{!connectLoading && connectStatus}</td>
                 </tr>
                 <tr>
-                    <td>******************************** Test 2: File Upload</td>
+                    <td>Test 2: File Upload</td>
                     <td><button type="button" onClick={() => fileUploadDelete()}>Test</button></td>
                     <td><ClipLoader loading={uploadLoading}></ClipLoader></td>
                     <td>{!uploadLoading && uploadStatus}</td>
                 </tr>
                 <tr>
-                    <td>******************************** Test 3: File Delete</td>
+                    <td>Test 3: File Delete</td>
                     <td><button type="button" onClick={() => fileUploadDelete()}>Test</button></td>
                     <td><ClipLoader loading={deleteLoading}></ClipLoader></td>
                     <td>{!deleteLoading && deleteStatus}</td>
                 </tr>
                 <tr>
-                    <td>******************************** Test 4: File Download</td>
+                    <td>Test 4: File Download</td>
                     <td><button type="button" onClick={() => fileDownload()}>Test</button></td>
                     <td><ClipLoader loading={downloadLoading}></ClipLoader></td>
                     <td>{!downloadLoading && downloadStatus}</td>
                 </tr>
                 <tr>
-                    <td>******************************** Test 5: AuthenticateUser</td>
+                    <td>Test 5: AuthenticateUser</td>
                     <td><button type="button" onClick={() => authenticateUser()}>Test</button></td>
                     <td><ClipLoader loading={authenticateLoading}></ClipLoader></td>
                     <td>{!authenticateLoading && authenticateStatus}</td>

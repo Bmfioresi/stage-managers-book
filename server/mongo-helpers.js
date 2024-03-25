@@ -83,7 +83,7 @@ module.exports = {
             const query = { uid: userId};
             console.log("Getting user profile with this query:");
             console.log(query);
-            const userProfile = await profiles.findOne(query);
+            var userProfile = await profiles.findOne(query);
         
             // console.log(userProfile.uid);
             console.log("GOT USER PROFILE!!");
@@ -186,7 +186,7 @@ module.exports = {
         } 
     },
 
-    updateProfile: async function (f) {
+    updateProfile: async function (f, userId) {
 
         // Connecting to MongoDB
         const { MongoClient } = require("mongodb");
@@ -201,7 +201,7 @@ module.exports = {
 
             // Updating record
             const result = await profiles.updateOne(
-                { uid: f.uid },
+                { uid: userId },
                 {
                     $set: {
                         name: f.name,

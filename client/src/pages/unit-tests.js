@@ -110,8 +110,17 @@ const UnitTests = () => {
 
         // Converting form to json format
         try {
+            var thisSessionID = "DUMMY";
             await axios.post(url, JSON.stringify(formData)).then((response) => {
-                if (response.data.uid == "101") {
+                thisSessionID = response.data;
+            });
+            await axios.post(`${baseUrl}/loadProfile`, JSON.stringify({ "sessionID": thisSessionID })).then((response) => {
+
+                console.log("BACK TO PROFILE PAGE");
+                console.log(response);
+                console.log(response.data);
+
+                if (response.data.uid == "101" && response.data.name == "DUMMY USER" && response.data.phone_number == "DUMMY PHONE") {
                     setAuthenticateStatus(<p>&#10003;</p>);
                     setAuthenticateLoading(false);
                 } else {
@@ -119,7 +128,7 @@ const UnitTests = () => {
                     setAuthenticateLoading(false);
                     throw Error("Did not find proper user");
                 }
-            })
+            });
         } catch (err) {
             setAuthenticateStatus(<p>&#10005;</p>);
             console.log(err);

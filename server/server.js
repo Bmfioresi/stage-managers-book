@@ -33,18 +33,11 @@ const corsOptions = {
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
 };
 
-
 // router.post('/google', async (req, res) => {
 //     console.log("Google Auth");
 //     console.log(req.body);
 //     res.json({message: 'Google Auth'}); 
 // })
-
-router.post('/google', async (req, res) => {
-    console.log("Google Auth");
-    console.log(req.body);
-    res.json({message: 'Google Auth'}); 
-})
 
 
 app.get('/', (req, res) => {
@@ -52,7 +45,7 @@ app.get('/', (req, res) => {
     res.send({ "msg": "This has CORS enabled"});
 })
 
-const response = await fetch('http://localhost:8000', {mode: 'cors'});
+// const response = await fetch('http://localhost:8000', {mode: 'cors'});
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -66,6 +59,12 @@ app.use((req, res, next) => {
     res.header('Cross-Origin-Embedder-Policy', 'require-corp');
     next();
 });  
+
+// For getting userID from a sessionID
+async function getUID(sessionID) {
+    const userIDResponse = await mongoHelpers.getUserID(sessionID);
+    return userIDResponse.userId;
+};
 
 app.get('/test', (req, res) => {
     res.json({message: "Test successful"});
@@ -239,10 +238,11 @@ app.post('/createProfile', async (req, res) => {
 app.post('/updateProfile', async (req, res) => {
     // Converting req into readable format
     const fields = JSON.parse(Object.keys(req.fields)[0]);
+    const userID = await getUID(fields.sessionID);
 
     //TODO: Sanitize input
     //TODO: Handle Errors
-    const userId = await mongoHelpers.updateProfile(fields); 
+    const userId = await mongoHelpers.updateProfile(fields, userID); 
     console.log("Got back from updateProfile");
     console.log(userId);
     if (userId==null) {
@@ -253,16 +253,10 @@ app.post('/updateProfile', async (req, res) => {
 
 app.post('/loadProfile', async (req, res) => {
     console.log("Just entered loadProfile");
-    // console.log(req);
-    const fields = JSON.parse(Object.keys(req.fields)[0]);
-    console.log("SessionID");
-    console.log(fields);
-    console.log(fields.sessionID);
-
-    //TODO: Sanitize input
+    // TODO: Sanitize input
     // TODO: Handle errors
-    const userIDResponse = await mongoHelpers.getUserID(fields.sessionID);
-    const userID = userIDResponse.userId;
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    const userID = await getUID(fields.sessionID);
     console.log("JUST GOT USERID FROM SESSIONS DB");
     console.log(userID);
     if (userID == "-1") {
@@ -270,10 +264,9 @@ app.post('/loadProfile', async (req, res) => {
     }
     const profileData = await mongoHelpers.loadProfile(userID); 
     console.log(profileData);
-    console.log("ABOUT TO RETURN");
     res.json(profileData);
 });
-
+ 
 app.listen(8000, () => {
     console.log('Server is running on port 8000.');
 });

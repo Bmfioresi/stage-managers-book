@@ -31,7 +31,7 @@ const ProfileEdit = () => {
         // Combining formData with userID
         const allData = {
             name: formData.name, bio: formData.bio, phoneNumber: formData.phoneNumber, pronouns: formData.pronouns,
-            email: formData.email, roles: formData.roles, uid: localStorage.getItem('uid')
+            email: formData.email, roles: formData.roles, sessionID: localStorage.getItem('sessionID')
         };
 
         console.log("Trying to change profile");
@@ -54,9 +54,9 @@ const ProfileEdit = () => {
 
     useEffect(() => {
         // Loading current profile into template
-        var thisUID = localStorage.getItem('uid');
+        var thisSessionID = localStorage.getItem('sessionID');
         console.log("ABOUT TO SEND POST REQUEST HERE");
-        axios.post('http://localhost:8000/loadProfile', JSON.stringify({ uid: thisUID })).then((response) => {
+        axios.post('http://localhost:8000/loadProfile', JSON.stringify({ sessionID: thisSessionID })).then((response) => {
 
             console.log("BACK TO PROFILE EDIT PAGE")
             console.log(response.data);

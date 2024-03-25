@@ -175,7 +175,6 @@ app.get('/get-filenames', async (req, res) => {
 // returns a list of hub info to load into buttons in hubs.js
 app.post('/hubs', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-    console.log(fields.uid);
     const hids = await mongoHelpers.getHids(fields.uid)
     const hubInfo = await mongoHelpers.getHubInfo(hids);
     res.json(hubInfo);
@@ -184,15 +183,12 @@ app.post('/hubs', async (req, res) => {
 // returns a single collection of hub info to load into a page hub-individual.js
 app.post('/hub-individual', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-    console.log(fields.hid);
     const hubInfo = await mongoHelpers.getIndividualHubInfo(fields.hid);
     res.json(hubInfo);
 });
 
 app.post('/retrieve-members', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-    console.log("here");
-    console.log(fields);
     const members = await mongoHelpers.retrieveMembers(fields);
     res.json(members);
 });

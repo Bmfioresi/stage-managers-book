@@ -11,13 +11,10 @@ const NavBar = () => {
     const [hubs, setHubs] = useState([]);
 
     async function getHubs() {
-        console.log(formData);
         const url = 'http://localhost:8000/hubs';
         axios.post(url, JSON.stringify(formData)).then((response) => {
           const hubTemp = [];
-          console.log(response.data);
           for(let i = 0; i < response.data.length; i++) {
-            console.log(response.data[i].name);
             hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner, hid: response.data[i].hid});
           }
           setHubs(hubTemp);

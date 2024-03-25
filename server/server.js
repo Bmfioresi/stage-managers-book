@@ -49,8 +49,8 @@ app.get('/test', (req, res) => {
 // use the following code block to format attached data
     // const data = new FormData();
     // data.append('file', fileData);
-    // data.append('bucket', "bucketName");
     // data.append('hub', "hubName");
+    // data.append('bucket', "bucketName");
     // const headers = {
     //     headers: {
     //         'Content-Type': `multipart/form-data; boundary=${data._boundary}`
@@ -60,9 +60,9 @@ app.post('/upload-file', async (req, res) => {
     if (req.fields.hub == "Unit Test") {
         const stream = fs.createReadStream("unit-test-files/unit-test-file.jpg");
         const name = "unit-test-file.jpg";
-        const bucket = "unit-tests";
         const hub = "unit-tests";
-        const ret = await gridfsHelpers.uploadFile(name, stream, hub + '-' + bucket);
+        const bucket = "unit-tests";
+        const ret = await gridfsHelpers.uploadFile(name, stream, hub, bucket);
         if (ret == null) res.json({status: 500});
         else res.json(ret);
     } else {

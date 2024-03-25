@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import axios from 'axios';
+import './pages.css';
 
 const UploadImage = () => {
     const [file, setFile] = useState();
@@ -24,11 +25,13 @@ const UploadImage = () => {
     };
 
     return (
+        <div className="right-side">
         <form onSubmit={handleSubmit}>
             <h1>File upload test</h1>
             <input type="file" onChange={handleChange}/>
             <button type="submit">Upload</button>
         </form>
+        </div>
     );
 };
 

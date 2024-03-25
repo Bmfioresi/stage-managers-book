@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom/client";
 import axios from 'axios';
 import './profile-page.css';
+import './pages.css';
 
 const ProfilePage = () => {
 
@@ -47,6 +48,7 @@ const ProfilePage = () => {
     }, []);
 
     return (
+        <div className='right-side'>
         <div className="container">
             <div className="content">
                 <h1 className="profile-h1">User Profile</h1>
@@ -84,6 +86,7 @@ const ProfilePage = () => {
 
                 </div>
             </div>
+        </div>
         </div>
     );
 };

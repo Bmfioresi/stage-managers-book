@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios, { formToJSON } from 'axios';
 import { useNavigate, Navigate } from "react-router-dom";
 import './profile-page.css';
+import './pages.css';
 
 const ProfileEdit = () => {
     const [formData, setFormData] = useState({
@@ -83,7 +84,7 @@ const ProfileEdit = () => {
     }
 
     return (
-
+        <div className='right-side'>
         <div className="container">
             <div className="content">
                 {/* Main content */}
@@ -113,7 +114,7 @@ const ProfileEdit = () => {
                 <button type="submit" onClick={handleSubmit}>Save Changes</button>
             </div>
         </div>
-
+        </div>
     );
 };
 

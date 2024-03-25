@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import axios from 'axios';
+import './pages.css';
 
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -151,6 +152,7 @@ const UnitTests = () => {
     }
 
     return (
+        <div className="right-side">
         <div>
             <button type="button" onClick={() => testAll()}>Test All</button>
             <table>
@@ -185,6 +187,7 @@ const UnitTests = () => {
                     <td>{!authenticateLoading && authenticateStatus}</td>
                 </tr>
             </table>
+        </div>
         </div>
     );
 }

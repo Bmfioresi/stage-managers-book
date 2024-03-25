@@ -44,7 +44,7 @@ const ProfileForm = () => {
     }
 
     return (
-
+        <div className='right-side'>
         <div className="container">
             <div className="content">
                 {/* Main content */}
@@ -74,7 +74,7 @@ const ProfileForm = () => {
                 <button type="submit" onClick={handleSubmit} className="profile-button">Save Changes</button>
             </div>
         </div>
-
+        </div>
     );
 };
 

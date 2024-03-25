@@ -1,8 +1,10 @@
 import React from 'react';
+import './pages.css';
 
 const PDFViewer = () => {
     const pdfURL = 'https://uca.edu/cwc/files/2017/11/Film-Script.pdf';
     return (
+        <div className='right-side'>
         <div style={styles.container}>
             <iframe
                 title="pdf-viewer"
@@ -11,6 +13,7 @@ const PDFViewer = () => {
                 height="600px"
                 style={styles.iframe}
             />
+        </div>
         </div>
     );
 };

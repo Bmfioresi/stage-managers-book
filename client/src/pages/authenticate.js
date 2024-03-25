@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
+import './pages.css';
 
 function Authenticate() {
 
@@ -53,6 +54,7 @@ function Authenticate() {
     }
 
     return (
+        <div className="right-side">
         <div myclass="myDiv">
             <h2>Login</h2>
             <form id="makeAccount" onSubmit={dummyFunc}>  
@@ -68,6 +70,7 @@ function Authenticate() {
                 <button className="myButton">Submit</button>
             </form><br/><br/>
             <h3>{userId}</h3>
+        </div>
         </div>
   );
 }

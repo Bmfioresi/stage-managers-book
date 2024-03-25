@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 import axios from 'axios';
+import './pages.css';
 
 function Hub() {
 
@@ -44,6 +45,7 @@ function Hub() {
   }, []);
 
   return (
+    <div className="right-side">
     <div key={hubs.name}>
       <h1>Hubs</h1>
       <form>
@@ -56,6 +58,7 @@ function Hub() {
           <button key={hub.hid} onClick={() => routeChange(hub.hid)}>{hub.name}<br></br>{hub.owner}<br></br>{hub.description}<br></br></button>
         ))}
       </li>
+    </div>
     </div>
   );
 }

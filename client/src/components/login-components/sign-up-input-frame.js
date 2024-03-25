@@ -5,6 +5,7 @@ import googleIcon from "./google.svg";
 import LineFrame from "./sign-up-form-frame";
 import "./sign-up-input-frame.css";
 import "../../global.css";
+import "../../pages/pages.css"
 
 const InputFrame = () => {
   const onMainButtonClick = useCallback(() => {
@@ -26,6 +27,7 @@ const InputFrame = () => {
   // }
 
   return (
+    <div className="right-side">
     <div className="input-frame2">
       <div className="create-account-frame">
         <div className="create-account">
@@ -112,6 +114,7 @@ const InputFrame = () => {
           />
         </div>
       </div>
+    </div>
     </div>
   );
 };

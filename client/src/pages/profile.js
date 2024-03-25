@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from "react-dom/client";
 import axios from 'axios';
-// import './profile-style.css';
+import './pages.css';
 
 const Profile = () => {
 
@@ -14,6 +14,7 @@ const Profile = () => {
 
 
     return (
+        <div className='right-side'>
         <div>
             <h1>User Profile</h1>
             <body>
@@ -36,6 +37,7 @@ const Profile = () => {
                 <span>{roles}</span> <br />
 
             </body>
+        </div>
         </div>
     );
 };

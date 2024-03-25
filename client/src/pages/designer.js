@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from "react";
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import ClipLoader from "react-spinners/ClipLoader";
+import './pages.css';
 
 const baseUrl = 'http://localhost:8000';
 
@@ -88,6 +89,7 @@ const Designer = () => {
     }, [getFileLinks, params] );
 
     return (
+        <div className="right-side">
         <div>
             <h1>Designer Page</h1>
             <p>Should be able to take uploads of the following types:</p>
@@ -108,6 +110,7 @@ const Designer = () => {
             <table>
                 {!loading && fileLinks}
             </table>
+        </div>
         </div>
     )
 }

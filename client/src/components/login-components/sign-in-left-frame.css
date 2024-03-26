@@ -198,6 +198,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    background: linear-gradient(180deg, #720d17, #be2722);
     justify-content: center;
     box-sizing: border-box;
     gap: var(--gap-base);

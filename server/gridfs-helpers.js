@@ -47,11 +47,13 @@ module.exports = {
             if (found) name = await incrementName(bucket, name);
             const upstream = bucket.openUploadStream(name);
             const res = stream.pipe(upstream);
+            await mongoclient.close();
             return {
                 name: res.filename,
                 id: res.id
             };
         } catch (err) {
+            await mongoclient.close();
             console.log(err);
             return null;
         }
@@ -67,9 +69,15 @@ module.exports = {
             const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             let found = await searchName(bucket, name);
-            if (found) return bucket.openDownloadStreamByName(name);
+            if (found) {
+                let ret = bucket.openDownloadStreamByName(name);
+                await mongoclient.close();
+                return ret;
+            }
+            await mongoclient.close();
             return {status: 404};
         } catch (err) {
+            await mongoclient.close();
             console.log(err);
             return null;
         }
@@ -99,10 +107,13 @@ module.exports = {
                 if (numFiles == 1) { // check if last file in bucket
                     bucket.drop(); // if so, delete bucket
                 }
+                await mongoclient.close();
                 return {status: 200};
             }
+            await mongoclient.close();
             return {status: 404};
         } catch (err) {
+            await mongoclient.close();
             console.log(err);
             return null;
         }
@@ -118,6 +129,7 @@ module.exports = {
             const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             const res = bucket.find({});
+            await mongoclient.close();
             var filenames = [];
 
             for await (const file of res) {
@@ -127,6 +139,7 @@ module.exports = {
             // console.log(filenames);
             return filenames;
         } catch (err) {
+            await mongoclient.close();
             console.log(err);
             return null;
         }

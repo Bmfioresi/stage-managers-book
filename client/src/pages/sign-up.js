@@ -1,14 +1,16 @@
-import InputFrame from "../components/login-components/sign-up-input-frame";
+import SignUpFrame from "../components/login-components/sign-up-frame";
 import "./sign-up.css";
-import "../global.css";
+import "./pages.css";
 
-const SignUp = () => {
+const SignIn = ({ setAuthenticated }) => {
   return (
-    <div className="desktop-sign-up">
-      <InputFrame />
-      <img className="login-art1" alt="" src="/create-account-art.png" />
+    <div className="right-side">
+      <div className="desktop-sign-in">
+        <SignUpFrame setAuthenticated={setAuthenticated} />
+        <img className="art-icon" loading="eager" alt="" src="/create-account-art.png" />
+      </div>
     </div>
   );
 };
 
-export default SignUp;
+export default SignIn;

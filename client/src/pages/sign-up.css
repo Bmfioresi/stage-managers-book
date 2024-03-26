@@ -1,50 +1,45 @@
-.desktop-sign-up {
+.art-icon {
+  height: 1200px;
+  flex: 1;
+  border-radius: var(--br-5xl);
+  max-width: 100%;
+  overflow: hidden;
+  object-fit: cover;
+  min-width: 530px;
+}
+.desktop-sign-in {
   width: 100%;
   position: relative;
   background-color: var(--color-white);
   overflow: hidden;
   display: flex;
   flex-direction: row;
-  align-items: center; /* Align items similar to SignIn */
-  padding: var(--padding-sm) 0px 0px; /* Padding adjusted to match SignIn */
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--padding-sm) 0px 0px;
   box-sizing: border-box;
-  gap: 10px; /* Similar gap as in SignIn */
+  gap: 10px;
   letter-spacing: normal;
 }
 
-.input-frame {
-  margin: 0;
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: var(--gap-5xs);
-  z-index: 1;
-  margin-top: -72px;
-}
-
-.login-art1 {
-  height: 1000px; 
-  width: 60%; /* Elongate the image by setting a specific width */
-  flex: none; /* Remove flex to control the size explicitly */
-  border-radius: var(--br-5xl); 
-  max-width: 100%; /* Maximum width limit */
-  overflow: hidden;
-  object-fit: cover;
-  padding: 10px var(--padding-xl) 0px var(--padding-4xl);
-  min-width: 530px; /* Maintain minimum width */
-}
-
-/* Media queries for responsive design, similar to SignIn */
-@media screen and (max-width: 700px) {
-  .login-art1 {
-    display: none; /* Hide the image on smaller screens */
+@media screen and (max-width: 1100px) {
+  .art-icon {
+    height: 100%;
+    min-width: 100%;
   }
 }
 
+@media screen and (max-width: 1050px) {
+  .art-icon {
+    display: none; 
+  }
+}
 @media screen and (max-width: 450px) {
-  .desktop-sign-up {
-    gap: var(--gap-base); /* Adjust gap similar to SignIn */
+  .desktop-sign-in {
+    gap: var(--gap-base);
+  }
+
+  .art-icon {
+    display: none; 
   }
 }

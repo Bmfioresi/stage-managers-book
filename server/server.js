@@ -40,10 +40,10 @@ const corsOptions = {
 // })
 
 
-app.get('/', (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.send({ "msg": "This has CORS enabled"});
-})
+// app.get('/', (req, res) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.send({ "msg": "This has CORS enabled"});
+// })
 
 // const response = await fetch('http://localhost:8000', {mode: 'cors'});
 

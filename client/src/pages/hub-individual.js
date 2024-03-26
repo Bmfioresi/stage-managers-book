@@ -20,10 +20,8 @@ function HubIndividual() {
     const formData = {hid: params.hub};
 
     async function getHubInfo() {
-        console.log(formData);
         const url = 'http://localhost:8000/hub-individual';
         await axios.post(url, JSON.stringify(formData)).then((response => {
-          console.log(response.data);
           setName(response.data[0].name);
           setDescription(response.data[0].description);
           setOwner(response.data[0].owner);
@@ -38,13 +36,10 @@ function HubIndividual() {
 
     async function retrieveMembers() {
       await getHubInfo();
-      console.log(whitelist)
       const url = 'http://localhost:8000/retrieve-members';
       await axios.post(url, JSON.stringify(whitelist)).then((response => {
-        console.log(response.data);
-        setMembers(response.data)
+        setMembers(response.data);
       }));
-      console.log(members);
     }
 
     useEffect(() => {

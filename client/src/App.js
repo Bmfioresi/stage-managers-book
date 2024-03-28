@@ -65,7 +65,7 @@ function App() {
           <Route path="/display-images" element={<DisplayImages />} />
           <Route path="/hubs/:hub/resources" element={<Resources />} />
           <Route path="/hubs/:hub/designer" element={<Designer />} />
-          <Route path="hubs/:hub/scripts" element={<Scripts />} />
+          <Route path="/hubs/:hub/scripts" element={<Scripts />} />
           <Route path="/delete-file" element={<DeleteFile />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />

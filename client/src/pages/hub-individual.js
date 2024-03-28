@@ -5,11 +5,11 @@ import { useNavigate, Navigate } from "react-router-dom";
 import './hub-individual.css';
 
 function HubIndividual() {
+    let whitelist = [];
     let navigate = useNavigate();
     const params = useParams();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [whitelist, setWhitelist] = useState({});
     const [members, setMembers] = useState([]);
     const [owner, setOwner] = useState("");
 
@@ -25,7 +25,7 @@ function HubIndividual() {
           setName(response.data[0].name);
           setDescription(response.data[0].description);
           setOwner(response.data[0].owner);
-          setWhitelist(response.data[0].whitelist);
+          whitelist = response.data[0].whitelist;
         }));
     }
 
@@ -36,9 +36,11 @@ function HubIndividual() {
 
     async function retrieveMembers() {
       await getHubInfo();
+      console.log(whitelist);
       const url = 'http://localhost:8000/retrieve-members';
       let data = await axios.post(url, JSON.stringify(whitelist));
-      setMembers(data.data);
+      console.log(data.data);
+      await setMembers(data.data);
     }
 
     useEffect(() => {
@@ -64,6 +66,7 @@ function HubIndividual() {
             <h1 className="cat-header">Links</h1>
             <button className="hubs-button" onClick={() => routeChange("resources")}>Resources</button>
             <button className="hubs-button" onClick={() => routeChange("designer")}>Designer</button>
+            <button className="hubs-button" onClick={() => routeChange("scripts")}>Scripts</button>
             <button className="hubs-button" onClick={() => routeChange("stage-manager")}>Stage Manager Access</button>
           </div>
           <div className="schedule">

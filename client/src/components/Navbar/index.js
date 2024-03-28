@@ -56,14 +56,12 @@ const NavBar = () => {
                                 reloadDocument
                                 key={hub.hid}
                                 onMouseEnter={() => setHubsVisible(true)}
-                                onMouseLeave={() => setHubsVisible(false)}
                                 to={`/hubs/${hub.hid}`}>
                                 {hub.name}
                                 </NavLink>
                             ))}
                             <button
                                 onMouseEnter={() => setHubsVisible(true)}
-                                onMouseLeave={() => setHubsVisible(false)}
                                 onClick={dummyFunc}>
                                 Create New Hub +
                             </button>

@@ -53,6 +53,7 @@ const NavBar = () => {
                         <ul>
                             {hubs.map((hub) => (
                             <NavLink
+                                reloadDocument
                                 key={hub.hid}
                                 onMouseEnter={() => setHubsVisible(true)}
                                 onMouseLeave={() => setHubsVisible(false)}

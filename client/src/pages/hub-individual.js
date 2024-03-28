@@ -37,9 +37,8 @@ function HubIndividual() {
     async function retrieveMembers() {
       await getHubInfo();
       const url = 'http://localhost:8000/retrieve-members';
-      await axios.post(url, JSON.stringify(whitelist)).then((response => {
-        setMembers(response.data);
-      }));
+      let data = await axios.post(url, JSON.stringify(whitelist));
+      setMembers(data.data);
     }
 
     useEffect(() => {
@@ -54,7 +53,7 @@ function HubIndividual() {
           <div className="members">
             <h1 className="cat-header">Members</h1>
             {members.map((member) => (
-                <p className="regular-text">{member.name}</p>
+                <p key={member.name} className="regular-text">{member.name}</p>
             ))}
           </div>
           <div className="overview">

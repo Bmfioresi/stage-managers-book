@@ -2,58 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
-import { GoogleLogin } from 'react-google-login';
-import { jwtDecode } from "jwt-decode";
-import { gapi } from 'gapi-script'; // to help with COOP errors
-import googleIcon from "./google.svg";
 import "./sign-in-left-frame.css";
 import "../../global.css";
 import LineFrame from "./sign-up-form-frame";
 
 const SignUpFrame = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    gapi.load("client:auth2", () => {
-      gapi.auth2.init({ client_id: "933341791381-nadvkll3fcr60dv19p4paljj4d2hq603.apps.googleusercontent.com" });
-    });
-  }, []);
-
-  const responseGoogle = (response) => {
-    console.log(response);
-  
-    // Extract the access token
-    const accessToken = response.accessToken;
-  
-    // Use the access token to make requests to the Google API
-    axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-      headers: { Authorization: `Bearer ${accessToken}` }  // Corrected this line
-    })
-    .then((apiResponse) => {
-      console.log(apiResponse.data);
-  
-      // Send user info to backend (optional)
-      axios.post('http://localhost:8000/auth/google', {
-        token: accessToken,
-        userData: apiResponse.data
-      })
-      .then((backendResponse) => {
-        // Handle backend response
-        if (backendResponse.status === 200) {
-          setLoggedIn("TRUE");
-          // Additional handling, like redirecting the user or storing data in state
-        }
-      })
-      .catch((backendError) => {
-        console.error('Backend error:', backendError);
-        // Handle backend error
-      });
-    })
-    .catch((apiError) => {
-      console.error('Error fetching user data from Google:', apiError);
-      // Handle error from Google API
-    });
-  }  
+  const navigate = useNavigate(); 
 
   // Used for facilitating login
   const [formData, setFormData] = useState({
@@ -143,24 +97,6 @@ const SignUpFrame = () => {
           </button>
         </form>
       </div>
-      <div className="line-frame">
-        <div className="or-text" />
-        <div className="or">Or</div>
-        <div className="or-text" />
-      </div>
-      <GoogleLogin
-          clientId="933341791381-nadvkll3fcr60dv19p4paljj4d2hq603.apps.googleusercontent.com"
-          buttonText="Sign up with Google"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={'single_host_origin'}
-          render={renderProps => (
-              <button onClick={renderProps.onClick} disabled={renderProps.disabled} className="social-buttondesktop">
-                <img src={googleIcon} alt="Google sign-in" />
-                <div>Sign In with Google</div>
-              </button>
-          )}
-        />
       <img
         className="smb-logo-icon"
         loading="eager"

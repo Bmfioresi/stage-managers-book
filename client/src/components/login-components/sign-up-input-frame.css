@@ -92,21 +92,6 @@
     justify-content: flex-start;
     min-width: 148px;
   }
-  .or-text {
-    height: 1px;
-    flex: 1;
-    position: relative;
-    border-top: 1px solid var(--color-gainsboro);
-    box-sizing: border-box;
-  }
-  .or {
-    height: 16px;
-    width: 17px;
-    position: relative;
-    letter-spacing: 0.01em;
-    line-height: 100%;
-    display: inline-block;
-  }
   .line-frame1 {
     width: 422px;
     display: flex;
@@ -128,42 +113,6 @@
     justify-content: center;
     padding: 0px 0px var(--padding-md);
     row-gap: 20px;
-  }
-  .social-button-signup {
-    cursor: pointer;
-    border: none;
-    padding: var(--padding-2xs) var(--padding-xl) var(--padding-2xs)
-      var(--padding-2xl);
-    background-color: var(--color-whitesmoke);
-    height: 54px;
-    width: 600px;
-    border-radius: var(--br-xs);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    gap: var(--gap-base);
-    max-width: 100%;
-  }
-  .social-button-signup img {
-    height: 28px;
-    width: 28px;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .social-button-signup div {
-    height: 19px;
-    width: 190px;
-    position: relative;
-    font-size: var(--font-size-xl);
-    letter-spacing: 0.01em;
-    line-height: 100%;
-    font-family: var(--font-roboto);
-    color: var(--color-white);
-    text-align: center;
-    display: inline-block;
   }
   .input-frame3 {
     margin: 0;

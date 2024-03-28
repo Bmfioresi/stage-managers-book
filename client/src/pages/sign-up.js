@@ -7,7 +7,7 @@ const SignIn = ({ setAuthenticated }) => {
     <div className="right-side">
       <div className="desktop-sign-in">
         <SignUpFrame setAuthenticated={setAuthenticated} />
-        <img className="art-icon" loading="eager" alt="" src="/create-account-art.png" />
+        <img className="art-icon-sign-up" loading="eager" alt="" src="/create-account-art.png" />
       </div>
     </div>
   );

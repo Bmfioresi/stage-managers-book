@@ -106,7 +106,7 @@
     line-height: 100%;
     font-family: var(--font-roboto);
     color: var(--link);
-    text-align: center;
+    text-align: right;
     display: inline-block;
     cursor: pointer;
   }
@@ -159,21 +159,6 @@
     max-width: 100%;
     font-family: var(--font-playfair-display);
   }
-  .or-text {
-    height: 1px;
-    flex: 1;
-    position: relative;
-    border-top: 1px solid var(--color-gainsboro);
-    box-sizing: border-box;
-  }
-  .or {
-    height: 16px;
-    width: 17px;
-    position: relative;
-    letter-spacing: 0.01em;
-    line-height: 100%;
-    display: inline-block;
-  }
   .line-frame {
     width: 422px;
     display: flex;
@@ -186,42 +171,6 @@
     max-width: 100%;
     font-size: var(--font-size-base);
     color: var(--color-darkslategray-100);
-  }
-  .social-buttondesktop {
-    cursor: pointer;
-    border: none;
-    padding: var(--padding-2xs) var(--padding-xl) var(--padding-2xs)
-      var(--padding-2xl);
-    background-color: var(--color-whitesmoke);
-    width: 422px;
-    border-radius: var(--br-xs);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background: linear-gradient(180deg, #720d17, #be2722);
-    justify-content: center;
-    box-sizing: border-box;
-    gap: var(--gap-base);
-    max-width: 100%;
-  }
-  .social-buttondesktop img {
-    height: 28px;
-    width: 28px;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .social-buttondesktop div {
-    height: 20px;
-    width: 140px;
-    position: relative;
-    font-size: var(--font-size-base);
-    letter-spacing: 0.01em;
-    line-height: 100%;
-    font-family: var(--font-roboto);
-    color: var(--color-white);
-    text-align: left;
-    display: inline-block;
   }
   .sign-up {
     color: var(--link);

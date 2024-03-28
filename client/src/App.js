@@ -15,6 +15,7 @@ import DisplayImage from "./pages/display-image.js";
 import DisplayImages from "./pages/display-images.js";
 import Resources from "./pages/resources.js";
 import Designer from "./pages/designer.js";
+import Scripts from "./pages/hub-scripts.js";
 import DeleteFile from "./pages/delete-file.js";
 import SignIn from "./pages/sign-in.js";
 import ForgotPassword from "./pages/forgot-password.js";
@@ -64,6 +65,7 @@ function App() {
           <Route path="/display-images" element={<DisplayImages />} />
           <Route path="/hubs/:hub/resources" element={<Resources />} />
           <Route path="/hubs/:hub/designer" element={<Designer />} />
+          <Route path="hubs/:hub/scripts" element={<Scripts />} />
           <Route path="/delete-file" element={<DeleteFile />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />

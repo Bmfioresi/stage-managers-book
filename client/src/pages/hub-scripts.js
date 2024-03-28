@@ -1,14 +1,15 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect, useCallback} from 'react';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
-import ClipLoader from "react-spinners/ClipLoader";
 import './pages.css';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const baseUrl = 'http://localhost:8000';
-const bucket = "resources";
+const bucket = "scripts";
 
-const Resources = () => {
-    const [hub, setHub] = useState("");
+const Scripts = () => {
+    const [pdfUrl, setPdfUrl] = useState(null);
+    const [hub, setHub] = useState();
     const [file, setFile] = useState();
     const [fileLinks, setFileLinks] = useState();
     const [loading, setLoading] = useState(true);
@@ -23,6 +24,13 @@ const Resources = () => {
 
         if (file == null) {
             alert("Make sure to select a file");
+            return;
+        }
+        
+        var re = /(?:\.([^.]+))?$/;
+        var ext = re.exec(file.name)[1];
+        if (ext !== "pdf") {
+            alert(ext + " files are not supported");
             return;
         }
 
@@ -44,6 +52,11 @@ const Resources = () => {
     }
 
     const getFileLinks = useCallback(async () => {
+        /*
+        async function updateFile(name) { // function for updating files displayed
+            // TODO
+        }
+        */
         async function deleteFile(name) { // function for deleting files displayed
             try {
                 let res = await fetch(`http://localhost:8000/delete-file?name=${name}&hub=${hub}&bucket=${bucket}`);
@@ -66,10 +79,12 @@ const Resources = () => {
         for (let i = 0; i < filenames.length; i++) {
             let res = await fetch(`${baseUrl}/download-file?name=${filenames[i]}&hub=${hub}&bucket=${bucket}`);
             let blob = await res.blob();
-            let url = URL.createObjectURL(blob);
+            let pdfblob = new Blob([blob], {type: "application/pdf"});
+            let url = URL.createObjectURL(pdfblob);
             links.push(
             <tr key={i}>
-                <td><a href={url} download={filenames[i]}>{filenames[i]}</a></td>
+                <td><button type="button" onClick={() => setPdfUrl(url)}>{filenames[i]}</button></td>
+                {/* <td><button type="button" onClick={() => updateFile(filenames[i])}>Update</button></td> */}
                 <td><button type="button" onClick={() => deleteFile(filenames[i])}>Delete</button></td>
             </tr>
             );
@@ -87,28 +102,50 @@ const Resources = () => {
     }, [getFileLinks, params] );
 
     return (
-        <div className="right-side">
+        <div className='right-side'>
         <div>
-            <h1>Resources Page</h1>
-            <p>Should be able to take uploads of the following types:</p>
-            <ul>
-                <li>Photos (.jpg, .png)</li>
-                <li>Videos (.mov, .mp4)</li>
-                <li>PDF (.pdf)</li>
-            </ul>
+            <h1>Script Viewer</h1>
             <form onSubmit={handleSubmit}>
-                <h2>Upload file</h2>
+                <h2>Upload Script PDF</h2>
                 <input type="file" onChange={handleChange}/>
                 <button type="submit">Upload</button>
             </form>
-            <h2>Download file</h2>
+            <h2>Select Script to Display</h2>
             <ClipLoader loading={loading}></ClipLoader>
             <table>
                 {!loading && fileLinks}
             </table>
         </div>
+        <div style={styles.container}>
+            <iframe
+                title="pdf-viewer"
+                src={pdfUrl}
+                width="100%"
+                height="600px"
+                style={styles.iframe}
+            />
         </div>
-    )
-}
+        </div>
+    );
+};
 
-export default Resources;
+const styles = {
+    container: {
+        width: '80%',
+        margin: 'auto',
+        marginTop: '50px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '70vh', // Setting minimum height for the container
+    },
+    iframe: {
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+        maxWidth: '100%',
+        maxHeight: '600px',
+    },
+};
+
+export default Scripts;

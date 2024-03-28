@@ -53,8 +53,11 @@ const UnitTests = () => {
         try {
             // check for file (in case of accidental upload/error) and delete it to avoid errors
             let names = await axios.get(`${baseUrl}/get-filenames?hub=unit-tests&bucket=unit-tests`);
-            for (let name in names) {
-                if (name === "unit-test-file.jpg") {
+            console.log(names);
+            for (let i = 0; i < names.data.length; i++) {
+                console.log(names.data[i]);
+                if (names.data[i] === "unit-test-file.jpg") {
+                    console.log("deleting file");
                     axios.get(`${baseUrl}/delete-file?name=unit-test-file.jpg&hub=unit-tests&bucket=unit-tests`);
                 }
             }
@@ -163,25 +166,25 @@ const UnitTests = () => {
                     <td>{!connectLoading && connectStatus}</td>
                 </tr>
                 <tr>
-                    <td>Test 2: File Upload</td>
+                    <td>Test 2a: File Upload and Delete (Upload)</td>
                     <td><button type="button" onClick={() => fileUploadDelete()}>Test</button></td>
                     <td><ClipLoader loading={uploadLoading}></ClipLoader></td>
                     <td>{!uploadLoading && uploadStatus}</td>
                 </tr>
                 <tr>
-                    <td>Test 3: File Delete</td>
+                    <td>Test 2b: File Upload and Delete (Delete)</td>
                     <td><button type="button" onClick={() => fileUploadDelete()}>Test</button></td>
                     <td><ClipLoader loading={deleteLoading}></ClipLoader></td>
                     <td>{!deleteLoading && deleteStatus}</td>
                 </tr>
                 <tr>
-                    <td>Test 4: File Download</td>
+                    <td>Test 3: File Download</td>
                     <td><button type="button" onClick={() => fileDownload()}>Test</button></td>
                     <td><ClipLoader loading={downloadLoading}></ClipLoader></td>
                     <td>{!downloadLoading && downloadStatus}</td>
                 </tr>
                 <tr>
-                    <td>Test 5: AuthenticateUser</td>
+                    <td>Test 4: AuthenticateUser</td>
                     <td><button type="button" onClick={() => authenticateUser()}>Test</button></td>
                     <td><ClipLoader loading={authenticateLoading}></ClipLoader></td>
                     <td>{!authenticateLoading && authenticateStatus}</td>

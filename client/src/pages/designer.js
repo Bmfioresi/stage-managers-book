@@ -5,6 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import './pages.css';
 
 const baseUrl = 'http://localhost:8000';
+const bucket = "designer";
 
 const Designer = () => {
     const [hub, setHub] = useState("");
@@ -29,7 +30,7 @@ const Designer = () => {
         const data = new FormData();
         data.append('file', file);
         data.append('hub', hub);
-        data.append('bucket', 'designer');
+        data.append('bucket', bucket);
         const headers = {
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${data._boundary}`
@@ -44,7 +45,6 @@ const Designer = () => {
 
     const getFileLinks = useCallback(async () => {
         async function deleteFile(name) { // function for deleting files displayed
-            const bucket = "designer";
             try {
                 let res = await fetch(`http://localhost:8000/delete-file?name=${name}&hub=${hub}&bucket=${bucket}`);
                 res = await res.json();
@@ -58,7 +58,6 @@ const Designer = () => {
         };
 
         setLoading(true);
-        const bucket = "designer";
 
         let filenames = await fetch(`${baseUrl}/get-filenames?hub=${hub}&bucket=${bucket}`);
         filenames = await filenames.json();

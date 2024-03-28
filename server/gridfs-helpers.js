@@ -27,6 +27,11 @@ const incrementName = async function (bucket, name) {
     return newname;
 }
 
+const { MongoClient, GridFSBucket } = require("mongodb");
+const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
+const mongoclient = new MongoClient(uri);
+mongoclient.connect();
+
 // https://mongodb.github.io/node-mongodb-native/6.3/classes/GridFSBucket.html
 module.exports = {
     /*
@@ -35,61 +40,41 @@ module.exports = {
     bucketName - name of bucket to store file in
     */
     uploadFile: async function (name, stream, hubName, bucketName) {
-        const { MongoClient, GridFSBucket } = require("mongodb");
-        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
-        const mongoclient = new MongoClient(uri);
-
         try {
-            await mongoclient.connect();
             const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             let found = await searchName(bucket, name);
             if (found) name = await incrementName(bucket, name);
             const upstream = bucket.openUploadStream(name);
             const res = stream.pipe(upstream);
-            await mongoclient.close();
             return {
                 name: res.filename,
                 id: res.id
             };
         } catch (err) {
-            await mongoclient.close();
             console.log(err);
             return null;
         }
     },
 
     downloadFile: async function (name, hubName, bucketName) {
-        const { MongoClient, GridFSBucket } = require("mongodb");
-        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
-        const mongoclient = new MongoClient(uri);
-
         try {
-            await mongoclient.connect();
             const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             let found = await searchName(bucket, name);
             if (found) {
-                let ret = bucket.openDownloadStreamByName(name);
-                await mongoclient.close();
+                let ret = await bucket.openDownloadStreamByName(name);
                 return ret;
             }
-            await mongoclient.close();
             return {status: 404};
         } catch (err) {
-            await mongoclient.close();
             console.log(err);
             return null;
         }
     },
 
     deleteFile: async function (name, hubName, bucketName) {
-        const { MongoClient, GridFSBucket } = require("mongodb");
-        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
-        const mongoclient = new MongoClient(uri);
-
         try {
-            await mongoclient.connect();
             const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             let files = bucket.find({});
@@ -107,29 +92,20 @@ module.exports = {
                 if (numFiles == 1) { // check if last file in bucket
                     bucket.drop(); // if so, delete bucket
                 }
-                await mongoclient.close();
                 return {status: 200};
             }
-            await mongoclient.close();
             return {status: 404};
         } catch (err) {
-            await mongoclient.close();
             console.log(err);
             return null;
         }
     },
 
     getFilenames: async function (hubName, bucketName) {
-        const { MongoClient, GridFSBucket } = require("mongodb");
-        const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/";
-        const mongoclient = new MongoClient(uri);
-        
         try {
-            await mongoclient.connect();
             const db = mongoclient.db(hubName);
             const bucket = new GridFSBucket(db, {bucketName: bucketName});
             const res = bucket.find({});
-            await mongoclient.close();
             var filenames = [];
 
             for await (const file of res) {
@@ -139,7 +115,6 @@ module.exports = {
             // console.log(filenames);
             return filenames;
         } catch (err) {
-            await mongoclient.close();
             console.log(err);
             return null;
         }

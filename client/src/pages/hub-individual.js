@@ -13,10 +13,6 @@ function HubIndividual() {
     const [members, setMembers] = useState([]);
     const [owner, setOwner] = useState("");
 
-    // const [formData, setFormData] = useState({
-    //   hid: "01"
-    // });
-
     const formData = {hid: params.hub};
 
     async function getHubInfo() {
@@ -36,10 +32,8 @@ function HubIndividual() {
 
     async function retrieveMembers() {
       await getHubInfo();
-      console.log(whitelist);
       const url = 'http://localhost:8000/retrieve-members';
       let data = await axios.post(url, JSON.stringify(whitelist));
-      console.log(data.data);
       await setMembers(data.data);
     }
 

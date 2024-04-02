@@ -8,7 +8,7 @@ function Hub() {
   let navigate = useNavigate();
   const [hubs, setHubs] = useState([]);
 
-  const [formData, setFormData] = useState({uid: "03"});
+  const [formData, setFormData] = useState({sessionID: localStorage.getItem('sessionID')});
 
   const [redirect, setRedirect] = useState("FALSE");
   

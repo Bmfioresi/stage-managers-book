@@ -10,6 +10,9 @@ const gridfsHelpers = require('./gridfs-helpers');
 const session = require('express-session');
 const MongoStore = require('connect-mongo'); // May need to change to const MongoStore = require('connect-mongo')(session);
 
+const { body, validationResult } = require('express-validator'); // For validating user input
+const router = express.Router();
+
 const app = express();
 
 const thisMongoStore = new MongoStore({
@@ -194,41 +197,42 @@ app.post('/retrieve-members', async (req, res) => {
 });
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned
-app.post('/authenticate', async (req, res) => {
-    // Converting req into readable format
-    const fields = JSON.parse(Object.keys(req.fields)[0]);
-    console.log("User/Pass");
-    console.log(fields.email);
-    console.log(fields.password);
+app.post('/authenticate', 
+    body('email').isEmail().normalizeEmail(), // Validate and sanitize email
+    body('password').isLength({ min: 5 }).trim().escape(), // Validate and sanitize password
+    async (req, res) => {
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
 
-    //TODO: Sanitize input
-    var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
-    console.log("Back from autneticateUser");
-    console.log(userId);
-    if (userId==null) {
-        res.json("NOT AUTHENTICATED");
-    } else {
-        req.session.isLoggedIn = true;
-        req.session.userId = userId.uid;
-        console.log("USER's SESSION ID");
-        console.log(res.req.sessionID); // Newly Created SessionID
-        // res.json(userId);
-        res.json(res.req.sessionID);
+        const fields = req.body;
+
+        console.log("User/Pass");
+        console.log(fields.email);
+        console.log(fields.password);
+
+        try {
+            var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
+            console.log("Back from authenticateUser");
+            console.log(userId);
+
+            if (userId == null) {
+                res.status(401).json("NOT AUTHENTICATED");
+            } else {
+                req.session.isLoggedIn = true;
+                req.session.userId = userId.uid;
+                console.log("USER's SESSION ID");
+                console.log(req.sessionID); // Newly Created SessionID
+                res.json(req.sessionID);
+            }
+        } catch (error) {
+            console.error("Authentication Error:", error);
+            res.status(500).json("Server Error");
+        }
     }
-});
-
-app.post('/createProfile', async (req, res) => {
-    // Converting req into readable format
-    const fields = JSON.parse(Object.keys(req.fields)[0]);
-
-    //TODO: Sanitize input
-    //TODO: Handle Errors
-    const userId = await mongoHelpers.createProfile(fields); 
-    if (userId==null) {
-        userId = {'uid': '-1'};
-    } 
-    res.json(userId);
-});
+);
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returnde
 app.post('/updateProfile', async (req, res) => {

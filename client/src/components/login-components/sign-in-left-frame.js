@@ -20,7 +20,7 @@ const LeftSide8Column = () => {
   }, [navigate]);
 
   const onMainButtonClick = useCallback(() => {
-    // Please sync "Profile" to the project
+    navigate("/profile")
   }, []);
 
   const onDontYouHaveClick = useCallback(() => {
@@ -29,6 +29,13 @@ const LeftSide8Column = () => {
 
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
+
+    // Email validation and escaping special characters
+    if (name === 'email' && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
+      alert('Invalid login credentials. Please try again.');
+      return
+    }
+
     setFormData((prevState) => ({ ...prevState, [name]: value }));
     console.log(formData);
   };

@@ -3,6 +3,8 @@ import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import './pages.css';
 import ClipLoader from 'react-spinners/ClipLoader';
+import { NavLink } from "../components/Navbar/elements";
+
 
 const baseUrl = 'http://localhost:8000';
 const bucket = "scripts";
@@ -104,6 +106,7 @@ const Scripts = () => {
     return (
         <div className='right-side'>
         <div>
+            <NavLink to={`/hubs/${hub}`}>Back to hub</NavLink>
             <h1>Script Viewer</h1>
             <form onSubmit={handleSubmit}>
                 <h2>Upload Script PDF</h2>

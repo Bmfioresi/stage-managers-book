@@ -39,8 +39,8 @@ const NavBar = () => {
                         src="/smb-logo.png"
                     /></NavLink><br></br>
                     {/* <NavLink to="/test">Test</NavLink> */}
-                    <NavLink to="/upload-image">Upload Image</NavLink>
-                    <NavLink to="/display-image">Display Image</NavLink>
+                    {/* <NavLink to="/upload-image">Upload Image</NavLink>
+                    <NavLink to="/display-image">Display Image</NavLink> */}
                     {/* <NavLink to="/login">Login</NavLink> */}
                     <NavLink to="/createProfile">Create Profile</NavLink>
                     <NavLink to="/editProfile">Edit Profile</NavLink>
@@ -68,7 +68,7 @@ const NavBar = () => {
                         </ul>
                     )}
                     <NavLink to="/profile">Profile</NavLink>
-                    <NavLink to="/script">Display Script</NavLink>
+                    {/* <NavLink to="/script">Display Script</NavLink> */}
                     <NavLink to="/unit-tests">Unit Tests</NavLink>
                     <NavLink to="/createAccount">Create Account</NavLink>
                     {/* <NavLink to="/signin">Hannah's Links</NavLink> */}

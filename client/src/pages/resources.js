@@ -3,6 +3,8 @@ import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import ClipLoader from "react-spinners/ClipLoader";
 import './pages.css';
+import { NavLink } from "../components/Navbar/elements";
+
 
 const baseUrl = 'http://localhost:8000';
 const bucket = "resources";
@@ -89,6 +91,7 @@ const Resources = () => {
     return (
         <div className="right-side">
         <div>
+            <NavLink to={`/hubs/${hub}`}>Back to hub</NavLink>
             <h1>Resources Page</h1>
             <p>Should be able to take uploads of the following types:</p>
             <ul>

@@ -10,12 +10,15 @@ const gridfsHelpers = require('./gridfs-helpers');
 const session = require('express-session');
 const MongoStore = require('connect-mongo'); // May need to change to const MongoStore = require('connect-mongo')(session);
 
+const { body, validationResult } = require('express-validator'); // For validating user input
+const router = express.Router();
+
 const app = express();
 
 const thisMongoStore = new MongoStore({
     mongoUrl: "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/",
     collectionName: 'sessions',
-    ttl: 14 * 24 * 60 * 60,
+    ttl: 60 * 60, // In seconds; verification here expires after one hour
     autoRemove: 'native'
 });
 
@@ -190,7 +193,8 @@ app.get('/get-filenames', async (req, res) => {
 // returns a list of hub info to load into buttons in hubs.js
 app.post('/hubs', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-    const uid = await getUID(fields.sessionID)
+    //const uid = await getUID(fields.sessionID)
+    const uid = fields.sessionID;
     const hids = await mongoHelpers.getHids(uid)
     const hubInfo = await mongoHelpers.getHubInfo(hids);
     res.json(hubInfo);
@@ -210,53 +214,56 @@ app.post('/retrieve-members', async (req, res) => {
 });
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned
-app.post('/authenticate', async (req, res) => {
-    // Converting req into readable format
-    const fields = JSON.parse(Object.keys(req.fields)[0]);
-    console.log("User/Pass");
-    console.log(fields.email);
-    console.log(fields.password);
+app.post('/authenticate', // Validate and sanitize email
+        // body('email').isEmail().normalizeEmail() // Validate email
+        // body('password').isLength({ min: 5 }).trim().escape(), // Validate and sanitize password
+    async (req, res) => {
 
-    //TODO: Sanitize input
-    var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
-    console.log("Back from autneticateUser");
-    console.log(userId);
-    if (userId==null) {
-        res.json("NOT AUTHENTICATED");
-    } else {
-        req.session.isLoggedIn = true;
-        req.session.userId = userId.uid;
-        console.log("USER's SESSION ID");
-        console.log(res.req.sessionID); // Newly Created SessionID
-        // res.json(userId);
-        res.json(res.req.sessionID);
+        // Check for validation errors
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
+
+        const fields = JSON.parse(Object.keys(req.fields)[0]);
+
+        // FOR DEBUGGING
+        // console.log("GOT FIELDS");
+        // console.log(fields);
+
+        try {
+            var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
+
+            if (userId == null) {
+                res.status(401).json("NOT AUTHENTICATED");
+            } else {
+                req.session.isLoggedIn = true;
+                req.session.userId = userId.uid;
+
+                // FOR DEBUGGING
+                // console.log("USER's SESSION ID");
+                // console.log(req.sessionID); // Newly Created SessionID
+                res.json(req.sessionID);
+            }
+        } catch (error) {
+            console.error("Authentication Error:", error);
+            res.status(500).json("Server Error");
+        }
     }
-});
-
-app.post('/createProfile', async (req, res) => {
-    // Converting req into readable format
-    const fields = JSON.parse(Object.keys(req.fields)[0]);
-
-    //TODO: Sanitize input
-    //TODO: Handle Errors
-    const userId = await mongoHelpers.createProfile(fields); 
-    if (userId==null) {
-        userId = {'uid': '-1'};
-    } 
-    res.json(userId);
-});
+);
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returnde
 app.post('/updateProfile', async (req, res) => {
     // Converting req into readable format
-    const fields = JSON.parse(Object.keys(req.fields)[0]);
-    const userID = await getUID(fields.sessionID);
-
     //TODO: Sanitize input
     //TODO: Handle Errors
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    const userID = await getUID(fields.sessionID);
     const userId = await mongoHelpers.updateProfile(fields, userID); 
-    console.log("Got back from updateProfile");
-    console.log(userId);
+
+    // FOR DEBUGGING
+    // console.log("Got back from updateProfile");
+    // console.log(userId);
     if (userId==null) {
         userId = {'uid': '-1'};
     } 
@@ -264,18 +271,16 @@ app.post('/updateProfile', async (req, res) => {
 });
 
 app.post('/loadProfile', async (req, res) => {
-    console.log("Just entered loadProfile");
+    // Converting req into readable format
     // TODO: Sanitize input
     // TODO: Handle errors
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     const userID = await getUID(fields.sessionID);
-    console.log("JUST GOT USERID FROM SESSIONS DB");
-    console.log(userID);
+
     if (userID == "-1") {
         console.log("Could not verify user's identity.");
     }
     const profileData = await mongoHelpers.loadProfile(userID); 
-    console.log(profileData);
     res.json(profileData);
 });
  

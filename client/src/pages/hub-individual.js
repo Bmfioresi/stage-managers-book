@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import {useParams} from 'react-router-dom';
 import { useNavigate, Navigate } from "react-router-dom";
-import './hub-individual.css';
+import './hub-pages.css';
 
 function HubIndividual() {
     let whitelist = [];
@@ -43,7 +43,7 @@ function HubIndividual() {
 
     return (
         <div className="bucket">
-          <div className="title">
+          <div className="hub-title">
             <h1 className="cat-header">{name}</h1>
           </div>
           <div className="members">
@@ -61,7 +61,7 @@ function HubIndividual() {
             <button className="hubs-button" onClick={() => routeChange("resources")}>Resources</button>
             <button className="hubs-button" onClick={() => routeChange("designer")}>Designer</button>
             <button className="hubs-button" onClick={() => routeChange("scripts")}>Scripts</button>
-            <button className="hubs-button" onClick={() => routeChange("stage-manager")}>Stage Manager Access</button>
+            <button className="hubs-button" onClick={() => routeChange("hub-admin")}>Admin Access</button>
           </div>
           <div className="schedule">
             <h1 className="cat-header">Schedule</h1>

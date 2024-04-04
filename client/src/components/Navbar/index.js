@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const NavBar = () => {
     const [hubsVisible, setHubsVisible] = useState(false);
-    const [formData, setFormData] = useState({sessionID: localStorage.getItem('sessionID')});
+    const [formData, setFormData] = useState({sessionID: '01'});
     const [hubs, setHubs] = useState([]);
 
     async function getHubs() {
@@ -33,14 +33,14 @@ const NavBar = () => {
         <>
             <Nav>
                 <NavMenu onMouseLeave={() => setHubsVisible(false)}>
-                    <NavLink to="/"><img style={{width: "70%"}}
+                    <NavLink to="/"><img style={{width: "100%", height: "200%", objectFit: "contain"}}
                         loading="eager"
                         alt=""
                         src="/smb-logo.png"
-                    /></NavLink><br></br>
+                    /></NavLink><br></br><br></br><br></br>
                     {/* <NavLink to="/test">Test</NavLink> */}
-                    <NavLink to="/upload-image">Upload Image</NavLink>
-                    <NavLink to="/display-image">Display Image</NavLink>
+                    {/* <NavLink to="/upload-image">Upload Image</NavLink>
+                    <NavLink to="/display-image">Display Image</NavLink> */}
                     {/* <NavLink to="/login">Login</NavLink> */}
                     <NavLink to="/createProfile">Create Profile</NavLink>
                     <NavLink to="/editProfile">Edit Profile</NavLink>
@@ -68,7 +68,7 @@ const NavBar = () => {
                         </ul>
                     )}
                     <NavLink to="/profile">Profile</NavLink>
-                    <NavLink to="/script">Display Script</NavLink>
+                    {/* <NavLink to="/script">Display Script</NavLink> */}
                     <NavLink to="/unit-tests">Unit Tests</NavLink>
                     <NavLink to="/createAccount">Create Account</NavLink>
                     {/* <NavLink to="/signin">Hannah's Links</NavLink> */}

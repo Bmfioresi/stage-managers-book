@@ -20,7 +20,7 @@ const LeftSide8Column = () => {
   }, [navigate]);
 
   const onMainButtonClick = useCallback(() => {
-    // Please sync "Profile" to the project
+    navigate("/profile")
   }, []);
 
   const onDontYouHaveClick = useCallback(() => {
@@ -29,22 +29,33 @@ const LeftSide8Column = () => {
 
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
+
+    // // Email validation and escaping special characters
+    // if (name === 'email' && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
+    //   alert('Invalid login credentials. Please try again.');
+    //   return
+    // }
+
     setFormData((prevState) => ({ ...prevState, [name]: value }));
-    console.log(formData);
   };
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
 
     const url = 'http://localhost:8000/authenticate';
-    console.log(formData.email);
-    console.log(formData.password);
-    console.log(url);
 
-    axios.post(url, JSON.stringify(formData)).then((response) => {
-      // Writing user id to local storeage
-      //TODO Not secure; must be updated
-      localStorage.setItem('uid', response.data.uid);
+    // FOR DEBUGGING PURPOSES
+    // console.log(formData.email);
+    // console.log(formData.password);
+    // console.log(url);
+    // console.log("ABOUT TO SEND AXIOS");
+
+    await axios.post(url, JSON.stringify(formData)).then((response) => {
+
+      // FOR DEBUGGING PURPOSES
+      // console.log("GOT RESPONSE");
+      // console.log(response.data);
+      localStorage.setItem('sessionID', response.data); // WRITING SESSION ID TO LOCAL STORAGE
 
       // Ensuring we redirect to profile page
       setLoggedIn("TRUE");
@@ -54,7 +65,7 @@ const LeftSide8Column = () => {
   // Redirecting to profile if user just logged in
   if (loggedIn == "TRUE") {
     return <Navigate to='/profile' />;
-}
+  } 
 
   return (
     <div className="left-side-column">
@@ -110,7 +121,7 @@ const LeftSide8Column = () => {
           <div className="forgot-password" onClick={onForgotPasswordTextClick}>
             Forgot Password?
           </div>
-          <button className="main-button1" onClick={onMainButtonClick}>
+          <button className="main-button1" onClick={handleLoginSubmit}>
             <div className="sign-in1">Sign in</div>
           </button>
         </form>

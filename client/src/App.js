@@ -30,6 +30,7 @@ import Script from './pages/scripts.js';
 import ProfileEdit from './pages/profile-edit.js';
 import UnitTests from './pages/unit-tests.js';
 import InputFrame from "./components/login-components/sign-up-frame.js";
+import HubAdmin from './pages/hub-admin.js';
 
 function App() {
   return (
@@ -42,9 +43,11 @@ function App() {
           <Route path="/upload-image" element={<UploadImage />} />
           <Route path="/display-image" element={<DisplayImage />} />
           <Route path="/display-images" element={<DisplayImages />} />
+          <Route path="/hubs/:hub" element={<HubIndividual />} />
           <Route path="/hubs/:hub/resources" element={<Resources />} />
           <Route path="/hubs/:hub/designer" element={<Designer />} />
           <Route path="/hubs/:hub/scripts" element={<Scripts />} />
+          <Route path="/hubs/:hub/hub-admin" element={<HubAdmin />} />
           <Route path="/delete-file" element={<DeleteFile />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />
@@ -56,7 +59,6 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/script" element={<Script />} />
-          <Route path="/hubs/:hub" element={<HubIndividual />} />
           <Route path="/unit-tests" element={<UnitTests />} />
         </Routes>
       </Router>

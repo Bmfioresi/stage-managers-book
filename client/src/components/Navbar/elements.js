@@ -21,10 +21,10 @@ export const NavLink = styled(Link)`
     color: #eeeee4;
     display: flex;
     font-family: var(--font-zen-kaku-gothic-antique);
-    align-items: center;
+    align-items: left;
     text-decoration: none;
-    padding: 0 1rem;
-    height: 50px;
+    padding: 2%;
+    height: 60px;
     cursor: pointer;
     &.active {
         color: #A43f3f;
@@ -47,7 +47,7 @@ export const Bars = styled(FaBars)`
  
 export const NavMenu = styled.div`
     display: initial;
-    align-items: center;
+    align-items: left;
     margin-right: -24px;
     /* Second Nav */
     /* margin-right: 24px; */

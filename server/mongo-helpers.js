@@ -19,13 +19,16 @@ module.exports = {
             if (!response) {
                 return {'uid': "-1"};
             }
-        
-            console.log("ACCESSED SESSION IDs from DATABASE");
-            console.log(response.session);
+
             const userData = JSON.parse(response.session);
-            console.log("Getting userID");
-            console.log(userData);
-            console.log(userData.userId);
+        
+            // FOR DEBUGGING
+            // console.log("ACCESSED SESSION IDs from DATABASE");
+            // console.log(response.session);
+            // console.log("Getting userID");
+            // console.log(userData);
+            // console.log(userData.userId);
+
             return userData;
         
         } catch (err) {
@@ -40,17 +43,21 @@ module.exports = {
         try {
             const credentialsBase = mongoclient.db('credentials');
             const credentials = credentialsBase.collection('credentials');
-            console.log("LOGIN CREDS");
-            console.log(uname);
-            console.log(pword);
+
+            // FOR DEBUGGING
+            // console.log("LOGIN CREDS");
+            // console.log(uname);
+            // console.log(pword);
         
             // query
             const query = { username: uname, password: pword };
             const userProfile = await credentials.findOne(query);
         
+            // FOR DEBUGGING
             // console.log(userProfile.uid);
-            console.log(userProfile);
+            // console.log(userProfile);
             // console.log(userProfile.uid);
+
             return userProfile;
         
         } catch (err) {
@@ -67,15 +74,18 @@ module.exports = {
         
             // query
             const query = { uid: userId};
-            console.log("Getting user profile with this query:");
-            console.log(query);
             var userProfile = await profiles.findOne(query);
         
+            // FOR DEBUGGING PURPOSES
+            // console.log("Getting user profile with this query:");
+            // console.log(query);
             // console.log(userProfile.uid);
-            console.log("GOT USER PROFILE!!");
-            console.log(userProfile);
+            // console.log("GOT USER PROFILE!!");
+            // console.log(userProfile);
             // console.log(userProfile.uid);
-            console.log("CLOSED MONGOCLIENT");
+            // console.log("CLOSED MONGOCLIENT");
+
+            // RETURNING BLANK PROFILE
             if (userProfile == null) {
                 console.log("USER PROFILE IS NULL.");
                 userProfile = {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
@@ -87,34 +97,6 @@ module.exports = {
             console.log(err);
             console.log("PROFILE NOT FOUND");
             return {'uid': "-1"};
-        } 
-    },
-
-    getBio: async function (userId) {
-        try {
-            const profilesBase = mongoclient.db('profiles');
-            const profiles = profilesBase.collection('profiles');
-
-            console.log("USER ID");
-            console.log(userId.uid);
-            const query = { uid: userId.uid};
-            const userProfile = await profiles.findOne(query);
-
-            if (userProfile == null) {
-                userProfile = {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
-                'phone_number': "NOT FOUND", 'pronouns': "NOT FOUND", 'roles': "NOT FOUND"};
-            }
-        
-            // console.log(userProfile.uid);
-            console.log(userProfile);
-            // console.log(userProfile.uid);
-            return userProfile;
-        
-        } catch (err) {
-            console.log(err);
-            console.log("PROFILE NOT FOUND");
-            return {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
-            'phone_number': "NOT FOUND", 'pronouns': "NOT FOUND", 'roles': "NOT FOUND"};
         } 
     },
 
@@ -132,9 +114,11 @@ module.exports = {
                 countQuery,
                 { $inc: { count : 1 } }
             );
+            thisUID = countResult.count;
+
+            // FOR DEBUGGING PURPOSES
             console.log("COUNT RESULT");
             console.log(countResult);
-            thisUID = countResult.count;
 
             // Connecting to profiles database
             const profilesBase = mongoclient.db('profiles');
@@ -146,8 +130,9 @@ module.exports = {
 
             // TODO: Error handling if "result" is not created properly
         
+            // FOR DEBUGGING PURPOSES
             // console.log(userProfile.uid);
-            console.log(result);
+            // console.log(result);
             return {'uid': thisUID};
         
         } catch (err) {
@@ -180,9 +165,10 @@ module.exports = {
 
             // TODO: Error handling if "result" is not created properly
         
+            // FOR DEBUGGING PURPOSES
             // console.log(userProfile.uid);
-            console.log(result);
-            console.log("UPDATE PROFILE ABOUT TO RETURN");
+            // console.log(result);
+            // console.log("UPDATE PROFILE ABOUT TO RETURN");
             return {'uid': f.uid};
         
         } catch (err) {

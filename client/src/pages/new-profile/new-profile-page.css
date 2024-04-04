@@ -1,0 +1,65 @@
+body.body-class {
+    height: 100%;
+}
+
+.ui-container-style {
+    height: auto;
+    min-height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-style {
+    width: 100%;
+    padding: 2rem;
+    background-color: white;
+    border-radius: .5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+}
+
+.flex-style {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-pic-style {
+    width: 8rem;
+    height: 8rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.name-style {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+
+.role-title-style,
+.description-style {
+    color: #718096;
+}
+
+.margin-top-6 {
+    margin-top: 1.5rem;
+}
+
+.header-style {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.grid-style {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.image-style {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: .5rem;
+}

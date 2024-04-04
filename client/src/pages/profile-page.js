@@ -19,23 +19,23 @@ const ProfilePage = () => {
         sessionID: "-1"
     });
 
+    // TODO: FIX BUG WHERE NULL PROFILE LOADS IMMEDIATELY BEFORE TARGET PROFILE
     useEffect(() => {
-        // setUid(localStorage.uid);
-
         const url = 'http://localhost:8000/loadProfile';
-        // Converting form to json format
-
         // Preparing data to send to axios
-        console.log("profile-page sending axios post");
         setFormData({ ...formData, sessionID: localStorage.getItem("sessionID") });
-        console.log("SessionID");
-        console.log(localStorage.getItem("sessionID"));
+
+        // FOR DEBUGGING PURPOSES
+        // console.log("profile-page sending axios post");
+        // console.log("SessionID");
+        // console.log(localStorage.getItem("sessionID"));
 
         axios.post(url, JSON.stringify({ "sessionID": localStorage.getItem("sessionID") })).then((response) => {
 
-            console.log("BACK TO PROFILE PAGE");
-            console.log(response);
-            console.log(response.data);
+            // FOR DEBUGGING PURPOSES
+            // console.log("BACK TO PROFILE PAGE");
+            // console.log(response);
+            // console.log(response.data);
 
             // Updating data
             setName(response.data.name);
@@ -74,49 +74,6 @@ const ProfilePage = () => {
             </div>
         </div>
     );
-    //old profile below
-    // return (
-    //     <div className='right-side'>
-    //     <div className="container">
-    //         <div className="content">
-    //             <h1 className="profile-h1">User Profile</h1>
-    //             <div className="profile-info">
-    //                 <div className="profile-details">
-    //                     <label htmlFor="name">Name: {name}</label><br /><br />
-    //                     <label htmlFor="pronouns">Preferred Pronouns:{pronouns} </label><br /><br />
-    //                     <label htmlFor="roles">Roles: {roles}</label><br /><br />
-    //                 </div>
-
-    //                 <div className="about-me">
-    //                     <label htmlFor="bio">Bio: {bio}</label><br />
-    //                     <label htmlFor="email">Email: {email}</label><br />
-    //                     <label htmlFor="phoneNumber">Phone Number: {phoneNumber}</label><br />
-    //                 </div>
-
-
-    //                 {/* <label htmlFor="name">Name: </label>
-    //                 <span>{name}</span> <br /> */}
-
-    //                 {/* <label htmlFor="bio">Bio: </label>
-    //                 <span>{bio}</span> <br /> */}
-
-    //                 {/* <label htmlFor="email">Email Address: </label>
-    //                 <span>{email}</span> <br /> */}
-
-    //                 {/* <label htmlFor="phoneNumber">Phone Number: </label>
-    //                 <span>{phoneNumber}</span> <br /> */}
-
-    //                 {/* <label htmlFor="pronouns">Preferred Pronouns: </label>
-    //                 <span>{pronouns}</span> <br /> */}
-
-    //                 {/* <label htmlFor="roles">Roles: </label>
-    //                 <span>{roles}</span> <br /> */}
-
-    //             </div>
-    //         </div>
-    //     </div>
-    //     </div>
-    // );
 };
 
 export default ProfilePage;

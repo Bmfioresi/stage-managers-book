@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom/client";
 import axios from 'axios';
-//import './profile-page.css';
 //import './pages.css';
 import './new-profile/new-profile-page.css';
 

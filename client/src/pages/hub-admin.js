@@ -45,7 +45,7 @@ function HubAdmin() {
 
     return(
         <div className="bucket">
-            <div className="title">
+            <div className="hub-title">
                 <h1 className="cat-header">Admin Control For {name}</h1>
             </div>
             <div className="members">
@@ -56,9 +56,9 @@ function HubAdmin() {
             </div>
             <div className="overview">
                 <h1 className="cat-header">Announcements</h1>
-                {announcements.map((announcement) => (
+                {/* {announcements.map((announcement) => (
                     <p key={announcement} className="regular-text">{announcement}</p>
-                ))}
+                ))} */}
             </div>
             <div className="links">
                 <h1 className="cat-header">Make an Announcement</h1>
@@ -69,10 +69,10 @@ function HubAdmin() {
                             width: "90%",
                             alignSelf: "center"
                         }}
-                    /><br></br>
+                    />
                     <button
                         style={{
-                            width: "10%",
+                            height: "10%",
                             alignSelf: "center"
                         }}
                         type="submit">
@@ -86,14 +86,7 @@ function HubAdmin() {
             <div className="notifications">
                 <h1 className="cat-header">Join Requests</h1>
             </div>
-            <NavLink
-                style={{
-                    color: "black",
-                    height: "190%",
-                }}
-                to={`/hubs/${formData.hid}`}>
-                Back to hub
-            </NavLink>
+            
         </div>
     );
 }

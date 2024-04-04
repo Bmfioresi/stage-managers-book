@@ -43,7 +43,7 @@ function HubIndividual() {
 
     return (
         <div className="bucket">
-          <div className="title">
+          <div className="hub-title">
             <h1 className="cat-header">{name}</h1>
           </div>
           <div className="members">

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom/client";
 import axios from 'axios';
-import './profile-page.css';
-import './pages.css';
+//import './profile-page.css';
+//import './pages.css';
+import './new-profile/new-profile-page.css';
 
 const ProfilePage = () => {
 
@@ -48,47 +49,74 @@ const ProfilePage = () => {
     }, []);
 
     return (
-        <div className='right-side'>
-        <div className="container">
-            <div className="content">
-                <h1 className="profile-h1">User Profile</h1>
-                <div className="profile-info">
-                    <div className="profile-details">
-                        <label htmlFor="name">Name: {name}</label><br /><br />
-                        <label htmlFor="pronouns">Preferred Pronouns:{pronouns} </label><br /><br />
-                        <label htmlFor="roles">Roles: {roles}</label><br /><br />
+        <div className='body-screen'>
+            <div className="ui-container" id="ui-container">
+                <div className="container">
+                    <div className="profile-content"><img src="https://source.unsplash.com/600x600/?abstract" alt="Profile Picture" className="profile-picture" />
+                        <h1 className="title" htmlFor="name">{name}</h1>
+                        <p className="subtitle" htmlFor="roles">{roles}</p>
+                        <p className="subtitle" htmlFor="pronouns">{pronouns}</p>
                     </div>
-
-                    <div className="about-me">
-                        <label htmlFor="bio">Bio: {bio}</label><br />
-                        <label htmlFor="email">Email: {email}</label><br />
-                        <label htmlFor="phoneNumber">Phone Number: {phoneNumber}</label><br />
+                    <div className="bio">
+                        <h2 className="heading">Bio</h2>
+                        <p className="description" htmlFor="bio">{bio}</p>
                     </div>
-
-
-                    {/* <label htmlFor="name">Name: </label>
-                    <span>{name}</span> <br /> */}
-
-                    {/* <label htmlFor="bio">Bio: </label>
-                    <span>{bio}</span> <br /> */}
-
-                    {/* <label htmlFor="email">Email Address: </label>
-                    <span>{email}</span> <br /> */}
-
-                    {/* <label htmlFor="phoneNumber">Phone Number: </label>
-                    <span>{phoneNumber}</span> <br /> */}
-
-                    {/* <label htmlFor="pronouns">Preferred Pronouns: </label>
-                    <span>{pronouns}</span> <br /> */}
-
-                    {/* <label htmlFor="roles">Roles: </label>
-                    <span>{roles}</span> <br /> */}
-
+                    <div className="gallery">
+                        <h2 className="heading">Gallery</h2>
+                        <div className="images"><img src="https://source.unsplash.com/600x600/?abstract" alt="Gallery Image" className="gallery-image" /><img src="https://source.unsplash.com/600x600/?abstract" alt="Gallery Image" className="gallery-image" /><img src="https://source.unsplash.com/600x600/?abstract" alt="Gallery Image" className="gallery-image" /></div>
+                    </div>
+                    <div className="contact-info">
+                        <h2 className="heading">Contact Information</h2>
+                        <p className="description" htmlFor="email">{email}</p>
+                        <p className="description" htmlFor="phoneNumber">{phoneNumber}</p>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
     );
+    //old profile below
+    // return (
+    //     <div className='right-side'>
+    //     <div className="container">
+    //         <div className="content">
+    //             <h1 className="profile-h1">User Profile</h1>
+    //             <div className="profile-info">
+    //                 <div className="profile-details">
+    //                     <label htmlFor="name">Name: {name}</label><br /><br />
+    //                     <label htmlFor="pronouns">Preferred Pronouns:{pronouns} </label><br /><br />
+    //                     <label htmlFor="roles">Roles: {roles}</label><br /><br />
+    //                 </div>
+
+    //                 <div className="about-me">
+    //                     <label htmlFor="bio">Bio: {bio}</label><br />
+    //                     <label htmlFor="email">Email: {email}</label><br />
+    //                     <label htmlFor="phoneNumber">Phone Number: {phoneNumber}</label><br />
+    //                 </div>
+
+
+    //                 {/* <label htmlFor="name">Name: </label>
+    //                 <span>{name}</span> <br /> */}
+
+    //                 {/* <label htmlFor="bio">Bio: </label>
+    //                 <span>{bio}</span> <br /> */}
+
+    //                 {/* <label htmlFor="email">Email Address: </label>
+    //                 <span>{email}</span> <br /> */}
+
+    //                 {/* <label htmlFor="phoneNumber">Phone Number: </label>
+    //                 <span>{phoneNumber}</span> <br /> */}
+
+    //                 {/* <label htmlFor="pronouns">Preferred Pronouns: </label>
+    //                 <span>{pronouns}</span> <br /> */}
+
+    //                 {/* <label htmlFor="roles">Roles: </label>
+    //                 <span>{roles}</span> <br /> */}
+
+    //             </div>
+    //         </div>
+    //     </div>
+    //     </div>
+    // );
 };
 
 export default ProfilePage;

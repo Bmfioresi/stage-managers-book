@@ -70,6 +70,21 @@ app.get('/test', (req, res) => {
     res.json({message: "Test successful"});
 });
 
+// // creating a new user from the sign-up form
+// Checking with Liam before moving forward with this
+// app.post('/register', async (req, res) => {
+//     const { fullname, email, password } = req.body;
+
+//     // validate and check for existing user
+//     const user = await mongoHelpers.getUserByEmail(email);
+//     if (user) {
+//         return res.status(400).json({ message: 'User already exists' });
+//     }
+
+//     const newUser = await mongoHelpers.createUser(fullname, email, password);
+//     await 
+// });
+
 // uploads attached file to database in the attached bucket
 // use the following code block to format attached data
     // const data = new FormData();

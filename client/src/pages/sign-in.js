@@ -1,5 +1,5 @@
 import LeftSide8Column from "../components/login-components/sign-in-left-frame";
-import "./sign-in.css";
+import "./login-css/sign-in.css";
 import "./pages.css";
 
 const SignIn = ({ setAuthenticated }) => {

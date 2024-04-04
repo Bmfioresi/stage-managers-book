@@ -22,15 +22,15 @@
   letter-spacing: normal;
 }
 
-@media screen and (max-width: 1100px) {
-  .art-icon {
+@media screen and (min-width: 1260px) and (max-height: 900px) {
+  .art-icon-sign-up {
     height: 100%;
     min-width: 100%;
   }
 }
 
-@media screen and (max-width: 1050px) {
-  .art-icon {
+@media screen and (max-width: 1260px) {
+  .art-icon-sign-up {
     display: none; 
   }
 }
@@ -39,7 +39,7 @@
     gap: var(--gap-base);
   }
 
-  .art-icon {
+  .art-icon-sign-up {
     display: none; 
   }
 }

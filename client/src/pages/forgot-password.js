@@ -1,5 +1,5 @@
 import FrameForgotPassword from "../components/login-components/frame-forgot-password";
-import "./forgot-password.css";
+import "./login-css/forgot-password.css";
 import "../global.css";
 
 const DesktopForgotPassword = () => {

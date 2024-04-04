@@ -65,6 +65,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   text-align: left;
+  padding: 80px var(--padding-12xs) var(--padding-5xs) 0px;
   font-size: var(--font-size-base);
   color: var(--primary-text);
   font-family: var(--font-roboto);

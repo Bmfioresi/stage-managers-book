@@ -3,7 +3,7 @@ import axios from 'axios';
 import {useParams} from 'react-router-dom';
 import { useNavigate, Navigate } from "react-router-dom";
 import { NavLink } from "../components/Navbar/elements";
-import './hub-pages.css';
+import '../css/hub-pages.css';
 
 function HubAdmin() {
     let whitelist = [];

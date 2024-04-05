@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
-import './pages.css';
+import '../css/pages.css';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { NavLink } from "../components/Navbar/elements";
 

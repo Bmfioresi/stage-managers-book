@@ -1,5 +1,5 @@
 import React from 'react';
-import './pages.css';
+import '../css/pages.css';
 
 const PDFViewer = () => {
     const pdfURL = 'https://uca.edu/cwc/files/2017/11/Film-Script.pdf';

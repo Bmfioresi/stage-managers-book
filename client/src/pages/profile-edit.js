@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios, { formToJSON } from 'axios';
 import { useNavigate, Navigate } from "react-router-dom";
-import './profile-page.css';
-import './pages.css';
+import '../css/profile-page.css';
+import '../css/pages.css';
 
 const ProfileEdit = () => {
     const [formData, setFormData] = useState({

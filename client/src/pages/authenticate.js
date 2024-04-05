@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
-import './pages.css';
+import '../css/pages.css';
 
 function Authenticate() {
 

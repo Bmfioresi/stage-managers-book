@@ -1,6 +1,6 @@
 import SignUpFrame from "../components/login-components/sign-up-frame";
-import "./login-css/sign-up.css";
-import "./pages.css";
+import "../css/sign-up.css";
+import "../css/pages.css";
 
 const SignIn = ({ setAuthenticated }) => {
   return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios, { formToJSON } from 'axios';
 import { useNavigate, Navigate } from "react-router-dom";
-import './profile-page.css';
+import '../css/profile-page.css';
 
 const ProfileForm = () => {
     const [formData, setFormData] = useState({

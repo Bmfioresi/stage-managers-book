@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
-import "./sign-up-form-frame.css";
-import "../../global.css"
+import "../../css/sign-up-form-frame.css";
+import "../../css/global.css"
 
 const LineFrame = ({
   label1,

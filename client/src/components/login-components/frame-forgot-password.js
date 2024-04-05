@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import Input from "./input";
 import { useNavigate } from "react-router-dom";
-import "./frame-forgot-password.css";
-import "../../global.css";
+import "../../css/frame-forgot-password.css";
+import "../../css/global.css";
 
 const FrameForgotPassword = () => {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from "react";
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import ClipLoader from "react-spinners/ClipLoader";
-import './pages.css';
+import '../css/pages.css';
 import { NavLink } from "../components/Navbar/elements";
 
 const baseUrl = 'http://localhost:8000';

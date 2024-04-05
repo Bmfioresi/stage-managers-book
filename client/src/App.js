@@ -11,12 +11,12 @@ import {
 // import Home from "./pages";
 import Test from "./pages/test.js";
 import UploadImage from "./pages/upload-image.js";
-import DisplayImage from "./pages/display-image.js";
+// import DisplayImage from "./pages/display-image.js";
 import DisplayImages from "./pages/display-images.js";
 import Resources from "./pages/resources.js";
 import Designer from "./pages/designer.js";
 import Scripts from "./pages/hub-scripts.js";
-import DeleteFile from "./pages/delete-file.js";
+// import DeleteFile from "./pages/delete-file.js";
 import SignIn from "./pages/sign-in.js";
 import ForgotPassword from "./pages/forgot-password.js";
 import SignUp from "./pages/sign-up.js";
@@ -41,14 +41,14 @@ function App() {
           <Route exact path="/" element={<SignIn />} />
           <Route path="/test" element={<Test />} />
           <Route path="/upload-image" element={<UploadImage />} />
-          <Route path="/display-image" element={<DisplayImage />} />
+          {/* <Route path="/display-image" element={<DisplayImage />} /> */}
           <Route path="/display-images" element={<DisplayImages />} />
           <Route path="/hubs/:hub" element={<HubIndividual />} />
           <Route path="/hubs/:hub/resources" element={<Resources />} />
           <Route path="/hubs/:hub/designer" element={<Designer />} />
           <Route path="/hubs/:hub/scripts" element={<Scripts />} />
           <Route path="/hubs/:hub/hub-admin" element={<HubAdmin />} />
-          <Route path="/delete-file" element={<DeleteFile />} />
+          {/* <Route path="/delete-file" element={<DeleteFile />} /> */}
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />
           <Route path="/createAccount" element={<InputFrame />} />

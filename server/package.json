@@ -19,7 +19,7 @@
     "express-session": "1.18.0",
     "express-validator": "^7.0.1",
     "mongodb": "^6.3.0",
-    "pdfjs-dist": "^4.0.379"
+    "sanitize-filename": "^1.6.3"
   },
   "devDependencies": {
     "@types/node": "^20.12.2",

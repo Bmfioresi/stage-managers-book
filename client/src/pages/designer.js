@@ -38,9 +38,16 @@ const Designer = () => {
             }
         };
         axios.post(url, data, headers).then((response) => {
-            // console.log(response.data);
-            alert(`Successfully uploaded ${response.data.name}`);
-            getFileLinks();
+            try {
+                // console.log(response.data);
+                if (response.data.status == 500) throw("Something went wrong");
+                if (response.data.status == 413) throw("File size is too large");
+                alert(`Successfully uploaded ${response.data.name}`);
+                getFileLinks();
+            } catch (err) {
+                //console.log(err);
+                alert(err);
+            }
         });
     }
 
@@ -109,7 +116,9 @@ const Designer = () => {
             <h2>Download file</h2>
             <ClipLoader loading={loading}></ClipLoader>
             <table>
-                {!loading && fileLinks}
+                <tbody>
+                    {!loading && fileLinks}
+                </tbody>
             </table>
         </div>
         </div>

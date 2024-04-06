@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const formidable = require('express-formidable');
 const fs = require('fs');
+const sanitize = require('sanitize-filename');
 
 const mongoHelpers = require('./mongo-helpers');
 const gridfsHelpers = require('./gridfs-helpers');
@@ -110,13 +111,20 @@ app.post('/upload-file', async (req, res) => {
         else res.json(ret);
     } else {
         const file = req.files.file;
-        const name = file.name;
-        const hub = req.fields.hub;
-        const bucket = req.fields.bucket;
-        const stream = fs.createReadStream(file.path); // path here refers to the temporary location of the file within the server returned by mongoDB. It should not be accessible in any way by the client
-        const ret = await gridfsHelpers.uploadFile(name, stream, hub, bucket);
-        if (ret == null) res.json({status: 500});
-        else res.json(ret);
+        // check for file size
+        const MAX_FILE_SIZE = 20000000; // 20 MB in bytes (change later)
+        if (file.size > MAX_FILE_SIZE) {
+            res.json({status: 413}); // status code for "file is too large"
+        } else {
+            const name = sanitize(file.name); // sanitize file name to remove control/reserved characters and etc.
+            file.name = name;
+            const hub = req.fields.hub;
+            const bucket = req.fields.bucket;
+            const stream = fs.createReadStream(file.path); // path here refers to the temporary location of the file within the server returned by mongoDB. It should not be accessible in any way by the client
+            const ret = await gridfsHelpers.uploadFile(name, stream, hub, bucket);
+            if (ret == null) res.json({status: 500});
+            else res.json(ret);
+        }
     }
 });
 

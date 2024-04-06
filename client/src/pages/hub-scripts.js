@@ -29,10 +29,11 @@ const Scripts = () => {
             return;
         }
         
+        // check for proper file extension
         var re = /(?:\.([^.]+))?$/;
         var ext = re.exec(file.name)[1];
         if (ext !== "pdf") {
-            alert(ext + " files are not supported");
+            alert(`Invalid file format .${ext}`);
             return;
         }
 

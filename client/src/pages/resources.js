@@ -28,6 +28,15 @@ const Resources = () => {
             return;
         }
 
+        // check for proper file extension
+        var re = /(?:\.([^.]+))?$/;
+        var ext = re.exec(file.name)[1];
+        if (ext !== 'jpg' && ext !== 'png' && ext !== 'mov' && 
+            ext !== 'mp4' && ext !== 'pdf') {
+                alert(`Invalid file format .${ext}`);
+                return;
+        }
+
         const url = `${baseUrl}/upload-file`;
         const data = new FormData();
         data.append('file', file);

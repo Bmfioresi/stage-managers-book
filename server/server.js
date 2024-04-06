@@ -70,7 +70,7 @@ async function getUID(sessionID) {
     return userIDResponse.userId;
 };
 
-app.get('/test', (req, res) => {
+app.get('/test', (req, res) => { // don't delete, necessary for unit tests
     res.json({message: "Test successful"});
 });
 
@@ -136,9 +136,6 @@ app.get('/download-file', async (req, res) => {
     const name = req.query.name;
     const hub = req.query.hub;
     const bucket = req.query.bucket;
-    // TODO - check for proper file extension, input sanitization, etc
-    // var re = /(?:\.([^.]+))?$/;
-    // var ext = re.exec(name)[1];
     const ret = await gridfsHelpers.downloadFile(name, hub, bucket);
     if (ret == null) res.json({status: 500});
     else if (ret.status == 404) res.json(ret);
@@ -154,21 +151,6 @@ app.get('/delete-file', async (req, res) => {
     else res.json(ret);
 })
 
-// uploads attached image to database in the images bucket
-app.post('/upload-image', async (req, res) => {
-    const file = req.files.file;
-    const name = file.name;
-    const type = file.type;
-    if (type !== 'image/jpeg' && type !== 'image/png') {
-        res.json({message: `Invalid file format ${type}`});
-    } else {
-        const stream = fs.createReadStream(file.path); // path here refers to the temporary location of the file within the server returned by mongoDB. It should not be accessible in any way by the client
-        const ret = await gridfsHelpers.uploadFile(name, stream, 'images');
-        if (ret == null) res.json({status: 500});
-        else res.json(ret);
-    }
-});
-
 // returns file stream of image with given name
 // to access image data in the front end, 
 //  use .blob() and URL.createObjectURL(blob)
@@ -178,7 +160,10 @@ app.get('/display-image', async (req, res) => {
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(name)[1];
     if (ext !== 'jpg' && ext !== 'png') {
-        res.json({message: `Invalid file format .${ext}`});
+        res.json({
+            status: 422, // status code for unprocessable entity (wrong file format)
+            message: `Invalid file format .${ext}`
+        });
     } else {
         const ret = await gridfsHelpers.downloadFile(name, 'images');
         if (ret == {status: 404}) res.json(ret);

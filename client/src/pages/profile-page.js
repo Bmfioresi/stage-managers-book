@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom/client";
 import axios from 'axios';
-//import '../css/pages.css';
 import '../css/new-profile-page.css';
 
 const ProfilePage = () => {
@@ -58,12 +57,12 @@ const ProfilePage = () => {
                     </div>
                     <div className="bio">
                         <h2 className="header-style">Bio</h2>
-                        <p className="description" htmlFor="bio">{bio}</p>
+                        <p className="description-style" htmlFor="bio">{bio}</p>
                     </div>
                     <div className="contact-info">
                         <h2 className="header-style">Contact Information</h2>
-                        <p className="description" htmlFor="email">{email}</p>
-                        <p className="description" htmlFor="phoneNumber">{phoneNumber}</p>
+                        <p className="description-style" htmlFor="email">{email}</p>
+                        <p className="description-style" htmlFor="phoneNumber">{phoneNumber}</p>
                     </div>
                     <div className="gallery">
                         <h2 className="header-style">Gallery</h2>

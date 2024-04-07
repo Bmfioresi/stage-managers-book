@@ -2,7 +2,15 @@
     height: 100%;
 }
 
-.ui-container-style {
+#ui-container-style {
+    height: auto;
+    min-height: 100vh;
+    display: contents;
+    justify-content: center;
+    align-items: center;
+}
+
+#ui-container-style-edit {
     height: auto;
     min-height: 100vh;
     display: grid;
@@ -54,14 +62,25 @@
 
 .grid-style {
     display: grid;
-    /* grid-template-columns: repeat(3, 2fr); */
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: auto auto auto; */
     /* gap: 0.5rem; */
 }
 
 .gallery-image-style {
-    width: 50%;
-    height: 50%;
+    width: 75%;
+    height: 75%;
     object-fit: cover;
     border-radius: .5rem;
+}
+
+.profile-button {
+    background: linear-gradient(180deg, #720D17 0%, #BE2722 100%);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 30%;
 }

@@ -192,7 +192,8 @@ module.exports = {
                         whitelist: hubInfo.whitelist,
                         blacklist: hubInfo.blacklist,
                         description: hubInfo.description,
-                        announcements: hubInfo.announcements
+                        announcements: hubInfo.announcements,
+                        join_requests: hubInfo.join_requests
                     }
                 }
             );

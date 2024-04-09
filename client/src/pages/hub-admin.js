@@ -8,14 +8,18 @@ import '../css/hub-pages.css';
 const baseUrl = 'http://localhost:8000';
 
 function HubAdmin() {
+    let joinRequests = [];
     let whitelist = [];
+    let blacklist = [];
     let navigate = useNavigate();
     const params = useParams();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [members, setMembers] = useState([]);
+    const [bannedMembers, setBannedMembers] = useState([]);
     const [owner, setOwner] = useState("");
     const [announcements, setAnnouncements] = useState([]);
+    const [joinRequestMembers, setJoinRequestMembers] = useState([]);
 
     const formData = {hid: params.hub};
 
@@ -26,39 +30,72 @@ function HubAdmin() {
           setDescription(response.data[0].description);
           setOwner(response.data[0].owner);
           setAnnouncements(response.data[0].announcements);
-          console.log(response.data[0].announcements);
+          joinRequests = response.data[0].join_requests;
           whitelist = response.data[0].whitelist;
+          blacklist = response.data[0].blacklist;
         }));
     }
 
     async function retrieveMembers() {
-      await getHubInfo();
-      const url = `${baseUrl}/retrieve-members`;
-      console.log(whitelist);
-      let data = await axios.post(url, JSON.stringify(whitelist));
-      await setMembers(data.data);
+        await getHubInfo();
+        const url = `${baseUrl}/retrieve-members`;
+        let data = await axios.post(url, JSON.stringify(whitelist));
+        await setMembers(data.data);
+        data = await axios.post(url, JSON.stringify(blacklist));
+        await setBannedMembers(data.data);
+        data = await axios.post(url, JSON.stringify(joinRequests));
+        await setJoinRequestMembers(data.data);
+    }
+
+    async function removeJoinRequest(uid) {
+        const url = `${baseUrl}/remove-join-request?hid=${formData.hid}&uid=${uid}`;
+        await axios.get(url).then((response) => {
+            //console.log(response);
+        });
+        await retrieveMembers();
+    }
+
+    async function admitUser(uid, requested) {
+        const url = `${baseUrl}/add-member?hid=${formData.hid}&uid=${uid}`;
+        await axios.get(url).then((response) => {
+            // console.log(response);
+        });
+        if (requested) await removeJoinRequest(uid);
+        else await retrieveMembers();
     }
 
     async function kickUser(uid) {
-        const url = `${baseUrl}/update-whitelist?hid=${formData.hid}&uid=${uid}`;
+        const url = `${baseUrl}/kick-member?hid=${formData.hid}&uid=${uid}`;
         await axios.get(url).then((response) => {
-            console.log(response);
+            // console.log(response);
         });
         await retrieveMembers();
     }
 
-    async function banUser(uid) {
-        await kickUser(uid);
-        const url = `${baseUrl}/update-blacklist?hid=${formData.hid}&uid=${uid}`;
-        console.log(url);
+    async function banUser(uid, exists) {
+        if (exists) await kickUser(uid);
+        else await removeJoinRequest(uid);
+        const url = `${baseUrl}/ban-member?hid=${formData.hid}&uid=${uid}`;
         await axios.get(url).then((response) => {
-            console.log(response);
+            // console.log(response);
         });
         await retrieveMembers();
+    }
+
+    async function unbanUser(uid) {
+        const url = `${baseUrl}/unban-member?hid=${formData.hid}&uid=${uid}`;
+        await axios.get(url).then((response) => {
+            // console.log(response);
+        });
+        admitUser(uid, false);
     }
 
     useEffect(() => {
-        retrieveMembers().then();
+        try {
+            retrieveMembers();
+        } catch (err) {
+            console.log(err);
+        }
     }, []);
 
     async function addAnnouncement() {
@@ -77,9 +114,18 @@ function HubAdmin() {
                         <p key={member.name} className="regular-text">
                             {member.name} 
                             <button type="button" onClick={() => kickUser(member.uid)}>Kick</button>
-                            <button type="button" onClick={() => banUser(member.uid)}>Ban</button>
+                            <button type="button" onClick={() => banUser(member.uid, true)}>Ban</button>
                         </p>
                     </div>
+                ))}
+                <h1 className="cat-header">Banned Members</h1>
+                {bannedMembers.map((member) => (
+                    <div>
+                    <p key={member.name} className="regular-text">
+                        {member.name} 
+                        <button type="button" onClick={() => unbanUser(member.uid)}>Unban</button>
+                    </p>
+                </div>
                 ))}
             </div>
             <div className="overview">
@@ -113,6 +159,16 @@ function HubAdmin() {
             </div>
             <div className="notifications">
                 <h1 className="cat-header">Join Requests</h1>
+                {joinRequestMembers.map((member) => (
+                    <div>
+                        <p key={member.name} className="regular-text">
+                            {member.name}
+                            <button type="button" onClick={() => admitUser(member.uid, true)}>Admit</button>
+                            <button type="button" onClick={() => removeJoinRequest(member.uid)}>Deny</button>
+                            <button type="button" onClick={() => banUser(member.uid, false)}>Ban</button>
+                        </p>
+                    </div>
+                ))}
             </div>
             
         </div>

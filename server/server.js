@@ -216,7 +216,42 @@ app.post('/retrieve-members', async (req, res) => {
     res.json(members);
 });
 
-app.get('/update-whitelist', async (req, res) => {
+app.get('/add-join-request', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    if (hubInfo[0].join_requests.includes(uid)) {
+        res.json({status: 403});
+    } else {
+        hubInfo[0].join_requests.push(uid);
+        let ret = await mongoHelpers.updateHub(hubInfo[0]);
+        res.json(ret);
+    }
+});
+
+app.get('/remove-join-request', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    hubInfo[0].join_requests = hubInfo[0].join_requests.filter((jruid) => jruid !== uid);
+    let ret = await mongoHelpers.updateHub(hubInfo[0]);
+    res.json(ret);
+})
+
+app.get('/add-member', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    if (hubInfo[0].whitelist.includes(uid)) {
+        res.json({status: 403}); // status code for already exists
+    } else {
+        hubInfo[0].whitelist.push(uid);
+        let ret = await mongoHelpers.updateHub(hubInfo[0]);
+        res.json(ret);
+    }
+});
+
+app.get('/kick-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
@@ -225,14 +260,27 @@ app.get('/update-whitelist', async (req, res) => {
     res.json(ret);
 });
 
-app.get('/update-blacklist', async (req, res) => {
+app.get('/ban-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    hubInfo[0].blacklist.push(uid);
+    if (hubInfo[0].blacklist.includes(uid)) {
+        res.json({status: 403}); // status code for already exists
+    } else {
+        hubInfo[0].blacklist.push(uid);
+        let ret = await mongoHelpers.updateHub(hubInfo[0]);
+        res.json(ret);
+    }
+});
+
+app.get('/unban-member', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    hubInfo[0].blacklist = hubInfo[0].blacklist.filter((wluid) => wluid !== uid);
     let ret = await mongoHelpers.updateHub(hubInfo[0]);
     res.json(ret);
-});
+})
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned
 app.post('/authenticate', // Validate and sanitize email

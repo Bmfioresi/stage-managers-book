@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const NavBar = () => {
     const [hubsVisible, setHubsVisible] = useState(false);
-    const [formData, setFormData] = useState({sessionID: '01'});
+    const [formData, setFormData] = useState({sessionID: localStorage.sessionID});
     const [hubs, setHubs] = useState([]);
 
     async function getHubs() {

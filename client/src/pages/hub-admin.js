@@ -24,6 +24,7 @@ function HubAdmin() {
           setDescription(response.data[0].description);
           setOwner(response.data[0].owner);
           setAnnouncements(response.data[0].announcements);
+          console.log(response.data[0].announcements);
           whitelist = response.data[0].whitelist;
         }));
     }
@@ -56,9 +57,9 @@ function HubAdmin() {
             </div>
             <div className="overview">
                 <h1 className="cat-header">Announcements</h1>
-                {/* {announcements.map((announcement) => (
-                    <p key={announcement} className="regular-text">{announcement}</p>
-                ))} */}
+                {announcements.map((announcement) => (
+                    <li key={announcement} className="regular-text">{announcement}</li>
+                ))}
             </div>
             <div className="links">
                 <h1 className="cat-header">Make an Announcement</h1>

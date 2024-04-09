@@ -187,7 +187,7 @@ app.get('/get-filenames', async (req, res) => {
 app.post('/hubs', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     //const uid = await getUID(fields.sessionID)
-    const uid = fields.sessionID;
+    const uid = await getUID(fields.sessionID)
     const hids = await mongoHelpers.getHids(uid)
     const hubInfo = await mongoHelpers.getHubInfo(hids);
     res.json(hubInfo);
@@ -196,7 +196,8 @@ app.post('/hubs', async (req, res) => {
 // returns a single collection of hub info to load into a page hub-individual.js
 app.post('/hub-individual', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-    const hubInfo = await mongoHelpers.getIndividualHubInfo(fields.hid);
+    const hid = fields.hid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
     res.json(hubInfo);
 });
 

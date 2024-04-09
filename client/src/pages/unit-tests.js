@@ -53,11 +53,11 @@ const UnitTests = () => {
         try {
             // check for file (in case of accidental upload/error) and delete it to avoid errors
             let names = await axios.get(`${baseUrl}/get-filenames?hub=unit-tests&bucket=unit-tests`);
-            console.log(names);
+            //console.log(names);
             for (let i = 0; i < names.data.length; i++) {
-                console.log(names.data[i]);
+                //console.log(names.data[i]);
                 if (names.data[i] === "unit-test-file.jpg") {
-                    console.log("deleting file");
+                    //console.log("deleting file");
                     await axios.get(`${baseUrl}/delete-file?name=unit-test-file.jpg&hub=unit-tests&bucket=unit-tests`);
                 }
             }

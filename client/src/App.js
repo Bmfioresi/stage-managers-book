@@ -10,8 +10,8 @@ import {
 import Test from "./pages/test.js";
 import Hubs from './pages/hubs.js';
 import HubIndividual from './pages/hub-individual.js';
-import Resources from "./pages/resources.js";
-import Designer from "./pages/designer.js";
+import Resources from "./pages/hub-resources.js";
+import Designer from "./pages/hub-designer.js";
 import Scripts from "./pages/hub-scripts.js";
 import HubAdmin from './pages/hub-admin.js';
 import Authenticate from './pages/authenticate.js';

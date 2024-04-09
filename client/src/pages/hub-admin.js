@@ -5,6 +5,8 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { NavLink } from "../components/Navbar/elements";
 import '../css/hub-pages.css';
 
+const baseUrl = 'http://localhost:8000';
+
 function HubAdmin() {
     let whitelist = [];
     let navigate = useNavigate();
@@ -18,7 +20,7 @@ function HubAdmin() {
     const formData = {hid: params.hub};
 
     async function getHubInfo() {
-        const url = 'http://localhost:8000/hub-individual';
+        const url = `${baseUrl}/hub-individual`;
         await axios.post(url, JSON.stringify(formData)).then((response => {
           setName(response.data[0].name);
           setDescription(response.data[0].description);
@@ -31,9 +33,28 @@ function HubAdmin() {
 
     async function retrieveMembers() {
       await getHubInfo();
-      const url = 'http://localhost:8000/retrieve-members';
+      const url = `${baseUrl}/retrieve-members`;
+      console.log(whitelist);
       let data = await axios.post(url, JSON.stringify(whitelist));
       await setMembers(data.data);
+    }
+
+    async function kickUser(uid) {
+        const url = `${baseUrl}/update-whitelist?hid=${formData.hid}&uid=${uid}`;
+        await axios.get(url).then((response) => {
+            console.log(response);
+        });
+        await retrieveMembers();
+    }
+
+    async function banUser(uid) {
+        await kickUser(uid);
+        const url = `${baseUrl}/update-blacklist?hid=${formData.hid}&uid=${uid}`;
+        console.log(url);
+        await axios.get(url).then((response) => {
+            console.log(response);
+        });
+        await retrieveMembers();
     }
 
     useEffect(() => {
@@ -52,7 +73,13 @@ function HubAdmin() {
             <div className="members">
                 <h1 className="cat-header">Current Members</h1>
                 {members.map((member) => (
-                    <p key={member.name} className="regular-text">{member.name}</p>
+                    <div>
+                        <p key={member.name} className="regular-text">
+                            {member.name} 
+                            <button type="button" onClick={() => kickUser(member.uid)}>Kick</button>
+                            <button type="button" onClick={() => banUser(member.uid)}>Ban</button>
+                        </p>
+                    </div>
                 ))}
             </div>
             <div className="overview">

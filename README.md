@@ -27,8 +27,3 @@ Front-end react client.
 
 ### server
 Back-end node server.
-
-### figma-items
-Figma resources.
-### front-end
-Tests for the front-end.

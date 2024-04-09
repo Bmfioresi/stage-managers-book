@@ -207,6 +207,24 @@ app.post('/retrieve-members', async (req, res) => {
     res.json(members);
 });
 
+app.get('/update-whitelist', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    hubInfo[0].whitelist = hubInfo[0].whitelist.filter((wluid) => wluid !== uid);
+    let ret = await mongoHelpers.updateHub(hubInfo[0]);
+    res.json(ret);
+});
+
+app.get('/update-blacklist', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    hubInfo[0].blacklist.push(uid);
+    let ret = await mongoHelpers.updateHub(hubInfo[0]);
+    res.json(ret);
+});
+
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned
 app.post('/authenticate', // Validate and sanitize email
         // body('email').isEmail().normalizeEmail() // Validate email

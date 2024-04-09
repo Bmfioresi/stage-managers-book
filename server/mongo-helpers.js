@@ -178,6 +178,31 @@ module.exports = {
         } 
     },
 
+    updateHub: async function (hubInfo) {
+        try {
+            const hubsBase = mongoclient.db('hubs');
+            const hubs = hubsBase.collection('hub_info');
+
+            await hubs.updateOne(
+                {hid: hubInfo.hid},
+                {
+                    $set: {
+                        name: hubInfo.name,
+                        access_code: hubInfo.access_code,
+                        whitelist: hubInfo.whitelist,
+                        blacklist: hubInfo.blacklist,
+                        description: hubInfo.description,
+                        announcements: hubInfo.announcements
+                    }
+                }
+            );
+            return {status: 200};
+        } catch (err) {
+            console.log(err);
+            return {status: 500};
+        }
+    },
+
     getHids: async function (userId) {
         try {
             const profilesBase = mongoclient.db("profiles");

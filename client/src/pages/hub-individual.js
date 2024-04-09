@@ -11,7 +11,8 @@ function HubIndividual() {
     const [description, setDescription] = useState("");
     const [whitelist, setWhitelist] = useState({});
     const [members, setMembers] = useState([]);
-    const [owner, setOwner] = useState("");
+    var owner = "";
+    const [ownerName, setOwnerName] = useState("");
 
     // const [formData, setFormData] = useState({
     //   hid: "01"
@@ -26,8 +27,13 @@ function HubIndividual() {
           console.log(response.data);
           setName(response.data[0].name);
           setDescription(response.data[0].description);
+<<<<<<< Updated upstream
           setOwner(response.data[0].owner);
           setWhitelist(response.data[0].whitelist);
+=======
+          owner = response.data[0].owner;
+          whitelist = response.data[0].whitelist;
+>>>>>>> Stashed changes
         }));
     }
 
@@ -40,11 +46,19 @@ function HubIndividual() {
       await getHubInfo();
       console.log(whitelist)
       const url = 'http://localhost:8000/retrieve-members';
+<<<<<<< Updated upstream
       await axios.post(url, JSON.stringify(whitelist)).then((response => {
         console.log(response.data);
         setMembers(response.data)
       }));
       console.log(members);
+=======
+      let data = await axios.post(url, JSON.stringify(whitelist));
+      await setMembers(data.data);
+      data = await axios.post(url, JSON.stringify([owner]));
+      console.log(data.data);
+      await setOwnerName(data.data[0].name);
+>>>>>>> Stashed changes
     }
 
     useEffect(() => {
@@ -58,6 +72,7 @@ function HubIndividual() {
           </div>
           <div className="members">
             <h1 className="cat-header">Members</h1>
+            <p className="regular-text">{ownerName} (Owner)</p>
             {members.map((member) => (
                 <p className="regular-text">{member.name}</p>
             ))}

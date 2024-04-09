@@ -14,16 +14,22 @@
     right: 3%;
     left: 3%;
     background-color: rgb(164, 63, 63);
+<<<<<<< Updated upstream:client/src/pages/hub-individual.css
     height: 8%;
     top: 1%
+=======
+    height: 11%;
+    top: 1%;
+    display: flex;
+>>>>>>> Stashed changes:client/src/css/hub-pages.css
 }
 
 .members {
     border:.8vw;
     border-style: solid;
     border-color: black;
-    width: 22%;
-    height: 79%;
+    width: 24%;
+    height: 84%;
     position: absolute;
     right: 3%;
     background-color: rgb(164, 63, 63);
@@ -34,8 +40,8 @@
     border:.8vw;
     border-style: solid;
     border-color: black;
-    width: 44%;
-    height: 59%;
+    width: 46%;
+    height: 62%;
     position: absolute;
     right: 28%;
     background-color: rgb(164, 63, 63);
@@ -46,8 +52,8 @@
     border:.8vw;
     border-style: solid;
     border-color: black;
-    width: 44%;
-    height: 15%;
+    width: 46%;
+    height: 20%;
     position: absolute;
     right: 28%;
     background-color: rgb(164, 63, 63);
@@ -58,8 +64,8 @@
     border:.8vw;
     border-style: solid;
     border-color: black;
-    width: 20%;
-    height: 37%;
+    width: 22%;
+    height: 42%;
     position: absolute;
     left: 3%;
     background-color: rgb(164, 63, 63);
@@ -70,8 +76,8 @@
     border:.8vw;
     border-style: solid;
     border-color: black;
-    width: 20%;
-    height: 36%;
+    width: 22%;
+    height: 40%;
     position: absolute;
     left: 3%;
     background-color: rgb(164, 63, 63);
@@ -87,7 +93,12 @@
 }
 
 .regular-text {
+<<<<<<< Updated upstream:client/src/pages/hub-individual.css
     padding:2%;
+=======
+    color: rgb(0, 0, 0);
+    padding:1%;
+>>>>>>> Stashed changes:client/src/css/hub-pages.css
     text-align: left;
 }
 

@@ -58,7 +58,7 @@ function HubAdmin() {
             <div className="overview">
                 <h1 className="cat-header">Announcements</h1>
                 {announcements.map((announcement) => (
-                    <li key={announcement} className="regular-text">{announcement}</li>
+                    <li key={announcement.date} className="regular-text">{announcement.message} ::: {announcement.date}</li>
                 ))}
             </div>
             <div className="links">

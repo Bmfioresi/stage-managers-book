@@ -183,6 +183,15 @@ app.get('/get-filenames', async (req, res) => {
     else res.json(ret);
 });
 
+app.post('/create-hub', async (req, res) => {
+    const hub = JSON.parse(Object.keys(req.fields)[0]);
+    const userIDResponse = await mongoHelpers.getUserID(hub.owner);
+    hub.owner = userIDResponse.userID;
+    console.log(hub);
+    const newHub = await mongoHelpers.createHub(hub);
+    res.json(newHub);
+});
+
 // returns a list of hub info to load into buttons in hubs.js
 app.post('/hubs', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);

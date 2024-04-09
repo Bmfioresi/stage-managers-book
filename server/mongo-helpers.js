@@ -260,12 +260,40 @@ module.exports = {
         }
     },
 
+    createHub: async function (hub) {
+        try {
+            // Connecting to current Database
+            const hubBase = mongoclient.db('hubs');
+            const hubs = hubBase.collection('hub_info');
+
+            // Getting next HID
+            var thisHID = -1;
+            const countQuery = { name : "UNIQUE_COUNT_DOCUMENT_IDENTIFIER", password : "UNIQUE_COUNT_DOCUMENT_IDENTIFIER"};
+            const countResult = await hubs.findOne(countQuery);
+            const updateCount = await hubs.updateOne(countQuery, { $inc: { count : 1 } });
+            const updateCode = await hubs.updateOne(countQuery, { $inc: { code : 1 } })
+            thisHID = countResult.count;
+            var thisCode = countResult.code;
+            var thisWhiteList = [];
+            var thisBlackList = [];
+
+            const doc = { name: hub.name, owner: hub.owner, description: hub.description, 
+                hid: thisHID, code: thisCode, whitelist: thisWhiteList, blacklist: thisBlackList };
+            const result = await hubs.insertOne(doc);
+        } catch (err) {
+            console.log(err);
+            console.log("HUB CREATION ERROR");
+            return {'hid': "-1"};
+        }
+    },
+
     retrieveMembers : async function (whitelist) {
         try {
             const db = mongoclient.db("profiles");
             const collection = db.collection("profiles");
             var members = [];
             for(let i = 0; i < whitelist.length; i++) {
+                console.log(whitelist[i]);
                 const query = { uid: whitelist[i] };
                 const member = await collection.findOne(query);
                 members.push(member);

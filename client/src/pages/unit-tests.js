@@ -58,7 +58,7 @@ const UnitTests = () => {
                 console.log(names.data[i]);
                 if (names.data[i] === "unit-test-file.jpg") {
                     console.log("deleting file");
-                    axios.get(`${baseUrl}/delete-file?name=unit-test-file.jpg&hub=unit-tests&bucket=unit-tests`);
+                    await axios.get(`${baseUrl}/delete-file?name=unit-test-file.jpg&hub=unit-tests&bucket=unit-tests`);
                 }
             }
             axios.post(url, data, headers).then((response) => {

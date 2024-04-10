@@ -202,7 +202,6 @@ app.post('/create-hub', async (req, res) => {
     const hub = JSON.parse(Object.keys(req.fields)[0]);
     const userIDResponse = await mongoHelpers.getUserID(hub.owner);
     hub.owner = userIDResponse.userID;
-    console.log(hub);
     const newHub = await mongoHelpers.createHub(hub);
     res.json(newHub);
 });

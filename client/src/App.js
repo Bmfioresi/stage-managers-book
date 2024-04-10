@@ -10,6 +10,7 @@ import {
 import Test from "./pages/test.js";
 import Hubs from './pages/hubs.js';
 import HubIndividual from './pages/hub-individual.js';
+import CreateHub from './pages/create-hub.js';
 import Resources from "./pages/hub-resources.js";
 import Designer from "./pages/hub-designer.js";
 import Scripts from "./pages/hub-scripts.js";
@@ -38,6 +39,7 @@ function App() {
           <Route path="/hubs/:hub/designer" element={<Designer />} />
           <Route path="/hubs/:hub/scripts" element={<Scripts />} />
           <Route path="/hubs/:hub/hub-admin" element={<HubAdmin />} />
+          <Route path="/hubs/create-hub" element={<CreateHub />} />
           <Route path="/login" element={<Authenticate />} />
           <Route path="/createProfile" element={<ProfileForm />} />
           <Route path="/createAccount" element={<InputFrame />} />

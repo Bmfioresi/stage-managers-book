@@ -112,32 +112,31 @@ const Scripts = () => {
     }, [getFileLinks, params] );
 
     return (
-        <div className='right-side'>
-        <div>
-            <NavLink to={`/hubs/${hub}`}>Back to hub</NavLink>
-            <h1>Script Viewer</h1>
-            <form onSubmit={handleSubmit}>
-                <h2>Upload Script PDF</h2>
-                <input type="file" onChange={handleChange}/>
-                <button type="submit">Upload</button>
-            </form>
-            <h2>Select Script to Display</h2>
-            <ClipLoader loading={loading}></ClipLoader>
-            <table>
-                <tbody>
-                    {!loading && fileLinks}
-                </tbody>
-            </table>
-        </div>
-        <div style={styles.container}>
-            <iframe
-                title="pdf-viewer"
-                src={pdfUrl}
-                width="100%"
-                height="600px"
-                style={styles.iframe}
-            />
-        </div>
+        <div className='bucket'>
+            <div className="overview" style={{height: "90%", top: "4%", width: "84%", right: "9%"}}>
+                <NavLink style={{color: "black"}} to={`/hubs/${hub}`}>Back to hub</NavLink>
+                <h1 style={{color: "black"}}>Script Viewer</h1>
+                <form onSubmit={handleSubmit}>
+                    <h2 style={{color: "black"}}>Upload Script PDF</h2>
+                    <input type="file" onChange={handleChange}/>
+                    <button type="submit">Upload</button>
+                </form>
+                <h2 style={{color: "black"}}>Select Script to Display</h2>
+                <ClipLoader loading={loading}></ClipLoader>
+                <table>
+                   <tbody>
+                        {!loading && fileLinks}
+                    </tbody>
+                </table>
+                <div style={styles.container}>
+                <iframe
+                    title="pdf-viewer"
+                    src={pdfUrl}
+                    width="100%"
+                    height="600px"
+                    style={styles.iframe}
+                /></div>
+            </div>
         </div>
     );
 };
@@ -146,11 +145,11 @@ const styles = {
     container: {
         width: '80%',
         margin: 'auto',
-        marginTop: '50px',
+        // marginTop: '20px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '70vh', // Setting minimum height for the container
+        minHeight: '50vh', // Setting minimum height for the container
     },
     iframe: {
         border: '1px solid #ccc',

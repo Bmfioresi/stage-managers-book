@@ -105,22 +105,22 @@ const Resources = () => {
     }, [getFileLinks, params] );
 
     return (
-        <div className="right-side">
-        <div>
-            <NavLink to={`/hubs/${hub}`}>Back to hub</NavLink>
-            <h1>Resources Page</h1>
-            <p>Should be able to take uploads of the following types:</p>
-            <ul>
+        <div className="bucket">
+        <div className="overview" style={{height: "88%", top: "4%", width: "84%", right: "9%"}}>
+            <NavLink style={{color: "black"}} to={`/hubs/${hub}`}>Back to hub</NavLink>
+            <h1 style={{color: "black"}}>Resources Page</h1>
+            <p style={{color: "black"}}>Should be able to take uploads of the following types:</p>
+            <ul style={{color: "black"}}>
                 <li>Photos (.jpg, .png)</li>
                 <li>Videos (.mov, .mp4)</li>
                 <li>PDF (.pdf)</li>
             </ul>
             <form onSubmit={handleSubmit}>
-                <h2>Upload file</h2>
+                <h2 style={{color: "black"}}>Upload file</h2>
                 <input type="file" onChange={handleChange}/>
                 <button type="submit">Upload</button>
             </form>
-            <h2>Download file</h2>
+            <h2 style={{color: "black"}}>Download file</h2>
             <ClipLoader loading={loading}></ClipLoader>
             <table>
                 <tbody>

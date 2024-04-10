@@ -7,15 +7,15 @@ import axios from 'axios';
 
 
 const NavBar = () => {
+    const baseUrl = "http://localhost:8000";
     const navigate = useNavigate();
     const [hubsVisible, setHubsVisible] = useState(false);
     const [formData, setFormData] = useState({sessionID: localStorage.sessionID});
     const [hubs, setHubs] = useState([]);
-    const [hubName, setName] = useState("Default name");
-    const [hubDescription, setDescription] = useState("Default description");
+    
 
     async function getHubs() {
-        const url = 'http://localhost:8000/hubs';
+        const url = `${baseUrl}/hubs`;;
         axios.post(url, JSON.stringify(formData)).then((response) => {
           const hubTemp = [];
           for(let i = 0; i < response.data.length; i++) {
@@ -30,22 +30,14 @@ const NavBar = () => {
     }, []);
 
     async function createHub() {
-        const url = 'http://localhost:8000/create-hub';
-        let newHub = {
-            name: hubName,
-            owner: localStorage.sessionID,
-            description: hubDescription
-        };
-        axios.post(url, JSON.stringify(newHub)).then((response) => {
-            console.log(response);
-            let path = `/hubs/${response.data}`; 
-            navigate(path);
-        });
+        let path = `/hubs/create-hub`; 
+        navigate(path);
     }
 
     if((localStorage.getItem("sessionID") == -1) || (localStorage.getItem("sessionID") == null)) {
         return (
             <>
+                <h1 style={{color: "blue"}}>{localStorage.getItem("sessionID")}</h1>
                 <Nav>
                     <NavMenu onMouseLeave={() => setHubsVisible(false)}>
                         <NavLink to="/"><img style={{width: "100%", height: "200%", objectFit: "contain"}}

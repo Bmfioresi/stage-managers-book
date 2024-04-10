@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
-import "./sign-up-frame.css";
-import "../../global.css";
+import "../../css/sign-up-frame.css";
+import "../../css/global.css";
 import LineFrame from "./sign-up-form-frame";
 
 const SignUpFrame = () => {

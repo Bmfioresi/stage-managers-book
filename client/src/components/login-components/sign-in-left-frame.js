@@ -2,8 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import ReactDOM from "react-dom/client";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
-import "./sign-in-left-frame.css";
-import "../../global.css";
+import "../../css/sign-in-left-frame.css";
+import "../../css/global.css";
 
 const LeftSide8Column = () => {
   const navigate = useNavigate();

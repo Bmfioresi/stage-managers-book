@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const formidable = require('express-formidable');
 const fs = require('fs');
+const sanitize = require('sanitize-filename');
 
 const bcrypt = require('bcrypt');
 const saltrounds = 10;
@@ -69,7 +70,7 @@ async function getUID(sessionID) {
     return userIDResponse.userId;
 };
 
-app.get('/test', (req, res) => {
+app.get('/test', (req, res) => { // don't delete, necessary for unit tests
     res.json({message: "Test successful"});
 });
 
@@ -125,13 +126,20 @@ app.post('/upload-file', async (req, res) => {
         else res.json(ret);
     } else {
         const file = req.files.file;
-        const name = file.name;
-        const hub = req.fields.hub;
-        const bucket = req.fields.bucket;
-        const stream = fs.createReadStream(file.path); // path here refers to the temporary location of the file within the server returned by mongoDB. It should not be accessible in any way by the client
-        const ret = await gridfsHelpers.uploadFile(name, stream, hub, bucket);
-        if (ret == null) res.json({status: 500});
-        else res.json(ret);
+        // check for file size
+        const MAX_FILE_SIZE = 20000000; // 20 MB in bytes (change later)
+        if (file.size > MAX_FILE_SIZE) {
+            res.json({status: 413}); // status code for "file is too large"
+        } else {
+            const name = sanitize(file.name); // sanitize file name to remove control/reserved characters and etc.
+            file.name = name;
+            const hub = req.fields.hub;
+            const bucket = req.fields.bucket;
+            const stream = fs.createReadStream(file.path); // path here refers to the temporary location of the file within the server returned by mongoDB. It should not be accessible in any way by the client
+            const ret = await gridfsHelpers.uploadFile(name, stream, hub, bucket);
+            if (ret == null) res.json({status: 500});
+            else res.json(ret);
+        }
     }
 });
 
@@ -143,9 +151,6 @@ app.get('/download-file', async (req, res) => {
     const name = req.query.name;
     const hub = req.query.hub;
     const bucket = req.query.bucket;
-    // TODO - check for proper file extension, input sanitization, etc
-    // var re = /(?:\.([^.]+))?$/;
-    // var ext = re.exec(name)[1];
     const ret = await gridfsHelpers.downloadFile(name, hub, bucket);
     if (ret == null) res.json({status: 500});
     else if (ret.status == 404) res.json(ret);
@@ -161,21 +166,6 @@ app.get('/delete-file', async (req, res) => {
     else res.json(ret);
 })
 
-// uploads attached image to database in the images bucket
-app.post('/upload-image', async (req, res) => {
-    const file = req.files.file;
-    const name = file.name;
-    const type = file.type;
-    if (type !== 'image/jpeg' && type !== 'image/png') {
-        res.json({message: `Invalid file format ${type}`});
-    } else {
-        const stream = fs.createReadStream(file.path); // path here refers to the temporary location of the file within the server returned by mongoDB. It should not be accessible in any way by the client
-        const ret = await gridfsHelpers.uploadFile(name, stream, 'images');
-        if (ret == null) res.json({status: 500});
-        else res.json(ret);
-    }
-});
-
 // returns file stream of image with given name
 // to access image data in the front end, 
 //  use .blob() and URL.createObjectURL(blob)
@@ -185,7 +175,10 @@ app.get('/display-image', async (req, res) => {
     var re = /(?:\.([^.]+))?$/;
     var ext = re.exec(name)[1];
     if (ext !== 'jpg' && ext !== 'png') {
-        res.json({message: `Invalid file format .${ext}`});
+        res.json({
+            status: 422, // status code for unprocessable entity (wrong file format)
+            message: `Invalid file format .${ext}`
+        });
     } else {
         const ret = await gridfsHelpers.downloadFile(name, 'images');
         if (ret == {status: 404}) res.json(ret);
@@ -205,11 +198,20 @@ app.get('/get-filenames', async (req, res) => {
     else res.json(ret);
 });
 
+app.post('/create-hub', async (req, res) => {
+    const hub = JSON.parse(Object.keys(req.fields)[0]);
+    const userIDResponse = await mongoHelpers.getUserID(hub.owner);
+    hub.owner = userIDResponse.userID;
+    console.log(hub);
+    const newHub = await mongoHelpers.createHub(hub);
+    res.json(newHub);
+});
+
 // returns a list of hub info to load into buttons in hubs.js
 app.post('/hubs', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     //const uid = await getUID(fields.sessionID)
-    const uid = fields.sessionID;
+    const uid = await getUID(fields.sessionID)
     const hids = await mongoHelpers.getHids(uid)
     const hubInfo = await mongoHelpers.getHubInfo(hids);
     res.json(hubInfo);
@@ -218,7 +220,8 @@ app.post('/hubs', async (req, res) => {
 // returns a single collection of hub info to load into a page hub-individual.js
 app.post('/hub-individual', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-    const hubInfo = await mongoHelpers.getIndividualHubInfo(fields.hid);
+    const hid = fields.hid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
     res.json(hubInfo);
 });
 
@@ -227,6 +230,72 @@ app.post('/retrieve-members', async (req, res) => {
     const members = await mongoHelpers.retrieveMembers(fields);
     res.json(members);
 });
+
+app.get('/add-join-request', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    if (hubInfo[0].join_requests.includes(uid)) {
+        res.json({status: 403});
+    } else {
+        hubInfo[0].join_requests.push(uid);
+        let ret = await mongoHelpers.updateHub(hubInfo[0]);
+        res.json(ret);
+    }
+});
+
+app.get('/remove-join-request', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    hubInfo[0].join_requests = hubInfo[0].join_requests.filter((jruid) => jruid !== uid);
+    let ret = await mongoHelpers.updateHub(hubInfo[0]);
+    res.json(ret);
+})
+
+app.get('/add-member', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    if (hubInfo[0].whitelist.includes(uid)) {
+        res.json({status: 403}); // status code for already exists
+    } else {
+        hubInfo[0].whitelist.push(uid);
+        let ret = await mongoHelpers.updateHub(hubInfo[0]);
+        res.json(ret);
+    }
+});
+
+app.get('/kick-member', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    hubInfo[0].whitelist = hubInfo[0].whitelist.filter((wluid) => wluid !== uid);
+    let ret = await mongoHelpers.updateHub(hubInfo[0]);
+    res.json(ret);
+});
+
+app.get('/ban-member', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    if (hubInfo[0].blacklist.includes(uid)) {
+        res.json({status: 403}); // status code for already exists
+    } else {
+        hubInfo[0].blacklist.push(uid);
+        let ret = await mongoHelpers.updateHub(hubInfo[0]);
+        res.json(ret);
+    }
+});
+
+app.get('/unban-member', async (req, res) => {
+    const hid = req.query.hid;
+    const uid = req.query.uid;
+    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    hubInfo[0].blacklist = hubInfo[0].blacklist.filter((wluid) => wluid !== uid);
+    let ret = await mongoHelpers.updateHub(hubInfo[0]);
+    res.json(ret);
+})
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned
 app.post('/authenticate', 

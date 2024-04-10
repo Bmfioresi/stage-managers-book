@@ -3,12 +3,11 @@ require('dotenv').config();
 // searches bucket for file with same name
 const searchName = async function (bucket, name) {
     let files = bucket.find({});
-    let found = false;
     for await (const file of files) {
         // console.log("checking " + file.filename + " with " + name);
-        if (file.filename == name) found = true;
+        if (file.filename == name) return true;
     }
-    return found;
+    return false;
 }
 
 // increments a number at the end of the filename until it is unique
@@ -37,6 +36,7 @@ module.exports = {
     /*
     name - file name
     stream - file stream to upload to mongodb
+    hubName - name of hub to store file in
     bucketName - name of bucket to store file in
     */
     uploadFile: async function (name, stream, hubName, bucketName) {
@@ -57,6 +57,11 @@ module.exports = {
         }
     },
 
+    /*
+    name - file name
+    hubName - name of hub to download file from
+    bucketName - name of bucket to download file from
+    */
     downloadFile: async function (name, hubName, bucketName) {
         try {
             const db = mongoclient.db(hubName);
@@ -73,6 +78,11 @@ module.exports = {
         }
     },
 
+    /*
+    name - file name
+    hubName - name of hub to delete file from
+    bucketName - name of bucket to delete file from
+    */
     deleteFile: async function (name, hubName, bucketName) {
         try {
             const db = mongoclient.db(hubName);
@@ -101,6 +111,10 @@ module.exports = {
         }
     },
 
+    /*
+    hubName - name of hub to get filenames from
+    bucketName - name of bucket to get filenames from
+    */
     getFilenames: async function (hubName, bucketName) {
         try {
             const db = mongoclient.db(hubName);

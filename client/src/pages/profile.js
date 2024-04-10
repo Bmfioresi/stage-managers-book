@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from "react-dom/client";
 import axios from 'axios';
-import './pages.css';
+import '../css/pages.css';
 
 const Profile = () => {
 

@@ -1,0 +1,45 @@
+.art-icon-sign-up {
+  height: 1000px;
+  flex: 1;
+  border-radius: var(--br-5xl);
+  max-width: 100%;
+  overflow: hidden;
+  object-fit: cover;
+  min-width: 530px;
+}
+.desktop-sign-in {
+  width: 100%;
+  position: relative;
+  background-color: var(--color-white);
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--padding-sm) 0px 0px;
+  box-sizing: border-box;
+  gap: 10px;
+  letter-spacing: normal;
+}
+
+@media screen and (min-width: 1260px) and (max-height: 900px) {
+  .art-icon-sign-up {
+    height: 100%;
+    min-width: 100%;
+  }
+}
+
+@media screen and (max-width: 1260px) {
+  .art-icon-sign-up {
+    display: none; 
+  }
+}
+@media screen and (max-width: 450px) {
+  .desktop-sign-in {
+    gap: var(--gap-base);
+  }
+
+  .art-icon-sign-up {
+    display: none; 
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 import axios from 'axios';
-import './pages.css';
+import '../css/pages.css';
 
 function Hub() {
 

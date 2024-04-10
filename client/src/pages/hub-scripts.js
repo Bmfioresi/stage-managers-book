@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
-import './pages.css';
+import '../css/pages.css';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { NavLink } from "../components/Navbar/elements";
 
@@ -29,10 +29,11 @@ const Scripts = () => {
             return;
         }
         
+        // check for proper file extension
         var re = /(?:\.([^.]+))?$/;
         var ext = re.exec(file.name)[1];
         if (ext !== "pdf") {
-            alert(ext + " files are not supported");
+            alert(`Invalid file format .${ext}`);
             return;
         }
 
@@ -47,9 +48,16 @@ const Scripts = () => {
             }
         };
         axios.post(url, data, headers).then((response) => {
-            // console.log(response.data);
-            alert(`Successfully uploaded ${response.data.name}`);
-            getFileLinks();
+            try {
+                // console.log(response.data);
+                if (response.data.status == 500) throw("Something went wrong");
+                if (response.data.status == 413) throw("File size is too large");
+                alert(`Successfully uploaded ${response.data.name}`);
+                getFileLinks();
+            } catch (err) {
+                //console.log(err);
+                alert(err);
+            }
         });
     }
 
@@ -116,7 +124,9 @@ const Scripts = () => {
             <h2>Select Script to Display</h2>
             <ClipLoader loading={loading}></ClipLoader>
             <table>
-                {!loading && fileLinks}
+                <tbody>
+                    {!loading && fileLinks}
+                </tbody>
             </table>
         </div>
         <div style={styles.container}>

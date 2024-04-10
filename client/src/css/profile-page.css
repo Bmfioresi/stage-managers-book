@@ -1,0 +1,146 @@
+.container {
+    font-family: Playfair Display;
+    display: flex;
+    width: 60%;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.sidebar-links {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.sidebar-links li {
+    margin-bottom: 10px;
+}
+
+.sidebar-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar-links a:hover {
+    text-decoration: underline;
+}
+
+.dropdown {
+    display: none;
+    padding-left: 20px;
+}
+
+.sidebar-links li:hover .dropdown {
+    display: block;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(100% - 250px);
+    /* Subtract sidebar width */
+}
+
+.profile-h1 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 30px;
+}
+
+.profile-info {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.profile-details,
+.about-me {
+    flex: 1;
+}
+
+.about-me {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    /* Ensure full width */
+}
+
+.about-me label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.about-me input[type="text"],
+.about-me textarea {
+    width: calc(100% - 20px);
+    /* Adjust for padding */
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.about-me textarea {
+    resize: vertical;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+label {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+label {
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+textarea {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.profile-button {
+    background: linear-gradient(180deg, #720D17 0%, #BE2722 100%);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}

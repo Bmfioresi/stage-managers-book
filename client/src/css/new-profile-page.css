@@ -1,0 +1,86 @@
+.body-screen {
+    height: 100%;
+}
+
+#ui-container-style {
+    height: auto;
+    min-height: 100vh;
+    display: contents;
+    justify-content: center;
+    align-items: center;
+}
+
+#ui-container-style-edit {
+    height: auto;
+    min-height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-style {
+    width: 100%;
+    padding: 2rem;
+    background-color: white;
+    border-radius: .5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
+}
+
+.flex-style {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-pic-style {
+    width: 8rem;
+    height: 8rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.name-style {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+
+.role-title-style,
+.description-style {
+    color: #718096;
+}
+
+.margin-top-6 {
+    margin-top: 1.5rem;
+}
+
+.header-style {
+    font-size: 1.125rem;
+    font-weight: 600;
+    font-family: Playfair Display;
+}
+
+.grid-style {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: auto auto auto; */
+    /* gap: 0.5rem; */
+}
+
+.gallery-image-style {
+    width: 75%;
+    height: 75%;
+    object-fit: cover;
+    border-radius: .5rem;
+}
+
+.profile-button {
+    background: linear-gradient(180deg, #720D17 0%, #BE2722 100%);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 30%;
+}

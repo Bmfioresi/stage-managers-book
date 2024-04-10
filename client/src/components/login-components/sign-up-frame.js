@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
-import ReactDOM from "react-dom/client";
+import React, { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
 import "./sign-up-frame.css";
@@ -8,46 +7,37 @@ import LineFrame from "./sign-up-form-frame";
 
 const SignUpFrame = () => {
   const navigate = useNavigate(); 
-
-  // Used for facilitating login
+  
   const [formData, setFormData] = useState({
+    fullName: "",
     email: "",
     password: "",
+    verifyPassword: "",
   });
-  const [loggedIn, setLoggedIn] = useState("FALSE");
-
-  const onMainButtonClick = useCallback(() => {
-    // Please sync "Profile" to the project
-  }, []);
 
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-    console.log(formData);
-  };
+    // console.log("Input name:", name, "Value:", value); // Debugging log
+    setFormData(prevState => ({ ...prevState, [name]: value}));
+};
+  
 
   const handleLoginSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); 
 
-    const url = 'http://localhost:8000/authenticate';
-    console.log(formData.email);
-    console.log(formData.password);
-    console.log(url);
+    console.log('Submitting form with:', formData); // Debug log
+    const url = 'http://localhost:8000/register'; // URL for registration
 
-    axios.post(url, JSON.stringify(formData)).then((response) => {
-      // Writing user id to local storeage
-      //TODO Not secure; must be updated
-      localStorage.setItem('uid', response.data.uid);
+    await axios.post(url, JSON.stringify(formData)).then((response) => {
+      console.log('Received response:', response); // Debug log
 
-      // Ensuring we redirect to profile page
-      setLoggedIn("TRUE");
+      if (response.status === 201) {
+        navigate('/signin');
+      } else {
+        alert('Failed to register');
+      }
     });
   }
-
-  // Redirecting to profile if user just logged in
-  if (loggedIn == "TRUE") {
-    return <Navigate to='/profile' />;
-}
 
   return (
     <div className="left-side-column">
@@ -72,27 +62,41 @@ const SignUpFrame = () => {
             placeholderPlaceholder1="John Smith"
             propWidth1="370px"
             inputType="text"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleLoginChange}
           />
           <LineFrame
             label1="Email"
-            placeholderPlaceholder1="JohnSmith@email.com"
+            placeholderPlaceholder1="JohnSmith@example.com"
             propWidth1="370px"
             inputType="email"
+            name="email"
+            value={formData.email}
+            onChange={handleLoginChange}
           />
           <LineFrame
             label1="Password"
             placeholderPlaceholder1="at least 8 characters"
             propWidth1="370px"
             inputType="password"
+            name="password"
+            value={formData.password}
+            onChange={handleLoginChange} // Pass the handler
+            type = "password" // to hide the password
           />
           <LineFrame
             label1="Verify Password"
             placeholderPlaceholder1="Re-enter password"
             propWidth1="370px"
             inputType="password"
+            name="verifyPassword"
+            value={formData.verifyPassword}
+            onChange={handleLoginChange} // Pass the handler
+            type = "password" // to hide the password
           />
           </div>
-          <button className="main-button1" onClick={onMainButtonClick}>
+          <button className="main-button1" type="submit">
             <div className="sign-in1">Sign up</div>
           </button>
         </form>

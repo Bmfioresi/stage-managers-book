@@ -91,7 +91,7 @@ const LeftSide8Column = () => {
             <div className="input4">
               <div className="input5" />
               <input
-                className="placeholder"
+                className="placeholder-sign-in"
                 placeholder="stageManagersBook@email.com"
                 type="email"
                 name="email"
@@ -107,7 +107,7 @@ const LeftSide8Column = () => {
             <div className="input4">
               <div className="input5" />
               <input
-                className="placeholder"
+                className="placeholder-sign-in"
                 placeholder="Enter Password"
                 type="password"
                 name="password"

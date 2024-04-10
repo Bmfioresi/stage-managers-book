@@ -142,6 +142,70 @@ module.exports = {
         } 
     },
 
+    // currently, password is stored in plaintext
+    createUser: async function (fullName, email, hashedPassword) {
+        try {
+            const credentialsBase = mongoclient.db('credentials');
+            const credentials = credentialsBase.collection('credentials');
+
+            //console.log("Creating a user");
+    
+            // Check if user already exists
+            const existingUser = await credentials.findOne({ username: email});
+            if (existingUser) {
+                return { success: false, message: 'An account with this email already exists.' };
+            }
+
+            //console.log("After checking if user exists");
+    
+            // Getting next UserID
+            var thisUID = -1;
+            const countQuery = { username : "UNIQUE_COUNT_DOCUMENT_IDENTIFIER", password : "UNIQUE_COUNT_DOCUMENT_IDENTIFIER"};
+            const countResult = await credentials.findOneAndUpdate(
+                countQuery,
+                { $inc: { count : 1 } }
+            );
+            thisUID = countResult.count;
+
+            //console.log("After getting next UID");
+    
+            // Insert authentication details with the generated UID
+            const userResult = await credentials.insertOne({ uid: thisUID, username: email, password: hashedPassword });
+    
+            console.log("AFter inserting user credentials");
+
+            // Check if the user was inserted correctly
+            if (!userResult.acknowledged) {
+                throw new Error('Failed to create user credentials');
+            }
+    
+            // Now create a profile for the user with the same UID
+            const profilesBase = mongoclient.db('profiles');
+            const profiles = profilesBase.collection('profiles');
+            const profileResult = await profiles.insertOne({ 
+                uid: thisUID, 
+                name: fullName, 
+                bio: "", 
+                phone_number: "", 
+                email_address: email, 
+                pronouns: "", 
+                roles: "" 
+            });
+
+            //console.log("After inserting user profile");
+    
+            // Check if the profile was inserted correctly
+            if (!profileResult.acknowledged) {
+                throw new Error('Failed to create user profile');
+            }
+    
+            return { success: true, message: 'User created successfully' };
+        } catch (err) {
+            console.error(err);
+            return { success: false, message: 'Error creating user' };
+        }
+    },        
+
     updateProfile: async function (f, userId) {
         try {
             // Connecting to profiles database

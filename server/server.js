@@ -5,6 +5,9 @@ const cors = require('cors');
 const formidable = require('express-formidable');
 const fs = require('fs');
 
+const bcrypt = require('bcrypt');
+const saltrounds = 10;
+
 const mongoHelpers = require('./mongo-helpers');
 const gridfsHelpers = require('./gridfs-helpers');
 const session = require('express-session');
@@ -54,9 +57,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(formidable());
 
-app.use(express.json());
-app.use(formidable());
-
 app.use((req, res, next) => {
     res.header('Cross-Origin-Opener-Policy', 'same-origin');
     res.header('Cross-Origin-Embedder-Policy', 'require-corp');
@@ -73,20 +73,35 @@ app.get('/test', (req, res) => {
     res.json({message: "Test successful"});
 });
 
-// // creating a new user from the sign-up form
-// Checking with Liam before moving forward with this
-// app.post('/register', async (req, res) => {
-//     const { fullname, email, password } = req.body;
+// creating a new user from the sign-up form
+app.post('/register', async (req, res) => {
+    console.log("Registering user");
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    console.log(fields);
 
-//     // validate and check for existing user
-//     const user = await mongoHelpers.getUserByEmail(email);
-//     if (user) {
-//         return res.status(400).json({ message: 'User already exists' });
-//     }
+    try{     
+        if (fields.password != fields.verifyPassword) {
+            return res.status(400).send({message: "Passwords do not match"});
+        }
+        //console.log("Creating user with email: " + fields.email)
 
-//     const newUser = await mongoHelpers.createUser(fullname, email, password);
-//     await 
-// });
+        // hash the password
+        const hashedPassword = await bcrypt.hash(fields.password, saltrounds);
+
+        // Attempt to create a user
+        const userCreationResult = await mongoHelpers.createUser(fields.fullName, fields.email, fields.password);
+        if (userCreationResult.success) {
+            console.log(userCreationResult.message);
+            res.status(201).send('User created successfully');
+        }
+        else {
+            res.status(400).send(userCreationResult.message);
+        }
+    } catch (error) {
+        console.error('Error during registration:', error);
+        res.status(500).send('Server Error');
+    }
+});
 
 // uploads attached file to database in the attached bucket
 // use the following code block to format attached data
@@ -214,9 +229,7 @@ app.post('/retrieve-members', async (req, res) => {
 });
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned
-app.post('/authenticate', // Validate and sanitize email
-        // body('email').isEmail().normalizeEmail() // Validate email
-        // body('password').isLength({ min: 5 }).trim().escape(), // Validate and sanitize password
+app.post('/authenticate', 
     async (req, res) => {
 
         // Check for validation errors

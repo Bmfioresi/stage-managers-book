@@ -41,7 +41,7 @@ const Input = ({
       <div className="input1" style={input1Style}>
         <div className="input2" />
         <input
-          className="placeholder"
+          className="placeholder-input"
           placeholder={placeholderPlaceholder}
           value={placeholderTextValue}
           onChange={(event) => setPlaceholderTextValue(event.target.value)}

@@ -7,9 +7,10 @@ const LineFrame = ({
   placeholderPlaceholder1: placeholder,
   propWidth1,
   type: inputType,
+  value,
+  onChange,
+  name
 }) => {
-  const [placeholderText4Value, setPlaceholderText4Value] = useState("");
-
   const placeholder2Style = useMemo(() => {
     return {
       width: propWidth1,
@@ -23,12 +24,13 @@ const LineFrame = ({
         <div className="input7">
           <div className="input8" />
           <input
+            name={name}
             className="placeholder2"
             placeholder={placeholder}
             type={inputType}
-            value={placeholderText4Value}
-            onChange={(event) => setPlaceholderText4Value(event.target.value)}
-            style={placeholder2Style}
+            style={{ width: propWidth1 }}
+            value={value}
+            onChange={onChange}
           />
         </div>
       </div>

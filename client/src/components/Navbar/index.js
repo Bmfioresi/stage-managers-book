@@ -43,57 +43,6 @@ const NavBar = () => {
         });
     }
 
-<<<<<<< Updated upstream
-    return (
-        <>
-            <Nav>
-                <NavMenu onMouseLeave={() => setHubsVisible(false)}>
-                    <NavLink to="/"><img style={{width: "100%", height: "200%", objectFit: "contain"}}
-                        loading="eager"
-                        alt=""
-                        src="/smb-logo.png"
-                    /></NavLink><br></br><br></br><br></br>
-                    {/* <NavLink to="/test">Test</NavLink> */}
-                    {/* <NavLink to="/upload-image">Upload Image</NavLink>
-                    <NavLink to="/display-image">Display Image</NavLink> */}
-                    {/* <NavLink to="/login">Login</NavLink> */}
-                    <NavLink to="/createProfile">Create Profile</NavLink>
-                    <NavLink to="/editProfile">Edit Profile</NavLink>
-                    <NavLink
-                        onMouseEnter={() => setHubsVisible(true)}
-                        to="/hubs">
-                        Hubs
-                    </NavLink>
-                    {hubsVisible && (
-                        <ul>
-                            {hubs.map((hub) => (
-                            <NavLink
-                                reloadDocument
-                                key={hub.hid}
-                                onMouseEnter={() => setHubsVisible(true)}
-                                to={`/hubs/${hub.hid}`}>
-                                {hub.name}
-                                </NavLink>
-                            ))}
-                            <button
-                                onMouseEnter={() => setHubsVisible(true)}
-                                onClick={dummyFunc}>
-                                Create New Hub +
-                            </button>
-                        </ul>
-                    )}
-                    <NavLink to="/profile">Profile</NavLink>
-                    {/* <NavLink to="/script">Display Script</NavLink> */}
-                    <NavLink to="/unit-tests">Unit Tests</NavLink>
-                    <NavLink to="/createAccount">Create Account</NavLink>
-                    {/* <NavLink to="/signin">Hannah's Links</NavLink> */}
-                    {/* <NavLink to="/signup">Sign Up</NavLink>
-                    <NavLink to="/forgotpassword">Forgot Password</NavLink> */}
-                </NavMenu>
-            </Nav>
-        </>
-    );
-=======
     if((localStorage.getItem("sessionID") == -1) || (localStorage.getItem("sessionID") == null)) {
         return (
             <>
@@ -163,7 +112,6 @@ const NavBar = () => {
     }
 
     
->>>>>>> Stashed changes
 };
 
 export default NavBar;

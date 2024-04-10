@@ -25,13 +25,8 @@ function HubIndividual() {
         await axios.post(url, JSON.stringify(formData)).then((response => {
           setName(response.data[0].name);
           setDescription(response.data[0].description);
-<<<<<<< Updated upstream
-          setOwner(response.data[0].owner);
-          setWhitelist(response.data[0].whitelist);
-=======
           owner = response.data[0].owner;
           whitelist = response.data[0].whitelist;
->>>>>>> Stashed changes
         }));
     }
 
@@ -43,19 +38,11 @@ function HubIndividual() {
     async function retrieveMembers() {
       await getHubInfo();
       const url = 'http://localhost:8000/retrieve-members';
-<<<<<<< Updated upstream
-      await axios.post(url, JSON.stringify(whitelist)).then((response => {
-        console.log(response.data);
-        setMembers(response.data)
-      }));
-      console.log(members);
-=======
       let data = await axios.post(url, JSON.stringify(whitelist));
       await setMembers(data.data);
       data = await axios.post(url, JSON.stringify([owner]));
       console.log(data.data);
       await setOwnerName(data.data[0].name);
->>>>>>> Stashed changes
     }
 
     useEffect(() => {

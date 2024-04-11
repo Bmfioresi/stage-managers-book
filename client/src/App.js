@@ -38,7 +38,7 @@ function App() {
           <Route path="/hubs/:hub/resources" element={<Resources />} />
           <Route path="/hubs/:hub/designer" element={<Designer />} />
           <Route path="/hubs/:hub/scripts" element={<Scripts />} />
-          <Route path="/hubs/:hub/hub-admin" element={<HubAdmin />} />
+          <Route path="/hubs/:hub/admin" element={<HubAdmin />} />
           <Route path="/hubs/create-hub" element={<CreateHub />} />
           {/* <Route path="/login" element={<Authenticate />} /> */}
           <Route path="/createProfile" element={<ProfileForm />} />

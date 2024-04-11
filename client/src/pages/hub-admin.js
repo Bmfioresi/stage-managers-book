@@ -17,10 +17,11 @@ function HubAdmin() {
     const [description, setDescription] = useState("");
     const [members, setMembers] = useState([]);
     const [bannedMembers, setBannedMembers] = useState([]);
-    const [owner, setOwner] = useState("");
+    let owneruid = "";
     const [announcements, setAnnouncements] = useState([]);
     const [joinRequestMembers, setJoinRequestMembers] = useState([])
     const [accessCode, setAccessCode] = useState("");
+    const [access, setAccess] = useState(false);
 
     const formData = {hid: params.hub};
 
@@ -29,7 +30,7 @@ function HubAdmin() {
         await axios.post(url, JSON.stringify(formData)).then((response => {
           setName(response.data[0].name);
           setDescription(response.data[0].description);
-          setOwner(response.data[0].owner);
+          owneruid = response.data[0].owner;
           setAnnouncements(response.data[0].announcements);
           setAccessCode(response.data[0].access_code);
           joinRequests = response.data[0].join_requests;
@@ -38,8 +39,19 @@ function HubAdmin() {
         }));
     }
 
+    async function checkAdmin() {
+        let url = `${baseUrl}/loadProfile`;
+        let profile = await axios.post(url, JSON.stringify({sessionID: localStorage.sessionID}));
+        return profile.data.uid === owneruid;
+    }
+
     async function retrieveMembers() {
         await getHubInfo();
+        let isAdmin = await checkAdmin();
+        console.log(isAdmin);
+        if (!isAdmin) navigate(`/hubs/${params.hub}`);
+        else await setAccess(true);
+        
         const url = `${baseUrl}/retrieve-members`;
         let data = await axios.post(url, JSON.stringify(whitelist));
         await setMembers(data.data);
@@ -95,28 +107,25 @@ function HubAdmin() {
 
     return(
         <div className="bucket">
+            {access && <div>
             <div className="hub-title">
                 <h1 className="cat-header">Admin Control For {name}</h1>
             </div>
             <div className="members">
                 <h1 className="cat-header">Current Members</h1>
                 {members.map((member) => (
-                    <div>
-                        <p key={member.name} className="regular-text">
-                            {member.name} 
-                            <button type="button" onClick={() => kickUser(member.uid)}>Kick</button>
-                            <button type="button" onClick={() => banUser(member.uid, true)}>Ban</button>
-                        </p>
-                    </div>
+                    <p key={member.name} className="regular-text">
+                        {member.name} 
+                        <button type="button" onClick={() => kickUser(member.uid)}>Kick</button>
+                        <button type="button" onClick={() => banUser(member.uid, true)}>Ban</button>
+                    </p>
                 ))}
                 <h1 className="cat-header">Banned Members</h1>
                 {bannedMembers.map((member) => (
-                    <div>
                     <p key={member.name} className="regular-text">
                         {member.name} 
                         <button type="button" onClick={() => unbanUser(member.uid)}>Unban</button>
                     </p>
-                </div>
                 ))}
             </div>
             <div className="overview">
@@ -127,7 +136,7 @@ function HubAdmin() {
             </div>
             <div className="links">
                 <h1 className="cat-header">Make an Announcement</h1>
-                <form action={addAnnouncement}>
+                <form onSubmit={addAnnouncement}>
                     <input 
                         name="announce"
                         style={{
@@ -162,7 +171,7 @@ function HubAdmin() {
                 ))}
                 <h1 className="cat-header">Access Code: {accessCode}</h1>
             </div>
-            
+            </div>}
         </div>
     );
 }

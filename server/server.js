@@ -240,7 +240,7 @@ app.get('/add-join-request', async (req, res) => {
     if (hub.status === 200) {
         let hid = hub.hid;
         const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-        if (hubInfo[0].whitelist?.includes(uid)) {
+        if (hubInfo[0].whitelist?.includes(uid) || hubInfo[0].owner === uid) {
             res.json({status: 409}); // status code for conflict
         }
         if (hubInfo[0].blacklist?.includes(uid)) {
@@ -274,7 +274,7 @@ app.get('/add-member', async (req, res) => {
     if (hubInfo[0].whitelist?.includes(uid)) {
         res.json({status: 403}); // status code for already exists
     } else {
-        let profile = await mongoHelpers.loadProfile(userID);
+        let profile = await mongoHelpers.loadProfile(uid);
         profile.hids.push(hid);
         await mongoHelpers.updateProfile(profile);
         hubInfo[0].whitelist.push(uid);
@@ -286,7 +286,7 @@ app.get('/add-member', async (req, res) => {
 app.get('/kick-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
-    let profile = await mongoHelpers.loadProfile(userID);
+    let profile = await mongoHelpers.loadProfile(uid);
     profile.hids = profile.hids?.filter((phid) => phid !== hid);
     await mongoHelpers.updateProfile(profile);
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
@@ -337,10 +337,7 @@ app.post('/authenticate',
             var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
 
             if (userId == null) {
-                //res.status(401).json("NOT AUTHENTICATED");
-                req.session.isLoggedIn = false;
-                req.session.userId = "-1";
-                res.json(req.sessionID);
+                res.status(401).json("NOT AUTHENTICATED");
             } else {
                 req.session.isLoggedIn = true;
                 req.session.userId = userId.uid;

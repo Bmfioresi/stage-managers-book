@@ -4,6 +4,8 @@ import {useParams} from 'react-router-dom';
 import { useNavigate, Navigate } from "react-router-dom";
 import '../css/hub-pages.css';
 
+const baseUrl = "http://localhost:8000"
+
 function HubIndividual() {
     let whitelist = [];
     let navigate = useNavigate();
@@ -13,6 +15,7 @@ function HubIndividual() {
     const [members, setMembers] = useState([]);
     var owner = "";
     const [ownerName, setOwnerName] = useState("");
+    const [access, setAccess] = useState(false);
 
     // const [formData, setFormData] = useState({
     //   hid: "01"
@@ -21,7 +24,7 @@ function HubIndividual() {
     const formData = {hid: params.hub};
 
     async function getHubInfo() {
-        const url = 'http://localhost:8000/hub-individual';
+        const url = `${baseUrl}/hub-individual`;
         await axios.post(url, JSON.stringify(formData)).then((response => {
           setName(response.data[0].name);
           setDescription(response.data[0].description);
@@ -35,13 +38,19 @@ function HubIndividual() {
       navigate(path);
     }
 
+    async function checkAdmin() {
+      let url = `${baseUrl}/loadProfile`;
+      let profile = await axios.post(url, JSON.stringify({sessionID: localStorage.sessionID}));
+      setAccess(profile.data.uid === owner);
+    }
+
     async function retrieveMembers() {
       await getHubInfo();
-      const url = 'http://localhost:8000/retrieve-members';
+      await checkAdmin();
+      const url = `${baseUrl}/retrieve-members`;
       let data = await axios.post(url, JSON.stringify(whitelist));
       await setMembers(data.data);
       data = await axios.post(url, JSON.stringify([owner]));
-      console.log(data.data);
       await setOwnerName(data.data[0].name);
     }
 
@@ -70,7 +79,7 @@ function HubIndividual() {
             <button className="hubs-button" onClick={() => routeChange("resources")}>Resources</button>
             <button className="hubs-button" onClick={() => routeChange("designer")}>Designer</button>
             <button className="hubs-button" onClick={() => routeChange("scripts")}>Scripts</button>
-            <button className="hubs-button" onClick={() => routeChange("hub-admin")}>Admin Access</button>
+            {access && <button className="hubs-button" onClick={() => routeChange("admin")}>Admin Access</button>}
           </div>
           <div className="schedule">
             <h1 className="cat-header">Schedule</h1>

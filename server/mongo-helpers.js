@@ -172,7 +172,7 @@ module.exports = {
             // Insert authentication details with the generated UID
             const userResult = await credentials.insertOne({ uid: thisUID, username: email, password: hashedPassword });
     
-            console.log("AFter inserting user credentials");
+            //console.log("AFter inserting user credentials");
 
             // Check if the user was inserted correctly
             if (!userResult.acknowledged) {

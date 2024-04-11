@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
 import "../../css/sign-up-frame.css";
 import "../../css/global.css";
+import { toast } from 'react-toastify'; 
 import LineFrame from "./sign-up-form-frame";
 
 const SignUpFrame = () => {
@@ -22,22 +23,34 @@ const SignUpFrame = () => {
 };
   
 
-  const handleLoginSubmit = async (event) => {
-    event.preventDefault(); 
+const handleLoginSubmit = async (event) => {
+  event.preventDefault();
+  const url = 'http://localhost:8000/register';
 
-    console.log('Submitting form with:', formData); // Debug log
-    const url = 'http://localhost:8000/register'; // URL for registration
-
-    await axios.post(url, JSON.stringify(formData)).then((response) => {
-      console.log('Received response:', response); // Debug log
-
+  try {
+      const response = await axios.post(url, formData);
       if (response.status === 201) {
-        navigate('/signin');
+          toast.success('Successfully registered');
+          navigate('/signin');
       } else {
-        alert('Failed to register');
+          // Handle any other success status if needed
+          toast.warn('Registration successful with unexpected status code.');
       }
-    });
+  } catch (error) {
+      if (error.response) {
+          // Server responded with a status code outside the 2xx range
+          const errorMessage = error.response.data.message || 'Registration failed due to an unknown error';
+          toast.error(errorMessage);
+      } else if (error.request) {
+          // The request was made but no response was received
+          toast.error('No response received from server');
+      } else {
+          // Something else caused an error
+          toast.error('An error occurred during registration');
+      }
   }
+};
+
 
   return (
     <div className="left-side-column">

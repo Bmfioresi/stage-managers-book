@@ -76,7 +76,7 @@ app.get('/test', (req, res) => { // don't delete, necessary for unit tests
 
 // creating a new user from the sign-up form
 app.post('/register', async (req, res) => {
-    console.log("Registering user");
+    // console.log("Registering user");
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     console.log(fields);
 
@@ -95,7 +95,8 @@ app.post('/register', async (req, res) => {
             console.log(userCreationResult.message);
             res.status(201).send('User created successfully');
         }
-        else {
+        else if (!userCreationResult.success) {
+            console.log(userCreationResult.message);
             res.status(400).send(userCreationResult.message);
         }
     } catch (error) {

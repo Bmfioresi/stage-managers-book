@@ -14,14 +14,19 @@ const NavBar = () => {
     
 
     async function getHubs() {
-        const url = `${baseUrl}/hubs`;;
-        axios.post(url, JSON.stringify(formData)).then((response) => {
-          const hubTemp = [];
-          for(let i = 0; i < response.data.length; i++) {
-            hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner, hid: response.data[i].hid});
-          }
-          setHubs(hubTemp);
-        });
+        //console.log("before check");
+        let check = await signedIn();
+        if(check) {
+            console.log("retrieving hubs");
+            const url = `${baseUrl}/hubs`;
+            await axios.post(url, JSON.stringify(formData)).then((response) => {
+              const hubTemp = [];
+              for(let i = 0; i < response.data.length; i++) {
+                hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner, hid: response.data[i].hid});
+              }
+              setHubs(hubTemp);
+            });
+        }
     }
 
     useEffect(() => {
@@ -34,11 +39,17 @@ const NavBar = () => {
     }
 
     async function signedIn() {
-        if(localStorage.sessionID != -1) {
-            // console.log(localStorage.sessionID);
-            return true;
-        }
-        return false;
+        const url = `${baseUrl}/authenticate`;
+        await axios.post(url, JSON.stringify({ "sessionID": localStorage.getItem("sessionID") })).then((response) => {
+            if (response.data[0].uid == "-1") {
+                //console.log("index.js signedIn() returning false");
+                return false;
+            }
+            else {
+                //console.log("index.js signedIn() returning true");
+                return true;
+            }
+        });
     }
 
     async function joinHub(event) {
@@ -74,11 +85,11 @@ const NavBar = () => {
                             alt=""
                             src="/smb-logo.png"
                         /></NavLink><br></br><br></br><br></br>
-                        <NavLink to="/createProfile">Create Profile</NavLink>
-                        <NavLink to="/editProfile">Edit Profile</NavLink>
+                        {/* <NavLink to="/createProfile">Create Profile</NavLink> */}
                         <NavLink to="/profile">Profile</NavLink>
+                        <NavLink to="/editProfile">Edit Profile</NavLink>
                         <NavLink to="/unit-tests">Unit Tests</NavLink>
-                        <NavLink to="/createAccount">Create Account</NavLink>
+                        {/* <NavLink to="/createAccount">Create Account</NavLink> */}
                         <NavLink
                             onMouseEnter={() => loadHubs()}
                             to="/hubs">

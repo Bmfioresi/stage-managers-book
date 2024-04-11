@@ -40,10 +40,10 @@ const CreateHub = () => {
             <div className="overview" style={{height: "74%", top: "11%", width: "76%", right: "12%"}}>
                 <form onSubmit={handleSubmit}>
                     <br></br>
-                    <label style={{color: "black", fontSize: "30px", padding: ".5%"}} for="name">Name: </label>
+                    <label style={{color: "black", fontSize: "30px", padding: ".5%"}} htmlFor="name">Name: </label>
                     <input style={{width: "90%", alignSelf: "center"}} type="text" id="name" name="name" placeholder={"Enter Name"} onChange={(e) => name = e.target.value}></input>
                     <br></br>
-                    <label style={{color: "black", fontSize: "30px", padding: ".5%"}} for="description">Description: </label>
+                    <label style={{color: "black", fontSize: "30px", padding: ".5%"}} htmlFor="description">Description: </label>
                     <input style={{width: "90%", alignSelf: "center"}} type="text" id="description" name="description" placeholder={"Enter Description"} onChange={(e) => description = e.target.value}></input>
                     <input style={{width: "10%", alignSelf: "center"}} type="submit"/>
                 </form>

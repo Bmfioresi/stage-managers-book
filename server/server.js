@@ -203,6 +203,7 @@ app.post('/create-hub', async (req, res) => {
     console.log(hub);
     const userIDResponse = await mongoHelpers.getUserID(hub.sessionID);
     hub.owner = userIDResponse.userID;
+    console.log(hub.owner); // HERE IT IS BREAKING IN SERVER.JS PLEASE REMEMBER LOGAN
     const newHub = await mongoHelpers.createHub(hub);
     res.json(newHub);
 });
@@ -336,7 +337,10 @@ app.post('/authenticate',
             var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
 
             if (userId == null) {
-                res.status(401).json("NOT AUTHENTICATED");
+                //res.status(401).json("NOT AUTHENTICATED");
+                req.session.isLoggedIn = false;
+                req.session.userId = "-1";
+                res.json(req.sessionID);
             } else {
                 req.session.isLoggedIn = true;
                 req.session.userId = userId.uid;

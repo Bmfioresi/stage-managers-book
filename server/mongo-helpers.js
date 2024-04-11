@@ -357,7 +357,7 @@ module.exports = {
             var thisBlackList = [];
 
             const doc = { name: hub.name, owner: hub.owner, description: hub.description, 
-                hid: thisHID, accessCode: thisCode, whitelist: thisWhiteList, blacklist: thisBlackList };
+                hid: thisHID, access_code: thisCode, whitelist: thisWhiteList, blacklist: thisBlackList };
             const result = await hubs.insertOne(doc);
         } catch (err) {
             console.log(err);

@@ -11,22 +11,21 @@ const NavBar = () => {
     const [formData, setFormData] = useState({sessionID: localStorage.sessionID});
     const [hubs, setHubs] = useState([]);
     const [joinHubMessage, setJoinHubMessage] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
     
 
     async function getHubs() {
-        //console.log("before check");
         let check = await signedIn();
-        if(check) {
-            console.log("retrieving hubs");
-            const url = `${baseUrl}/hubs`;
-            await axios.post(url, JSON.stringify(formData)).then((response) => {
-              const hubTemp = [];
-              for(let i = 0; i < response.data.length; i++) {
+        setLoggedIn(check);
+        console.log("retrieving hubs");
+        const url = `${baseUrl}/hubs`;
+        await axios.post(url, JSON.stringify(formData)).then((response) => {
+            const hubTemp = [];
+            for(let i = 0; i < response.data.length; i++) {
                 hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner, hid: response.data[i].hid});
-              }
-              setHubs(hubTemp);
-            });
-        }
+            }
+            setHubs(hubTemp);
+        });
     }
 
     useEffect(() => {
@@ -39,14 +38,15 @@ const NavBar = () => {
     }
 
     async function signedIn() {
+        console.log("this ones for you");
         const url = `${baseUrl}/authenticate`;
         await axios.post(url, JSON.stringify({ "sessionID": localStorage.getItem("sessionID") })).then((response) => {
             if (response.data[0].uid == "-1") {
-                //console.log("index.js signedIn() returning false");
+                console.log("index.js signedIn() returning false");
                 return false;
             }
             else {
-                //console.log("index.js signedIn() returning true");
+                console.log("index.js signedIn() returning true");
                 return true;
             }
         });
@@ -75,7 +75,6 @@ const NavBar = () => {
         setHubsVisible(true);
     }
 
-    if(signedIn()) {
         return (
             <>
                 <Nav>
@@ -85,63 +84,57 @@ const NavBar = () => {
                             alt=""
                             src="/smb-logo.png"
                         /></NavLink><br></br><br></br><br></br>
-                        {/* <NavLink to="/createProfile">Create Profile</NavLink> */}
-                        <NavLink to="/profile">Profile</NavLink>
-                        <NavLink to="/editProfile">Edit Profile</NavLink>
-                        <NavLink to="/unit-tests">Unit Tests</NavLink>
-                        {/* <NavLink to="/createAccount">Create Account</NavLink> */}
-                        <NavLink
-                            onMouseEnter={() => loadHubs()}
-                            to="/hubs">
-                            Hubs
-                        </NavLink>
-                        {hubsVisible && (
-                            <ul>
-                                {hubs.map((hub) => (
-                                <NavLink
-                                    style={{height: "10%"}}
-                                    reloadDocument
-                                    key={hub.hid}
-                                    onMouseEnter={() => loadHubs()}
-                                    to={`/hubs/${hub.hid}`}>
-                                    {hub.name}
+                        {!loggedIn && <div>
+                            {/* <NavLink to="/createProfile">Create Profile</NavLink> */}
+                            <NavLink to="/profile">Profile</NavLink>
+                            <NavLink to="/editProfile">Edit Profile</NavLink>
+                            <NavLink to="/unit-tests">Unit Tests</NavLink>
+                            {/* <NavLink to="/createAccount">Create Account</NavLink> */}
+                            <p
+                                style={{
+                                    color: "#eeeee4",
+                                    display: "flex",
+                                    fontFamily: "var(--font-zen-kaku-gothic-antique)",
+                                    alignItems: "left",
+                                    textDecoration: "none",
+                                    padding: "2%",
+                                    height: "60px",
+                                    cursor: "pointer",
+                                }}
+                                onMouseEnter={() => loadHubs()}
+                                >
+                                Hubs
+                            </p>
+                            {hubsVisible && (
+                                <ul>
+                                    {hubs.map((hub) => (
+                                    <NavLink
+                                        style={{height: "10%"}}
+                                        reloadDocument
+                                        key={hub.hid}
+                                        onMouseEnter={() => loadHubs()}
+                                        to={`/hubs/${hub.hid}`}>
+                                        {hub.name}
                                     </NavLink>
-                                ))}
-                                <button
-                                    onMouseEnter={() => loadHubs()}
-                                    onClick={createHub}>
-                                    Create New Hub +
-                                </button>
-                                <br/><br/>
-                                <form onSubmit={joinHub}>
-                                    <input type="text" placeholder="Enter Access Code"></input>
-                                    <button type="submit">Join New Hub</button>
-                                </form>
-                                <p style={{color:"white"}}>{joinHubMessage}</p>
-                            </ul>
-                        )}
+                                    ))}
+                                    <button
+                                        onMouseEnter={() => loadHubs()}
+                                        onClick={createHub}>
+                                        Create New Hub +
+                                    </button>
+                                    <br/><br/>
+                                    <form onSubmit={joinHub}>
+                                        <input type="text" placeholder="Enter Access Code"></input>
+                                        <button type="submit">Join New Hub</button>
+                                    </form>
+                                    <p style={{color:"white"}}>{joinHubMessage}</p>
+                                </ul>
+                            )}
+                        </div>}
                     </NavMenu>
                 </Nav>
             </>
-        );
-    }
-    else {
-        return (
-            <>
-                <Nav>
-                    <NavMenu onMouseLeave={() => setHubsVisible(false)}>
-                        <NavLink to="/"><img style={{width: "100%", height: "200%", objectFit: "contain"}}
-                            loading="eager"
-                            alt=""
-                            src="/smb-logo.png"
-                        /></NavLink><br></br><br></br><br></br>
-                    </NavMenu>
-                </Nav>
-            </>
-        );
-    }
-
-    
+        );   
 };
 
 export default NavBar;

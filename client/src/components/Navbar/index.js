@@ -1,5 +1,3 @@
-// following this tutorial: https://www.geeksforgeeks.org/how-to-create-a-multi-page-website-using-react-js/
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Nav, NavLink, NavMenu } from "./elements";
@@ -12,6 +10,7 @@ const NavBar = () => {
     const [hubsVisible, setHubsVisible] = useState(false);
     const [formData, setFormData] = useState({sessionID: localStorage.sessionID});
     const [hubs, setHubs] = useState([]);
+    const [joinHubMessage, setJoinHubMessage] = useState("");
     
 
     async function getHubs() {
@@ -32,6 +31,29 @@ const NavBar = () => {
     async function createHub() {
         let path = `/hubs/create-hub`; 
         navigate(path);
+    }
+
+    async function joinHub(event) {
+        event.preventDefault();
+        if (event.target[0].value === "") {
+            setJoinHubMessage("Please enter an access code");
+            return;
+        }
+        let url = `${baseUrl}/loadProfile`;
+        let profile = await axios.post(url, JSON.stringify(formData));
+        url = `${baseUrl}/add-join-request?accessCode=${event.target[0].value}&uid=${profile.data.uid}`;
+        let ret = await axios.get(url);
+        if (ret.data.status === 200) setJoinHubMessage("Request to join sent successfully");
+        if (ret.data.status === 403) setJoinHubMessage("Request already sent");
+        if (ret.data.status === 404) setJoinHubMessage("Hub not found");
+        if (ret.data.status === 406) setJoinHubMessage("Banned from this hub");
+        if (ret.data.status === 409) setJoinHubMessage("Already a member of this hub");
+        if (ret.data.status === 500 || ret.status !== 200) setJoinHubMessage("Something went wrong");
+    }
+
+    async function loadHubs() {
+        setJoinHubMessage("");
+        setHubsVisible(true);
     }
 
     if((localStorage.getItem("sessionID") == -1) || (localStorage.getItem("sessionID") == null)) {
@@ -60,14 +82,10 @@ const NavBar = () => {
                             alt=""
                             src="/smb-logo.png"
                         /></NavLink><br></br><br></br><br></br>
-                        {/* <NavLink to="/test">Test</NavLink> */}
-                        {/* <NavLink to="/upload-image">Upload Image</NavLink>
-                        <NavLink to="/display-image">Display Image</NavLink> */}
-                        {/* <NavLink to="/login">Login</NavLink> */}
                         <NavLink to="/createProfile">Create Profile</NavLink>
                         <NavLink to="/editProfile">Edit Profile</NavLink>
                         <NavLink
-                            onMouseEnter={() => setHubsVisible(true)}
+                            onMouseEnter={() => loadHubs()}
                             to="/hubs">
                             Hubs
                         </NavLink>
@@ -78,25 +96,27 @@ const NavBar = () => {
                                     style={{height: "10%"}}
                                     reloadDocument
                                     key={hub.hid}
-                                    onMouseEnter={() => setHubsVisible(true)}
+                                    onMouseEnter={() => loadHubs()}
                                     to={`/hubs/${hub.hid}`}>
                                     {hub.name}
                                     </NavLink>
                                 ))}
                                 <button
-                                    onMouseEnter={() => setHubsVisible(true)}
+                                    onMouseEnter={() => loadHubs()}
                                     onClick={createHub}>
                                     Create New Hub +
                                 </button>
+                                <br/><br/>
+                                <form onSubmit={joinHub}>
+                                    <input type="text" placeholder="Enter Access Code"></input>
+                                    <button type="submit">Join New Hub</button>
+                                </form>
+                                <p style={{color:"white"}}>{joinHubMessage}</p>
                             </ul>
                         )}
                         <NavLink to="/profile">Profile</NavLink>
-                        {/* <NavLink to="/script">Display Script</NavLink> */}
                         <NavLink to="/unit-tests">Unit Tests</NavLink>
                         <NavLink to="/createAccount">Create Account</NavLink>
-                        {/* <NavLink to="/signin">Hannah's Links</NavLink> */}
-                        {/* <NavLink to="/signup">Sign Up</NavLink>
-                        <NavLink to="/forgotpassword">Forgot Password</NavLink> */}
                     </NavMenu>
                 </Nav>
             </>

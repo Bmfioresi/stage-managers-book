@@ -222,7 +222,8 @@ module.exports = {
                         phone_number: f.phoneNumber,
                         email_address: f.email,
                         pronouns: f.pronouns,
-                        roles: f.roles
+                        roles: f.roles,
+                        hids: f.hids
                     }
                 }
             );
@@ -262,6 +263,19 @@ module.exports = {
                 }
             );
             return {status: 200};
+        } catch (err) {
+            console.log(err);
+            return {status: 500};
+        }
+    },
+
+    findHub: async function (accessCode) {
+        try {
+            const hubsBase = mongoclient.db('hubs');
+            const hubs = hubsBase.collection('hub_info');
+            let hub = await hubs.findOne({access_code: accessCode});
+            if (hub === null) return {status: 404}; // not found
+            else return {status: 200, hid: hub.hid};
         } catch (err) {
             console.log(err);
             return {status: 500};
@@ -343,7 +357,7 @@ module.exports = {
             var thisBlackList = [];
 
             const doc = { name: hub.name, owner: hub.owner, description: hub.description, 
-                hid: thisHID, code: thisCode, whitelist: thisWhiteList, blacklist: thisBlackList };
+                hid: thisHID, accessCode: thisCode, whitelist: thisWhiteList, blacklist: thisBlackList };
             const result = await hubs.insertOne(doc);
         } catch (err) {
             console.log(err);
@@ -358,7 +372,7 @@ module.exports = {
             const collection = db.collection("profiles");
             var members = [];
             for(let i = 0; i < whitelist.length; i++) {
-                console.log(whitelist[i]);
+                //console.log(whitelist[i]);
                 const query = { uid: whitelist[i] };
                 const member = await collection.findOne(query);
                 members.push(member);

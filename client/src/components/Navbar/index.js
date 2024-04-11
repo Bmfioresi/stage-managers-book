@@ -33,6 +33,14 @@ const NavBar = () => {
         navigate(path);
     }
 
+    async function signedIn() {
+        if(localStorage.sessionID != -1) {
+            // console.log(localStorage.sessionID);
+            return true;
+        }
+        return false;
+    }
+
     async function joinHub(event) {
         event.preventDefault();
         if (event.target[0].value === "") {
@@ -56,23 +64,7 @@ const NavBar = () => {
         setHubsVisible(true);
     }
 
-    if((localStorage.getItem("sessionID") == -1) || (localStorage.getItem("sessionID") == null)) {
-        return (
-            <>
-                <h1 style={{color: "blue"}}>{localStorage.getItem("sessionID")}</h1>
-                <Nav>
-                    <NavMenu onMouseLeave={() => setHubsVisible(false)}>
-                        <NavLink to="/"><img style={{width: "100%", height: "200%", objectFit: "contain"}}
-                            loading="eager"
-                            alt=""
-                            src="/smb-logo.png"
-                        /></NavLink><br></br><br></br><br></br>
-                    </NavMenu>
-                </Nav>
-            </>
-        );
-    }
-    else {
+    if(signedIn()) {
         return (
             <>
                 <Nav>
@@ -84,6 +76,9 @@ const NavBar = () => {
                         /></NavLink><br></br><br></br><br></br>
                         <NavLink to="/createProfile">Create Profile</NavLink>
                         <NavLink to="/editProfile">Edit Profile</NavLink>
+                        <NavLink to="/profile">Profile</NavLink>
+                        <NavLink to="/unit-tests">Unit Tests</NavLink>
+                        <NavLink to="/createAccount">Create Account</NavLink>
                         <NavLink
                             onMouseEnter={() => loadHubs()}
                             to="/hubs">
@@ -114,9 +109,21 @@ const NavBar = () => {
                                 <p style={{color:"white"}}>{joinHubMessage}</p>
                             </ul>
                         )}
-                        <NavLink to="/profile">Profile</NavLink>
-                        <NavLink to="/unit-tests">Unit Tests</NavLink>
-                        <NavLink to="/createAccount">Create Account</NavLink>
+                    </NavMenu>
+                </Nav>
+            </>
+        );
+    }
+    else {
+        return (
+            <>
+                <Nav>
+                    <NavMenu onMouseLeave={() => setHubsVisible(false)}>
+                        <NavLink to="/"><img style={{width: "100%", height: "200%", objectFit: "contain"}}
+                            loading="eager"
+                            alt=""
+                            src="/smb-logo.png"
+                        /></NavLink><br></br><br></br><br></br>
                     </NavMenu>
                 </Nav>
             </>

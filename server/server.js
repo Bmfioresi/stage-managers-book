@@ -200,7 +200,8 @@ app.get('/get-filenames', async (req, res) => {
 
 app.post('/create-hub', async (req, res) => {
     const hub = JSON.parse(Object.keys(req.fields)[0]);
-    const userIDResponse = await mongoHelpers.getUserID(hub.owner);
+    console.log(hub);
+    const userIDResponse = await mongoHelpers.getUserID(hub.sessionID);
     hub.owner = userIDResponse.userID;
     const newHub = await mongoHelpers.createHub(hub);
     res.json(newHub);

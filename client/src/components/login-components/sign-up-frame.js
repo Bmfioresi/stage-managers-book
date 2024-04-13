@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
 import "../../css/sign-up-frame.css";
 import "../../css/global.css";
+// import { Tooltip as ReactTooltip } from 'react-tooltip'; // couldn't get this to work 
 import { toast } from 'react-toastify'; 
 import LineFrame from "./sign-up-form-frame";
 
@@ -20,9 +21,38 @@ const SignUpFrame = () => {
     const { name, value } = event.target;
     setFormData(prevState => ({ ...prevState, [name]: value}));
 };
+
+function isValidEmail(email) { // Function to check if the email is valid
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isValidPassword(password) { // Function to check if the password is valid
+  const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return strongPasswordRegex.test(password);
+}
   
 async function handleLoginSubmit(event) {
   event.preventDefault(); // Prevent the default form submission
+
+  if (!formData.fullName || !formData.email || !formData.password || !formData.verifyPassword) { // If any of the fields are empty
+    toast.error('Please fill in all fields.');
+    return; // stop submission
+  }
+
+  if (!isValidEmail(formData.email)) { // If the email is not valid
+    toast.error('Please enter a valid email.');
+    return; // stop submission
+  }
+
+  if (!isValidPassword(formData.password)) { // If the password is not valid
+    toast.error('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character.');
+    return; // stop submission
+  }
+
+  if (formData.password !== formData.verifyPassword) { // If the passwords do not match
+    toast.error('Passwords do not match. Please try again.');
+    return; // stop submission
+  }
 
   const url = 'http://localhost:8000/register'; // URL for registration
 
@@ -82,6 +112,7 @@ async function handleLoginSubmit(event) {
             value={formData.password}
             onChange={handleLoginChange} // Pass the handler
             type = "password" // to hide the password
+            // tooltipText="Your password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
           />
           <LineFrame
             label1="Verify Password"

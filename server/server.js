@@ -78,31 +78,25 @@ app.get('/test', (req, res) => { // don't delete, necessary for unit tests
 app.post('/register', async (req, res) => {
     // console.log("Registering user");
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-    console.log(fields);
 
-    try{     
-        if (fields.password != fields.verifyPassword) {
-            return res.status(400).send({message: "Passwords do not match"});
-        }
-        //console.log("Creating user with email: " + fields.email)
-
+    try{
         // hash the password
         const hashedPassword = await bcrypt.hash(fields.password, saltrounds);
 
         // Attempt to create a user
         const userCreationResult = await mongoHelpers.createUser(fields.fullName, fields.email, fields.password);
         if (userCreationResult.success) {
-            console.log(userCreationResult.message);
+            //console.log(userCreationResult.message);
             res.status(201).send('User created successfully');
             //res.json({ status: 201, message: userCreationResult.message });
         }
         else if (!userCreationResult.success) {
-            console.log(userCreationResult.message);
+            //console.log(userCreationResult.message);
             //res.status(400).send(userCreationResult.message);
             res.json({ status: 400, message: userCreationResult.message });
         }
     } catch (error) {
-        console.error('Error during registration:', error);
+        //console.error('Error during registration:', error);
         res.json({ status: 500, message: 'Server Error' });
         // res.status(500).send('Server Error');
     }

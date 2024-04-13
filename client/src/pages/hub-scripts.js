@@ -80,13 +80,12 @@ const Scripts = () => {
             }
         };
 
-        setLoading(true);
-
         let filenames = await fetch(`${baseUrl}/get-filenames?hub=${hub}&bucket=${bucket}`);
         filenames = await filenames.json();
 
         var links = [];
         for (let i = 0; i < filenames.length; i++) {
+            setLoading(true);
             let res = await fetch(`${baseUrl}/download-file?name=${filenames[i]}&hub=${hub}&bucket=${bucket}`);
             let blob = await res.blob();
             let pdfblob = new Blob([blob], {type: "application/pdf"});

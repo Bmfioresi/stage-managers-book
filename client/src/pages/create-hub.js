@@ -8,35 +8,44 @@ import '../css/hub-pages.css';
 const CreateHub = () => {
     const navigate = useNavigate();
     const baseUrl = "http://localhost:8000";
+    var name = "";
+    var description = "";
     const [formData, setFormData] = useState({
         name: 'Default',
         description: 'Default',
-        owner: '',
-        hid: '',
+        sessionID: localStorage.getItem("sessionID"),
     });
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        createHub();
     };
     
     async function createHub() {
         const url = `${baseUrl}/create-hub`;
-        setFormData({owner: localStorage.sessionID});
+        setFormData({
+            name: name,
+            sessionID: localStorage.getItem("sessionID"), // passing it session
+            description: description
+        });
         axios.post(url, JSON.stringify(formData)).then((response) => {
             console.log(response);
+            let path = `/hubs/${formData.hid}/${response.data[0].hid}`; 
+            navigate(path);
         });
     }
 
     return (
         <div className="bucket">
-            <div className="hub-title">
-                <form action={handleChange}>
-                    <span>
-                        <label style={{color: "black", fontSize: "30px", padding: ".5%"}} for="name">Name: </label>
-                        <input type="text" id="name" name="fname" placeholder={formData.name} onChange={handleChange}></input>
-                    </span>
+            <div className="overview" style={{height: "74%", top: "11%", width: "76%", right: "12%"}}>
+                <form onSubmit={handleSubmit}>
+                    <br></br>
+                    <label style={{color: "black", fontSize: "30px", padding: ".5%"}} htmlFor="name">Name: </label>
+                    <input style={{width: "90%", alignSelf: "center"}} type="text" id="name" name="name" placeholder={"Enter Name"} onChange={(e) => name = e.target.value}></input>
+                    <br></br>
+                    <label style={{color: "black", fontSize: "30px", padding: ".5%"}} htmlFor="description">Description: </label>
+                    <input style={{width: "90%", alignSelf: "center"}} type="text" id="description" name="description" placeholder={"Enter Description"} onChange={(e) => description = e.target.value}></input>
+                    <input style={{width: "10%", alignSelf: "center"}} type="submit"/>
                 </form>
             </div>            
         </div>

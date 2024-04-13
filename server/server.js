@@ -192,8 +192,10 @@ app.get('/get-filenames', async (req, res) => {
 
 app.post('/create-hub', async (req, res) => {
     const hub = JSON.parse(Object.keys(req.fields)[0]);
-    const userIDResponse = await mongoHelpers.getUserID(hub.owner);
+    console.log(hub);
+    const userIDResponse = await mongoHelpers.getUserID(hub.sessionID);
     hub.owner = userIDResponse.userID;
+    console.log(hub.owner); // HERE IT IS BREAKING IN SERVER.JS PLEASE REMEMBER LOGAN
     const newHub = await mongoHelpers.createHub(hub);
     res.json(newHub);
 });
@@ -223,15 +225,28 @@ app.post('/retrieve-members', async (req, res) => {
 });
 
 app.get('/add-join-request', async (req, res) => {
-    const hid = req.query.hid;
+    const accessCode = req.query.accessCode;
     const uid = req.query.uid;
-    const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    if (hubInfo[0].join_requests.includes(uid)) {
-        res.json({status: 403});
+    const hub = await mongoHelpers.findHub(accessCode);
+    if (uid === "-1") hub.status = 500;
+    if (hub.status === 200) {
+        let hid = hub.hid;
+        const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+        if (hubInfo[0].whitelist?.includes(uid) || hubInfo[0].owner === uid) {
+            res.json({status: 409}); // status code for conflict
+        }
+        if (hubInfo[0].blacklist?.includes(uid)) {
+            res.json({status: 406}) // status code for not acceptable
+        }
+        if (hubInfo[0].join_requests?.includes(uid)) {
+            res.json({status: 403}); // status code for already exists
+        } else {
+            hubInfo[0].join_requests.push(uid);
+            let ret = await mongoHelpers.updateHub(hubInfo[0]);
+            res.json(ret);
+        }
     } else {
-        hubInfo[0].join_requests.push(uid);
-        let ret = await mongoHelpers.updateHub(hubInfo[0]);
-        res.json(ret);
+        res.json({status: hub.status});
     }
 });
 
@@ -239,7 +254,7 @@ app.get('/remove-join-request', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    hubInfo[0].join_requests = hubInfo[0].join_requests.filter((jruid) => jruid !== uid);
+    hubInfo[0].join_requests = hubInfo[0].join_requests?.filter((jruid) => jruid !== uid);
     let ret = await mongoHelpers.updateHub(hubInfo[0]);
     res.json(ret);
 })
@@ -248,9 +263,12 @@ app.get('/add-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    if (hubInfo[0].whitelist.includes(uid)) {
+    if (hubInfo[0].whitelist?.includes(uid)) {
         res.json({status: 403}); // status code for already exists
     } else {
+        let profile = await mongoHelpers.loadProfile(uid);
+        profile.hids.push(hid);
+        await mongoHelpers.updateProfile(profile);
         hubInfo[0].whitelist.push(uid);
         let ret = await mongoHelpers.updateHub(hubInfo[0]);
         res.json(ret);
@@ -260,8 +278,11 @@ app.get('/add-member', async (req, res) => {
 app.get('/kick-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
+    let profile = await mongoHelpers.loadProfile(uid);
+    profile.hids = profile.hids?.filter((phid) => phid !== hid);
+    await mongoHelpers.updateProfile(profile);
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    hubInfo[0].whitelist = hubInfo[0].whitelist.filter((wluid) => wluid !== uid);
+    hubInfo[0].whitelist = hubInfo[0].whitelist?.filter((wluid) => wluid !== uid);
     let ret = await mongoHelpers.updateHub(hubInfo[0]);
     res.json(ret);
 });
@@ -270,7 +291,7 @@ app.get('/ban-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    if (hubInfo[0].blacklist.includes(uid)) {
+    if (hubInfo[0].blacklist?.includes(uid)) {
         res.json({status: 403}); // status code for already exists
     } else {
         hubInfo[0].blacklist.push(uid);
@@ -283,7 +304,7 @@ app.get('/unban-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    hubInfo[0].blacklist = hubInfo[0].blacklist.filter((wluid) => wluid !== uid);
+    hubInfo[0].blacklist = hubInfo[0].blacklist?.filter((wluid) => wluid !== uid);
     let ret = await mongoHelpers.updateHub(hubInfo[0]);
     res.json(ret);
 })
@@ -314,12 +335,20 @@ app.post('/authenticate',
                 res.json({ status: 401, message: "Invalid Credentials. Please try again." });
             }
 
+
             // compare the hashed password with the password provided by the user
             
             const isMatch = await bcrypt.compare(fields.password, user.password);
             // console.log(isMatch);
             if (!isMatch) {
                 res.json({ status: 401, message: "Invalid Credentials. Please try again." });
+
+            if (userId == null) {
+                // res.status(401).json("NOT AUTHENTICATED");
+                req.session.isLoggedIn = false;
+                req.session.userId = "-1";
+                res.json(req.sessionID);
+
             } else {
                 req.session.isLoggedIn = true;
                 req.session.userId = user.uid;

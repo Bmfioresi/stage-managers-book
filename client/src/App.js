@@ -17,7 +17,7 @@ import Resources from "./pages/hub-resources.js";
 import Designer from "./pages/hub-designer.js";
 import Scripts from "./pages/hub-scripts.js";
 import HubAdmin from './pages/hub-admin.js';
-import Authenticate from './pages/authenticate.js';
+// import Authenticate from './pages/authenticate.js';
 import ProfileForm from './pages/profile-form.js';
 import InputFrame from "./components/login-components/sign-up-frame.js";
 import ProfileEdit from './pages/profile-edit.js';
@@ -40,9 +40,9 @@ function App() {
           <Route path="/hubs/:hub/resources" element={<Resources />} />
           <Route path="/hubs/:hub/designer" element={<Designer />} />
           <Route path="/hubs/:hub/scripts" element={<Scripts />} />
-          <Route path="/hubs/:hub/hub-admin" element={<HubAdmin />} />
+          <Route path="/hubs/:hub/admin" element={<HubAdmin />} />
           <Route path="/hubs/create-hub" element={<CreateHub />} />
-          <Route path="/login" element={<Authenticate />} />
+          {/* <Route path="/login" element={<Authenticate />} /> */}
           <Route path="/createProfile" element={<ProfileForm />} />
           <Route path="/createAccount" element={<InputFrame />} />
           <Route path="/editProfile" element={<ProfileEdit />} />

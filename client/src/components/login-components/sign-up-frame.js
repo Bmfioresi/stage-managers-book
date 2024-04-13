@@ -18,39 +18,24 @@ const SignUpFrame = () => {
 
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
-    // console.log("Input name:", name, "Value:", value); // Debugging log
     setFormData(prevState => ({ ...prevState, [name]: value}));
 };
   
+async function handleLoginSubmit(event) {
+  event.preventDefault(); // Prevent the default form submission
 
-const handleLoginSubmit = async (event) => {
-  event.preventDefault();
-  const url = 'http://localhost:8000/register';
+  const url = 'http://localhost:8000/register'; // URL for registration
 
-  try {
-      const response = await axios.post(url, formData);
-      if (response.status === 201) {
-          toast.success('Successfully registered');
-          navigate('/signin');
-      } else {
-          // Handle any other success status if needed
-          toast.warn('Registration successful with unexpected status code.');
-      }
-  } catch (error) {
-      if (error.response) {
-          // Server responded with a status code outside the 2xx range
-          const errorMessage = error.response.data.message || 'Registration failed due to an unknown error';
-          toast.error(errorMessage);
-      } else if (error.request) {
-          // The request was made but no response was received
-          toast.error('No response received from server');
-      } else {
-          // Something else caused an error
-          toast.error('An error occurred during registration');
-      }
-  }
+  await axios.post(url, JSON.stringify(formData)).then((response) => {
+
+    if (response.status === 201) { // If the status is 201 (Created)
+      toast.success('Successfully registered');
+      navigate('/signin');
+    } else { 
+      toast.error(response.data.message);
+    }
+  });
 };
-
 
   return (
     <div className="left-side-column">
@@ -62,7 +47,7 @@ const handleLoginSubmit = async (event) => {
             <span className="span">{` `}</span>
           </span>
         </div>
-        <form className="input-label" onSubmit={handleLoginSubmit} method="POST">
+        <form className="input-label" onSubmit={(event) => handleLoginSubmit(event)} method="POST">
           <div className="today-is-a-container">
             <span>
               <p className="today-is-a">{`Today marks a new beginning. It’s your stage. You

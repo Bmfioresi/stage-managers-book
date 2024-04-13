@@ -94,14 +94,17 @@ app.post('/register', async (req, res) => {
         if (userCreationResult.success) {
             console.log(userCreationResult.message);
             res.status(201).send('User created successfully');
+            //res.json({ status: 201, message: userCreationResult.message });
         }
         else if (!userCreationResult.success) {
             console.log(userCreationResult.message);
-            res.status(400).send(userCreationResult.message);
+            //res.status(400).send(userCreationResult.message);
+            res.json({ status: 400, message: userCreationResult.message });
         }
     } catch (error) {
         console.error('Error during registration:', error);
-        res.status(500).send('Server Error');
+        res.json({ status: 500, message: 'Server Error' });
+        // res.status(500).send('Server Error');
     }
 });
 

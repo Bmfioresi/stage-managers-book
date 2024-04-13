@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import "../../css/sign-up-form-frame.css";
 import "../../css/global.css"
+// import { Tooltip as ReactTooltip } from 'react-tooltip';
 
 const LineFrame = ({
   label1,
@@ -20,7 +21,9 @@ const LineFrame = ({
   return (
     <div className="line-frame1">
       <div className="input9">
-        <div className="label2">{label1}</div>
+      <div className="label2">
+          {label1}
+        </div>
         <div className="input7">
           <div className="input8" />
           <input
@@ -28,7 +31,7 @@ const LineFrame = ({
             className="placeholder2"
             placeholder={placeholder}
             type={inputType}
-            style={{ width: propWidth1 }}
+            style={{ width: propWidth1, height: "20px" }}
             value={value}
             onChange={onChange}
           />

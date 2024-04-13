@@ -1,5 +1,7 @@
 import React from "react";
 import './css/App.css';
+import 'react-toastify/dist/ReactToastify.css'; // for toast notifications
+import { ToastContainer } from 'react-toastify';
 
 import Navbar from "./components/Navbar/index.js";
 import {
@@ -51,6 +53,17 @@ function App() {
           <Route path="/unit-tests" element={<UnitTests />} />
         </Routes>
       </Router>
+      <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
     </div>
   );
 }

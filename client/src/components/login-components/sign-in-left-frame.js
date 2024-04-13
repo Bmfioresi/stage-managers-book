@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import ReactDOM from "react-dom/client";
+import { toast } from 'react-toastify';
 import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
 import "../../css/sign-in-left-frame.css";
@@ -29,13 +29,6 @@ const LeftSide8Column = () => {
 
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
-
-    // // Email validation and escaping special characters
-    // if (name === 'email' && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-    //   alert('Invalid login credentials. Please try again.');
-    //   return
-    // }
-
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
@@ -44,28 +37,23 @@ const LeftSide8Column = () => {
 
     const url = 'http://localhost:8000/authenticate';
 
-    // FOR DEBUGGING PURPOSES
-    // console.log(formData.email);
-    // console.log(formData.password);
-    // console.log(url);
-    // console.log("ABOUT TO SEND AXIOS");
+    const response = await axios.post(url, JSON.stringify(formData));
 
-    await axios.post(url, JSON.stringify(formData)).then((response) => {
-
-      // FOR DEBUGGING PURPOSES
-      // console.log("GOT RESPONSE");
-      // console.log(response.data);
+    if (response.status === 201) {
       localStorage.setItem('sessionID', response.data); // WRITING SESSION ID TO LOCAL STORAGE
-
-      // Ensuring we redirect to profile page
       setLoggedIn("TRUE");
-    });
-  }
+      toast.success('Successfully logged in');
+    } else {
+      setLoggedIn("FALSE");
+      navigate("/signin");
+      toast.error(response.data.message);
+    }
+  };
 
   // Redirecting to profile if user just logged in
   if (loggedIn == "TRUE") {
     return <Navigate to='/profile' />;
-  } 
+  }
 
   return (
     <div className="left-side-column">

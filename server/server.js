@@ -333,22 +333,18 @@ app.post('/authenticate',
             const user = await mongoHelpers.authenticateUser(fields.email);
             if (!user) {
                 res.json({ status: 401, message: "Invalid Credentials. Please try again." });
+                return;
             }
-
-
             // compare the hashed password with the password provided by the user
             
             const isMatch = await bcrypt.compare(fields.password, user.password);
             // console.log(isMatch);
             if (!isMatch) {
-                res.json({ status: 401, message: "Invalid Credentials. Please try again." });
-
-            if (userId == null) {
-                // res.status(401).json("NOT AUTHENTICATED");
+                console.log("Invalid Credentials. Please try again.");
                 req.session.isLoggedIn = false;
                 req.session.userId = "-1";
-                res.json(req.sessionID);
-
+                res.json({ status: 401, message: "Invalid Credentials. Please try again.", sessionID: req.sessionID});
+                return;
             } else {
                 req.session.isLoggedIn = true;
                 req.session.userId = user.uid;
@@ -358,14 +354,17 @@ app.post('/authenticate',
                 // console.log(req.sessionID); // Newly Created SessionID
                 res.status(201).json(req.sessionID);
                 //res.json(req.sessionID);
+                return;
             }
         } catch (error) {
             // console.error("Authentication Error:", error);
             // res.status(500).json("Server Error");
             res.json({ status: 500, message: "Server Error" }); 
+            return;
         }
     }
 );
+
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returnde
 app.post('/updateProfile', async (req, res) => {

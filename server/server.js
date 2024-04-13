@@ -76,7 +76,6 @@ app.get('/test', (req, res) => { // don't delete, necessary for unit tests
 
 // creating a new user from the sign-up form
 app.post('/register', async (req, res) => {
-    // console.log("Registering user");
     const fields = JSON.parse(Object.keys(req.fields)[0]);
 
     try{
@@ -84,21 +83,16 @@ app.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(fields.password, saltrounds);
 
         // Attempt to create a user
-        const userCreationResult = await mongoHelpers.createUser(fields.fullName, fields.email, fields.password);
+        const userCreationResult = await mongoHelpers.createUser(fields.fullName, fields.email, hashedPassword);
         if (userCreationResult.success) {
-            //console.log(userCreationResult.message);
             res.status(201).send('User created successfully');
-            //res.json({ status: 201, message: userCreationResult.message });
         }
         else if (!userCreationResult.success) {
-            //console.log(userCreationResult.message);
             //res.status(400).send(userCreationResult.message);
             res.json({ status: 400, message: userCreationResult.message });
         }
     } catch (error) {
-        //console.error('Error during registration:', error);
         res.json({ status: 500, message: 'Server Error' });
-        // res.status(500).send('Server Error');
     }
 });
 
@@ -311,14 +305,24 @@ app.post('/authenticate',
         // console.log(fields);
 
         try {
-            var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
+            // var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
 
-            if (userId == null) {
-                //res.status(401).json("NOT AUTHENTICATED");
-                res.json({ status: 401, message: "Invalid Credentials. Please try again." })
+            // implementing hashed passwords
+            // fetch user's hashed password from the database
+            const user = await mongoHelpers.authenticateUser(fields.email);
+            if (!user) {
+                res.json({ status: 401, message: "Invalid Credentials. Please try again." });
+            }
+
+            // compare the hashed password with the password provided by the user
+            
+            const isMatch = await bcrypt.compare(fields.password, user.password);
+            // console.log(isMatch);
+            if (!isMatch) {
+                res.json({ status: 401, message: "Invalid Credentials. Please try again." });
             } else {
                 req.session.isLoggedIn = true;
-                req.session.userId = userId.uid;
+                req.session.userId = user.uid;
 
                 // FOR DEBUGGING
                 // console.log("USER's SESSION ID");

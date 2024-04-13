@@ -38,26 +38,22 @@ module.exports = {
         } 
     },
 
-
-    authenticateUser: async function (uname, pword) {
+    // updated to just search for email... trying to use hashed passwords
+    authenticateUser: async function (uname) {
         try {
             const credentialsBase = mongoclient.db('credentials');
             const credentials = credentialsBase.collection('credentials');
-
-            // FOR DEBUGGING
-            // console.log("LOGIN CREDS");
-            // console.log(uname);
-            // console.log(pword);
         
             // query
-            const query = { username: uname, password: pword };
+            const query = { username: uname };
             const userProfile = await credentials.findOne(query);
         
-            // FOR DEBUGGING
-            // console.log(userProfile.uid);
-            // console.log(userProfile);
-            // console.log(userProfile.uid);
+            // no user found with this email
+            if (!userProfile) {
+                return null;
+            }
 
+            // returning user data
             return userProfile;
         
         } catch (err) {

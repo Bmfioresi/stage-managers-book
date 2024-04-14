@@ -4,6 +4,8 @@ import axios from 'axios';
 import '../css/pages.css';
 import '../css/hub-pages.css';
 
+const baseUrl = "https://localhost:8000"
+
 const NoAccess = () => {
     return (
         <div className="bucket">

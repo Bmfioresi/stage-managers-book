@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import {useParams} from 'react-router-dom';
 import { useNavigate, Navigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import '../css/hub-pages.css';
 const baseUrl = 'http://localhost:8000';
 
 function HubAdmin() {
+    const announcementRef = useRef(null);
     let joinRequests = [];
     let whitelist = [];
     let blacklist = [];
@@ -103,7 +104,8 @@ function HubAdmin() {
     }, []);
 
     async function addAnnouncement() {
-
+        const url = `${baseUrl}/add-announcement`;
+        axios.post(url, JSON.stringify({hid: Number(params.hub), announcement: announcementRef.current.value}));
     }
 
     return(
@@ -132,7 +134,7 @@ function HubAdmin() {
             <div className="overview">
                 <h1 className="cat-header">Announcements</h1>
                 {announcements.map((announcement) => (
-                    <li key={announcement.date} className="regular-text">{announcement.message} ::: {announcement.date}</li>
+                    <li key={announcement} className="regular-text">{announcement}</li>
                 ))}
             </div>
             <div className="links">
@@ -144,6 +146,7 @@ function HubAdmin() {
                             width: "90%",
                             alignSelf: "center"
                         }}
+                        ref={announcementRef}
                     />
                     <button
                         style={{

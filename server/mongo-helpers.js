@@ -286,7 +286,7 @@ module.exports = {
             //console.log(userId);
 
             // query
-            const query = { uid: Number(userId) };
+            const query = { uid: userId }; // DECIDE IF WE STORING UID AS NUMBER OR STRING
             const userProfile = await profiles.findOne(query);
         
             //console.log(userProfile.uid);
@@ -384,6 +384,26 @@ module.exports = {
             console.log(err);
             console.log("MEMBER ERROR");
             return {'uid': "-1"};
+        }
+    },
+
+    addAnnouncement : async function (hid, announcement) {
+        try {
+            const db = mongoclient.db("hubs");
+            const collection = db.collection("hub_info");
+            const query = { hid: hid };
+            await collection.updateOne(
+                query,
+                {
+                    $push: { announcements : announcement}
+                }
+            );
+            hub.announcements.push(announcement);
+            return hub;
+        } catch (err) {
+            console.log(err);
+            console.log("ANNOUNCEMENT BROKE");
+            return;
         }
     }
 }

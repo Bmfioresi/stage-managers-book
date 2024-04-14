@@ -5,9 +5,10 @@ import axios from 'axios';
 import '../css/pages.css';
 import '../css/hub-pages.css';
 
+const baseUrl = "http://localhost:8000";
+
 const CreateHub = () => {
     const navigate = useNavigate();
-    const baseUrl = "http://localhost:8000";
     const nameInputRef = useRef(null);
     const descriptionInputRef = useRef(null);
     var formData = {

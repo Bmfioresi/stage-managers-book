@@ -21,6 +21,7 @@ const NavBar = () => {
         const url = `${baseUrl}/hubs`;
         await axios.post(url, JSON.stringify(formData)).then((response) => {
             const hubTemp = [];
+            console.log(response);
             for(let i = 0; i < response.data.length; i++) {
                 hubTemp.push({name: response.data[i].name, description: response.data[i].description, owner: response.data[i].owner, hid: response.data[i].hid});
             }

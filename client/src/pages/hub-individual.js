@@ -21,11 +21,12 @@ function HubIndividual() {
     //   hid: "01"
     // });
 
-    const formData = {hid: params.hub};
+    const formData = {hid: Number(params.hub)};
 
     async function getHubInfo() {
         const url = `${baseUrl}/hub-individual`;
         await axios.post(url, JSON.stringify(formData)).then((response => {
+          // console.log(response);
           setName(response.data[0].name);
           setDescription(response.data[0].description);
           owner = response.data[0].owner;

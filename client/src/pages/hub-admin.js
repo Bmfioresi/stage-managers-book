@@ -23,7 +23,7 @@ function HubAdmin() {
     const [accessCode, setAccessCode] = useState("");
     const [access, setAccess] = useState(false);
 
-    const formData = {hid: params.hub};
+    const formData = {hid: Number(params.hub)};
 
     async function getHubInfo() {
         const url = `${baseUrl}/hub-individual`;
@@ -34,6 +34,7 @@ function HubAdmin() {
           setAnnouncements(response.data[0].announcements);
           setAccessCode(response.data[0].access_code);
           joinRequests = response.data[0].join_requests;
+          console.log(response.data[0].whitelist);
           whitelist = response.data[0].whitelist;
           blacklist = response.data[0].blacklist;
         }));
@@ -41,7 +42,7 @@ function HubAdmin() {
 
     async function checkAdmin() {
         let url = `${baseUrl}/loadProfile`;
-        let profile = await axios.post(url, JSON.stringify({sessionID: localStorage.sessionID}));
+        let profile = await axios.post(url, JSON.stringify({sessionID: localStorage.getItem("sessionID")}));
         return profile.data.uid === owneruid;
     }
 

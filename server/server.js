@@ -205,7 +205,6 @@ app.post('/create-hub', async (req, res) => {
 // returns a list of hub info to load into buttons in hubs.js
 app.post('/hubs', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-    //const uid = await getUID(fields.sessionID)
     const uid = await getUID(fields.sessionID)
     const hids = await mongoHelpers.getHids(uid)
     const hubInfo = await mongoHelpers.getHubInfo(hids);
@@ -217,7 +216,7 @@ app.post('/hub-individual', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     const hid = fields.hid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    console.log(hubInfo);
+    //console.log(hubInfo);
     res.json(hubInfo);
 });
 

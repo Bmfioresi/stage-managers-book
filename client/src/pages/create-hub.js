@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Nav, NavLink, NavMenu } from "../components/Navbar/elements";
 import axios from 'axios';
@@ -8,28 +8,26 @@ import '../css/hub-pages.css';
 const CreateHub = () => {
     const navigate = useNavigate();
     const baseUrl = "http://localhost:8000";
-    var name = "";
-    var description = "";
-    const [formData, setFormData] = useState({
+    const nameInputRef = useRef(null);
+    const descriptionInputRef = useRef(null);
+    var formData = {
         name: 'Default',
         description: 'Default',
         sessionID: localStorage.getItem("sessionID"),
-    });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        formData.name = nameInputRef.current.value;
+        formData.sessionID =  localStorage.getItem("sessionID"); // passing it session
+        formData.description = descriptionInputRef.current.value;
         createHub();
     };
     
     async function createHub() {
         const url = `${baseUrl}/create-hub`;
-        setFormData({
-            name: name,
-            sessionID: localStorage.getItem("sessionID"), // passing it session
-            description: description
-        });
         await axios.post(url, JSON.stringify(formData)).then((response) => {
-            console.log(response);
+            // console.log(response);
             let path = `/hubs/${response.data.hid}`; 
             navigate(path);
         });
@@ -41,10 +39,10 @@ const CreateHub = () => {
                 <form onSubmit={handleSubmit}>
                     <br></br>
                     <label style={{color: "black", fontSize: "30px", padding: ".5%"}} htmlFor="name">Name: </label>
-                    <input style={{width: "90%", alignSelf: "center"}} type="text" id="name" name="name" placeholder={"Enter Name"} onChange={(e) => name = e.target.value}></input>
+                    <input style={{width: "90%", alignSelf: "center"}} type="text" id="name" name="name" placeholder={"Enter Name"} ref={nameInputRef}></input>
                     <br></br>
                     <label style={{color: "black", fontSize: "30px", padding: ".5%"}} htmlFor="description">Description: </label>
-                    <input style={{width: "90%", alignSelf: "center"}} type="text" id="description" name="description" placeholder={"Enter Description"} onChange={(e) => description = e.target.value}></input>
+                    <input style={{width: "90%", alignSelf: "center"}} type="text" id="description" name="description" placeholder={"Enter Description"} ref={descriptionInputRef}></input>
                     <input style={{width: "10%", alignSelf: "center"}} type="submit"/>
                 </form>
             </div>            

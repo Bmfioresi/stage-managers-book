@@ -59,6 +59,8 @@ const NavBar = () => {
             setJoinHubMessage("Please enter an access code");
             return;
         }
+        console.log(event.target[0].value);
+        console.log();
         let url = `${baseUrl}/loadProfile`;
         let profile = await axios.post(url, JSON.stringify(formData));
         url = `${baseUrl}/add-join-request?accessCode=${event.target[0].value}&uid=${profile.data.uid}`;

@@ -9,11 +9,15 @@ const baseUrl = 'http://localhost:8000';
 
 function HubAdmin() {
     const announcementRef = useRef(null);
+    const nameRef = useRef(null);
+    const descriptionRef = useRef(null);
     let joinRequests = [];
     let whitelist = [];
     let blacklist = [];
     let navigate = useNavigate();
     const params = useParams();
+    var newName;
+    var newDescription;
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [members, setMembers] = useState([]);
@@ -108,6 +112,18 @@ function HubAdmin() {
         axios.post(url, JSON.stringify({hid: Number(params.hub), announcement: announcementRef.current.value}));
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const url = `${baseUrl}/update-hub`;
+        let data = {
+            hid: params.hub,
+            name: nameRef.current.value,
+            description: descriptionRef.current.value
+        }
+        axios.post(url, JSON.stringify(data));
+        window.location.reload();
+    };
+
     return(
         <div className="bucket">
             {access && <div>
@@ -159,7 +175,14 @@ function HubAdmin() {
                 </form>
             </div>
             <div className="schedule">
-                <h1 className="cat-header">Schedule</h1>
+                <h1 className="cat-header">Edit hub info:</h1>
+                <form onSubmit={handleSubmit}>
+                    <label style={{color: "black", fontSize: "15px"}} htmlFor="name">Name: </label>
+                    <input style={{width: "90%", alignSelf: "center", height:"5px"}} type="text" id="name" name="name" placeholder={"Enter Name"} ref={nameRef}></input>
+                    <label style={{color: "black", fontSize: "15px"}} htmlFor="description">Description: </label>
+                    <input style={{width: "90%", alignSelf: "center", height:"5px"}} type="text" id="description" name="description" placeholder={"Enter Description"} ref={descriptionRef}></input>
+                    <input style={{width: "40%", alignSelf: "center"}} type="submit"/>
+                </form>
             </div>
             <div className="notifications">
                 <h1 className="cat-header">Join Requests <button onClick={retrieveMembers}>Refresh</button></h1>

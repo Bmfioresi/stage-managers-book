@@ -236,22 +236,21 @@ app.post('/retrieve-members', async (req, res) => {
 
 app.get('/add-join-request', async (req, res) => {
     const accessCode = req.query.accessCode;
-    const uid = req.query.uid;
+    const uid = Number(req.query.uid);
     const hub = await mongoHelpers.findHub(accessCode);
+    console.log(hub);
     if (uid === "-1") hub.status = 500;
     if (hub.status === 200) {
         let hid = hub.hid;
         const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
         if (hubInfo[0].whitelist?.includes(uid) || hubInfo[0].owner === uid) {
             res.json({status: 409}); // status code for conflict
-        }
-        if (hubInfo[0].blacklist?.includes(uid)) {
+        } else if (hubInfo[0].blacklist?.includes(uid)) {
             res.json({status: 406}) // status code for not acceptable
-        }
-        if (hubInfo[0].join_requests?.includes(uid)) {
+        } else if (hubInfo[0].join_requests?.includes(uid)) {
             res.json({status: 403}); // status code for already exists
         } else {
-            hubInfo[0].join_requests.push(uid);
+            hubInfo[0].join_requests.push(Number(uid));
             let ret = await mongoHelpers.updateHub(hubInfo[0]);
             res.json(ret);
         }
@@ -264,7 +263,7 @@ app.get('/remove-join-request', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    hubInfo[0].join_requests = hubInfo[0].join_requests?.filter((jruid) => jruid !== uid);
+    hubInfo[0].join_requests = hubInfo[0].join_requests?.filter((jruid) => jruid !== Number(uid));
     let ret = await mongoHelpers.updateHub(hubInfo[0]);
     res.json(ret);
 })
@@ -276,10 +275,12 @@ app.get('/add-member', async (req, res) => {
     if (hubInfo[0].whitelist?.includes(uid)) {
         res.json({status: 403}); // status code for already exists
     } else {
-        let profile = await mongoHelpers.loadProfile(uid);
-        profile.hids.push(hid);
+        let profile = await mongoHelpers.loadProfile(Number(uid));
+        console.log(profile);
+        if (profile.hids === null) profile.hids = [];
+        profile.hids.push(Number(hid));
         await mongoHelpers.updateProfile(profile);
-        hubInfo[0].whitelist.push(uid);
+        hubInfo[0].whitelist.push(Number(uid));
         let ret = await mongoHelpers.updateHub(hubInfo[0]);
         res.json(ret);
     }
@@ -289,10 +290,12 @@ app.get('/kick-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     let profile = await mongoHelpers.loadProfile(uid);
-    profile.hids = profile.hids?.filter((phid) => phid !== hid);
+    console.log(profile);
+    profile.hids = profile.hids?.filter((phid) => phid !== Number(hid));
     await mongoHelpers.updateProfile(profile);
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    hubInfo[0].whitelist = hubInfo[0].whitelist?.filter((wluid) => wluid !== uid);
+    console.log(hubInfo);
+    hubInfo[0].whitelist = hubInfo[0].whitelist?.filter((wluid) => wluid !== Number(uid));
     let ret = await mongoHelpers.updateHub(hubInfo[0]);
     res.json(ret);
 });
@@ -304,7 +307,10 @@ app.get('/ban-member', async (req, res) => {
     if (hubInfo[0].blacklist?.includes(uid)) {
         res.json({status: 403}); // status code for already exists
     } else {
-        hubInfo[0].blacklist.push(uid);
+        let profile = await mongoHelpers.loadProfile(uid);
+        profile.hids = profile.hids?.filter((phid) => phid !== Number(hid));
+        await mongoHelpers.updateProfile(profile);
+        hubInfo[0].blacklist.push(Number(uid));
         let ret = await mongoHelpers.updateHub(hubInfo[0]);
         res.json(ret);
     }
@@ -314,10 +320,30 @@ app.get('/unban-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    hubInfo[0].blacklist = hubInfo[0].blacklist?.filter((wluid) => wluid !== uid);
+    hubInfo[0].blacklist = hubInfo[0].blacklist?.filter((wluid) => wluid !== Number(uid));
     let ret = await mongoHelpers.updateHub(hubInfo[0]);
     res.json(ret);
-})
+});
+
+app.post('/update-hub', async (req, res) => {
+    const fields = JSON.parse(Object.keys(req.fields)[0]);
+    let hid = fields.hid;
+    let hub = await mongoHelpers.getIndividualHubInfo(hid);
+    hub = hub[0];
+    let hubInfo = {
+        hid: hub.hid,
+        owner: hub.owner,
+        name: fields.name,
+        access_code: hub.access_code,
+        whitelist: hub.whitelist,
+        blacklist: hub.blacklist,
+        description: fields.description,
+        announcements: hub.announcements,
+        join_requests: hub.join_requests
+    };
+    let result = await mongoHelpers.updateHub(hubInfo);
+    res.json(result);
+});
 
 // Returns dictionary of authenticated user; 'uid' is the only attribute definitely returned
 app.post('/authenticate', 

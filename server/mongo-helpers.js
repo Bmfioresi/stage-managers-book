@@ -69,7 +69,7 @@ module.exports = {
             const profiles = profilesBase.collection('profiles');
         
             // query
-            const query = { uid: userId};
+            const query = {uid: Number(userId)};
             var userProfile = await profiles.findOne(query);
         
             // FOR DEBUGGING PURPOSES
@@ -249,7 +249,9 @@ module.exports = {
                 {
                     $set: {
                         name: hubInfo.name,
+                        owner: hubInfo.owner,
                         access_code: hubInfo.access_code,
+                        hid: hubInfo.hid,
                         whitelist: hubInfo.whitelist,
                         blacklist: hubInfo.blacklist,
                         description: hubInfo.description,
@@ -269,7 +271,9 @@ module.exports = {
         try {
             const hubsBase = mongoclient.db('hubs');
             const hubs = hubsBase.collection('hub_info');
-            let hub = await hubs.findOne({access_code: accessCode});
+            console.log(accessCode);
+            let hub = await hubs.findOne({access_code: Number(accessCode)});
+            console.log(hub);
             if (hub === null) return {status: 404}; // not found
             else return {status: 200, hid: hub.hid};
         } catch (err) {
@@ -324,8 +328,7 @@ module.exports = {
             const db = mongoclient.db("hubs");
             const collection = db.collection("hub_info");
             var hubInfo = [];
-            // console.log(hid);
-            const query = { hid: hid };
+            const query = { hid: Number(hid) };
             const hub = await collection.findOne(query);
             hubInfo.push(hub);
             return hubInfo;

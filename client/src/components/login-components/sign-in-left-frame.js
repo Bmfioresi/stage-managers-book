@@ -86,7 +86,7 @@ const LeftSide8Column = () => {
                 id="email"
                 value={formData.email}
                 onChange={handleLoginChange}
-                style={{ width: "500px" }}
+                style={{ width: "500px", height: "20px" }}
               />
             </div>
           </div>
@@ -102,7 +102,7 @@ const LeftSide8Column = () => {
                 id="password"
                 value={formData.password}
                 onChange={handleLoginChange}
-                style={{ width: "500px" }}
+                style={{ width: "500px", height: "20px" }}
               />
             </div>
           </div>

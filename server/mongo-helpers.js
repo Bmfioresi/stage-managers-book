@@ -340,7 +340,7 @@ module.exports = {
             //console.log(userId);
 
             // query
-            const query = { uid: userId };
+            const query = { uid: Number(userId) };
             const userProfile = await profiles.findOne(query);
         
             //console.log(userProfile.uid);
@@ -361,7 +361,7 @@ module.exports = {
             const collection = db.collection("hub_info");
             var hubInfo = [];
             for(let i = 0; i < hids.length; i++) {
-                const query = { hid: hids[i] };
+                const query = { hid: Number(hids[i]) };
                 const hub = await collection.findOne(query);
                 hubInfo.push(hub);
             }
@@ -378,6 +378,7 @@ module.exports = {
             const db = mongoclient.db("hubs");
             const collection = db.collection("hub_info");
             var hubInfo = [];
+            // console.log(hid);
             const query = { hid: hid };
             const hub = await collection.findOne(query);
             hubInfo.push(hub);
@@ -405,10 +406,15 @@ module.exports = {
             var thisCode = countResult.code;
             var thisWhiteList = [];
             var thisBlackList = [];
+            var thisAnnouncements = [];
+            var thisJoinRequests = [];
 
             const doc = { name: hub.name, owner: hub.owner, description: hub.description, 
-                hid: thisHID, access_code: thisCode, whitelist: thisWhiteList, blacklist: thisBlackList };
+                hid: thisHID, access_code: thisCode, whitelist: thisWhiteList, blacklist: thisBlackList,
+                announcements: thisAnnouncements, join_requests: thisJoinRequests
+            };
             const result = await hubs.insertOne(doc);
+            return doc;
         } catch (err) {
             console.log(err);
             console.log("HUB CREATION ERROR");

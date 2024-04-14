@@ -8,7 +8,7 @@ const NavBar = () => {
     const baseUrl = "http://localhost:8000";
     const navigate = useNavigate();
     const [hubsVisible, setHubsVisible] = useState(false);
-    const [formData, setFormData] = useState({sessionID: localStorage.sessionID});
+    const [formData, setFormData] = useState({sessionID: localStorage.getItem("sessionID")});
     const [hubs, setHubs] = useState([]);
     const [joinHubMessage, setJoinHubMessage] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);

@@ -199,6 +199,7 @@ app.post('/create-hub', async (req, res) => {
         owner: userIDResponse.userId
     };
     const newHub = await mongoHelpers.createHub(hub);
+    const addToProfilesHids = await mongoHelpers.addToProfileHids(userIDResponse.userId, newHub.hid);
     res.json(newHub);
 });
 

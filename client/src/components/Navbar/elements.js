@@ -10,7 +10,8 @@ export const Nav = styled.nav`
     left: 0px;
     background: #000000;
     width: 10%;
-    height: 100%;
+    height: fit-content;
+    min-height: 100%;
     ${'' /* display: flex; */}
     ${'' /* justify-content: space-between; */}
     padding: 1rem;

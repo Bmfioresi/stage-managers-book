@@ -374,8 +374,7 @@ module.exports = {
             const collection = db.collection("profiles");
             var members = [];
             for(let i = 0; i < whitelist.length; i++) {
-                //console.log(whitelist[i]);
-                const query = { uid: whitelist[i] };
+                const query = { uid: Number(whitelist[i]) };
                 const member = await collection.findOne(query);
                 members.push(member);
             }
@@ -405,5 +404,28 @@ module.exports = {
             console.log("ANNOUNCEMENT BROKE");
             return;
         }
+    },
+
+    addToProfileHids : async function (uid, hid) {
+        try {
+            // Connecting to profiles database
+            const profilesBase = mongoclient.db('profiles');
+            const profiles = profilesBase.collection('profiles');
+            console.log(uid);
+            // Updating record
+            const result = await profiles.updateOne(
+                { uid: uid },
+                {
+                    $push: { hids : hid }
+                }
+            );
+            console.log(result);
+            return {'hids': result.hids};
+        
+        } catch (err) {
+            console.log(err);
+            console.log("COULD NOT CREATE PROFILE");
+            return {'uid': "-1"};
+        } 
     }
 }

@@ -38,15 +38,15 @@ const NavBar = () => {
     }
 
     async function signedIn() {
-        console.log("this ones for you");
+        //console.log("this ones for you");
         const url = `${baseUrl}/authenticate`;
         await axios.post(url, JSON.stringify({ "sessionID": localStorage.getItem("sessionID") })).then((response) => {
             if (response.data[0] && response.data[0].uid == "-1") { // I changed the way backend sends data, and had to make this change
-                console.log("index.js signedIn() returning false");
+                //console.log("index.js signedIn() returning false");
                 return false;
             }
             else {
-                console.log("index.js signedIn() returning true");
+                //console.log("index.js signedIn() returning true");
                 return true;
             }
         });

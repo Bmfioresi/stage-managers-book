@@ -324,7 +324,8 @@ module.exports = {
             const db = mongoclient.db("hubs");
             const collection = db.collection("hub_info");
             var hubInfo = [];
-            const query = { hid: hid };
+            console.log(hid);
+            const query = { hid: Number(hid) };
             const hub = await collection.findOne(query);
             hubInfo.push(hub);
             return hubInfo;
@@ -355,6 +356,7 @@ module.exports = {
             const doc = { name: hub.name, owner: hub.owner, description: hub.description, 
                 hid: thisHID, access_code: thisCode, whitelist: thisWhiteList, blacklist: thisBlackList };
             const result = await hubs.insertOne(doc);
+            return doc;
         } catch (err) {
             console.log(err);
             console.log("HUB CREATION ERROR");

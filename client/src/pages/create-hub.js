@@ -28,9 +28,9 @@ const CreateHub = () => {
             sessionID: localStorage.getItem("sessionID"), // passing it session
             description: description
         });
-        axios.post(url, JSON.stringify(formData)).then((response) => {
+        await axios.post(url, JSON.stringify(formData)).then((response) => {
             console.log(response);
-            let path = `/hubs/${formData.hid}/${response.data[0].hid}`; 
+            let path = `/hubs/${response.data.hid}`; 
             navigate(path);
         });
     }

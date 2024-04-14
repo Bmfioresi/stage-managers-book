@@ -191,11 +191,13 @@ app.get('/get-filenames', async (req, res) => {
 });
 
 app.post('/create-hub', async (req, res) => {
-    const hub = JSON.parse(Object.keys(req.fields)[0]);
-    console.log(hub);
-    const userIDResponse = await mongoHelpers.getUserID(hub.sessionID);
-    hub.owner = userIDResponse.userID;
-    console.log(hub.owner); // HERE IT IS BREAKING IN SERVER.JS PLEASE REMEMBER LOGAN
+    const formData = JSON.parse(Object.keys(req.fields)[0]);
+    const userIDResponse = await mongoHelpers.getUserID(formData.sessionID);
+    let hub = {
+        name: formData.name,
+        description: formData.description,
+        owner: userIDResponse.userId
+    };
     const newHub = await mongoHelpers.createHub(hub);
     res.json(newHub);
 });
@@ -215,6 +217,7 @@ app.post('/hub-individual', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     const hid = fields.hid;
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
+    console.log(hubInfo);
     res.json(hubInfo);
 });
 

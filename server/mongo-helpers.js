@@ -63,6 +63,60 @@ module.exports = {
         } 
     },
 
+    // Function to check lockout status
+    checkLockout: async function (username) {
+        // console.log("Checking lockout status for " + username);
+        const credentialsBase = mongoclient.db('credentials');
+        const credentials = credentialsBase.collection('credentials');
+        const userProfile = await credentials.findOne({ username: username });
+
+        if (!userProfile) {
+            return { exists: false };
+        }
+
+        const isLocked = userProfile.lockUntil && new Date(userProfile.lockUntil) > new Date();
+        //  console.log("User is locked: " + isLocked);
+        return {
+            exists: true,
+            isLocked: isLocked,
+            userProfile: userProfile
+        };
+    },
+
+    // Function to increment login attempts and possibly lock the account
+    incrementLoginAttempts: async function (username) {
+        // console.log("Incrementing login attempts for " + username);
+        const credentialsBase = mongoclient.db('credentials');
+        const credentials = credentialsBase.collection('credentials');
+        const userProfile = await credentials.findOne({ username: username });
+
+        if (!userProfile) {
+            return { updated: false };
+        }
+
+        let updates = { $inc: { failedLoginAttempts: 1 } };
+        // console.log("Failed login attempts: " + userProfile.failedLoginAttempts);
+        if (userProfile.failedLoginAttempts + 1 >= parseInt(process.env.MAX_ATTEMPTS)) {
+            // console.log("Locking user account");
+            updates.$set = { lockUntil: new Date(Date.now() + parseInt(process.env.LOCKOUT_TIME)) };
+            // console.log(`Setting lockUntil to: ${new Date(Date.now() + parseInt(process.env.LOCKOUT_TIME))}`);
+        }
+
+        // console.log("Updating user profile");
+        await credentials.updateOne({ username: username }, updates);
+        // console.log("Updated user profile");
+        return { updated: true };
+    },
+
+    // Function to reset login attempts
+    resetLoginAttempts: async function (username) {
+        const credentialsBase = mongoclient.db('credentials');
+        const credentials = credentialsBase.collection('credentials');
+        // console.log("Resetting login attempts for " + username)
+        await credentials.updateOne({ username: username }, { $set: { failedLoginAttempts: 0 } });
+        // console.log("Reset login attempts");
+    },
+
     loadProfile: async function (userId) {
         try {
             const profilesBase = mongoclient.db('profiles');

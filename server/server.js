@@ -356,6 +356,17 @@ app.post('/authenticate',
         }
 
         const fields = JSON.parse(Object.keys(req.fields)[0]);
+        const lockoutStatus = await mongoHelpers.checkLockout(fields.email); // Check if user is locked out
+
+        if (!lockoutStatus.exists) {
+            res.json({ status: 401, message: "Invalid Credentials. Please try again." });
+            return;
+        }
+
+        if (lockoutStatus.isLocked) {
+            res.json({ status: 423, message: "Account is locked. Please try again later." });
+            return;
+        }
 
         // FOR DEBUGGING
         // console.log("GOT FIELDS");
@@ -376,12 +387,15 @@ app.post('/authenticate',
             const isMatch = await bcrypt.compare(fields.password, user.password);
             // console.log(isMatch);
             if (!isMatch) {
-                console.log("Invalid Credentials. Please try again.");
+                // console.log("Invalid Credentials. Please try again.");
                 req.session.isLoggedIn = false;
                 req.session.userId = "-1";
+                await mongoHelpers.incrementLoginAttempts(fields.email); // Increment login attempts
                 res.json({ status: 401, message: "Invalid Credentials. Please try again.", sessionID: req.sessionID});
                 return;
             } else {
+                await mongoHelpers.resetLoginAttempts(fields.email); // Reset login attempts
+
                 req.session.isLoggedIn = true;
                 req.session.userId = user.uid;
 

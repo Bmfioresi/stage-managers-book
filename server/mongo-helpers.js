@@ -123,7 +123,7 @@ module.exports = {
             const profiles = profilesBase.collection('profiles');
         
             // query
-            const query = { uid: userId};
+            const query = {uid: Number(userId)};
             var userProfile = await profiles.findOne(query);
         
             // FOR DEBUGGING PURPOSES
@@ -303,7 +303,9 @@ module.exports = {
                 {
                     $set: {
                         name: hubInfo.name,
+                        owner: hubInfo.owner,
                         access_code: hubInfo.access_code,
+                        hid: hubInfo.hid,
                         whitelist: hubInfo.whitelist,
                         blacklist: hubInfo.blacklist,
                         description: hubInfo.description,
@@ -323,7 +325,9 @@ module.exports = {
         try {
             const hubsBase = mongoclient.db('hubs');
             const hubs = hubsBase.collection('hub_info');
-            let hub = await hubs.findOne({access_code: accessCode});
+            console.log(accessCode);
+            let hub = await hubs.findOne({access_code: Number(accessCode)});
+            console.log(hub);
             if (hub === null) return {status: 404}; // not found
             else return {status: 200, hid: hub.hid};
         } catch (err) {
@@ -340,7 +344,7 @@ module.exports = {
             //console.log(userId);
 
             // query
-            const query = { uid: Number(userId) };
+            const query = { uid: userId }; // DECIDE IF WE STORING UID AS NUMBER OR STRING
             const userProfile = await profiles.findOne(query);
         
             //console.log(userProfile.uid);
@@ -378,8 +382,7 @@ module.exports = {
             const db = mongoclient.db("hubs");
             const collection = db.collection("hub_info");
             var hubInfo = [];
-            // console.log(hid);
-            const query = { hid: hid };
+            const query = { hid: Number(hid) };
             const hub = await collection.findOne(query);
             hubInfo.push(hub);
             return hubInfo;
@@ -428,8 +431,7 @@ module.exports = {
             const collection = db.collection("profiles");
             var members = [];
             for(let i = 0; i < whitelist.length; i++) {
-                //console.log(whitelist[i]);
-                const query = { uid: whitelist[i] };
+                const query = { uid: Number(whitelist[i]) };
                 const member = await collection.findOne(query);
                 members.push(member);
             }
@@ -439,5 +441,48 @@ module.exports = {
             console.log("MEMBER ERROR");
             return {'uid': "-1"};
         }
+    },
+
+    addAnnouncement : async function (hid, announcement) {
+        try {
+            const db = mongoclient.db("hubs");
+            const collection = db.collection("hub_info");
+            const query = { hid: hid };
+            await collection.updateOne(
+                query,
+                {
+                    $push: { announcements : announcement}
+                }
+            );
+            hub.announcements.push(announcement);
+            return hub;
+        } catch (err) {
+            console.log(err);
+            console.log("ANNOUNCEMENT BROKE");
+            return;
+        }
+    },
+
+    addToProfileHids : async function (uid, hid) {
+        try {
+            // Connecting to profiles database
+            const profilesBase = mongoclient.db('profiles');
+            const profiles = profilesBase.collection('profiles');
+            console.log(uid);
+            // Updating record
+            const result = await profiles.updateOne(
+                { uid: uid },
+                {
+                    $push: { hids : hid }
+                }
+            );
+            console.log(result);
+            return {'hids': result.hids};
+        
+        } catch (err) {
+            console.log(err);
+            console.log("COULD NOT CREATE PROFILE");
+            return {'uid': "-1"};
+        } 
     }
 }

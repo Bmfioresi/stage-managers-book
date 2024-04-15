@@ -13,7 +13,8 @@ function HubIndividual() {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [members, setMembers] = useState([]);
-    var owner = "";
+    const [announcements, setAnnouncements] = useState([]);
+    var owner;
     const [ownerName, setOwnerName] = useState("");
     const [access, setAccess] = useState(false);
 
@@ -26,9 +27,10 @@ function HubIndividual() {
     async function getHubInfo() {
         const url = `${baseUrl}/hub-individual`;
         await axios.post(url, JSON.stringify(formData)).then((response => {
-          // console.log(response);
+          console.log(response);
           setName(response.data[0].name);
           setDescription(response.data[0].description);
+          setAnnouncements(response.data[0].announcements);
           owner = response.data[0].owner;
           whitelist = response.data[0].whitelist;
         }));
@@ -86,7 +88,10 @@ function HubIndividual() {
             <h1 className="cat-header">Schedule</h1>
           </div>
           <div className="notifications">
-            <h1 className="cat-header">Notifications</h1>
+            <h1 className="cat-header">Announcements</h1>
+            {announcements.map((announcement) => (
+              <p key={announcement} className="regular-text">{announcement}</p>
+            ))}
           </div>
         </div>
     );

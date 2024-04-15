@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom/client";
 import axios from 'axios';
 import '../css/new-profile-page.css';
+import ProfileEdit from './profile-edit.js'; // Import the ProfileEdit component
 
 const ProfilePage = () => {
 
@@ -13,9 +14,65 @@ const ProfilePage = () => {
     const [roles, setRoles] = useState("ROLES");
     const [uid, setUid] = useState("-1");
 
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleCancelClick = () => {
+        setIsEditing(false);
+    };
+
     const [formData, setFormData] = useState({
         sessionID: "-1"
     });
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        console.log(formData);
+        console.log(formData);
+
+        const url = 'http://localhost:8000/updateProfile';
+
+        // Combining formData with userID
+        const allData = {
+            name: formData.name, bio: formData.bio, phoneNumber: formData.phoneNumber, pronouns: formData.pronouns,
+            email: formData.email, roles: formData.roles, sessionID: localStorage.getItem('sessionID')
+        };
+
+        console.log("Trying to change profile");
+        console.log(allData);
+
+        axios.post(url, JSON.stringify(allData)).then((response) => {
+
+            // TODO: Modify function so this only includes error handling
+            console.log("NEW LOCAL STORAGE UID EDIT PROFILE");
+            console.log(response.data.uid);
+            // setToProfile("TRUE");
+            localStorage.setItem('uid', response.data.uid);
+            // Update local state variables immediately
+            setName(formData.name);
+            setBio(formData.bio);
+            setEmail(formData.email);
+            setPhoneNumber(formData.phoneNumber);
+            setPronouns(formData.pronouns);
+            setRoles(formData.roles);
+            setIsEditing(false); // Exit edit mode after saving changes
+        });
+
+        // Displaying newly created profile
+        console.log("About to redirect to profile");
+        // return <Navigate to='/profile' />;
+
+    }
 
     // TODO: FIX BUG WHERE NULL PROFILE LOADS IMMEDIATELY BEFORE TARGET PROFILE
     useEffect(() => {
@@ -72,6 +129,25 @@ const ProfilePage = () => {
                             <img src="https://source.unsplash.com/600x600/?abstract" alt="Gallery Image" className="gallery-image-style" />
                         </div>
                     </div>
+                    {/* {isEditing ? (
+                        <div>
+                            <ProfileEdit />
+                            <button onClick={handleCancelClick}>Cancel</button>
+                            <button onClick={handleChange}>Save Changes</button>
+                        </div>
+                    ) : (
+                        <button onClick={handleEditClick}>Edit Profile</button>
+                    )} */}
+                    {isEditing ? (
+                        <form onSubmit={handleSubmit}>
+                            <ProfileEdit formData={formData} onChange={handleChange} />
+                            <button type="button" onClick={handleCancelClick}>Cancel</button>
+                            <button type="submit">Save Changes</button>
+                        </form>
+                    ) : (
+                        <button className="profile-button" onClick={handleEditClick}>Edit Profile</button>
+                    )
+                    }
                 </div>
             </div>
         </div>

@@ -38,6 +38,30 @@ module.exports = {
         } 
     },
 
+    isLoggedIn: async function (uid) {
+        try {
+            const credentialsBase = mongoclient.db('credentials');
+            const credentials = credentialsBase.collection('credentials');
+        
+            // query
+            const query = { uid: uid };
+            const userProfile = await credentials.findOne(query);
+        
+            // no user found with this email
+            if (!userProfile) {
+                return null;
+            }
+
+            // returning user data
+            return userProfile;
+        
+        } catch (err) {
+            console.log(err);
+            console.log("PROFILE NOT FOUND");
+            return {'uid': "-1"};
+        }
+    },
+
     // updated to just search for email... trying to use hashed passwords
     authenticateUser: async function (uname) {
         try {

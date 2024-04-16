@@ -3,10 +3,12 @@ import axios from 'axios';
 import {useParams} from 'react-router-dom';
 import { useNavigate, Navigate } from "react-router-dom";
 import '../css/hub-pages.css';
+// import checkLoggedIn from "./check-logged-in";
 
 const baseUrl = "http://localhost:8000"
 
 function HubIndividual() {
+    // let loggedIn = checkLoggedIn();
     let whitelist = [];
     let navigate = useNavigate();
     const params = useParams();
@@ -27,7 +29,7 @@ function HubIndividual() {
     async function getHubInfo() {
         const url = `${baseUrl}/hub-individual`;
         await axios.post(url, JSON.stringify(formData)).then((response => {
-          console.log(response);
+          // console.log(response);
           setName(response.data[0].name);
           setDescription(response.data[0].description);
           setAnnouncements(response.data[0].announcements);
@@ -48,6 +50,11 @@ function HubIndividual() {
     }
 
     async function retrieveMembers() {
+      // let loggedIn = await checkLoggedIn();
+      // if(!loggedIn) {
+      //   let path = `/`; 
+      //   navigate(path);
+      // }
       await getHubInfo();
       await checkAdmin();
       const url = `${baseUrl}/retrieve-members`;

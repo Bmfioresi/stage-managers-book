@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Nav, NavLink, NavMenu } from "./elements";
 import axios from 'axios';
 
-
 const NavBar = () => {
     const baseUrl = "http://localhost:8000";
     const navigate = useNavigate();
@@ -13,10 +12,30 @@ const NavBar = () => {
     const [joinHubMessage, setJoinHubMessage] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
     
-
+    // async function checkLoggedIn() {
+    //     let url = `${baseUrl}/check-logged-in`;
+    //     console.log(localStorage.getItem("sessionID"));
+    //     await axios.post(url, JSON.stringify(localStorage.getItem("sessionID"))).then((response) => {
+    //         console.log(response);
+    //         if (response.data == "-1") {
+    //             console.log("checkLogIn returning false");
+    //             return false;
+    //         }
+    //         else {
+    //             console.log("checkLogIn returning true");
+    //             return true;
+    //         }
+    //     });
+    // }
+    
     async function getHubs() {
-        let check = await signedIn();
-        setLoggedIn(check);
+        // let check = await checkLoggedIn();
+        // console.log(check);
+        // if(check === false) {
+        //     let path = `/`; 
+        //     navigate(path);
+        // }
+        // setLoggedIn(check);
         console.log("retrieving hubs");
         const url = `${baseUrl}/hubs`;
         await axios.post(url, JSON.stringify(formData)).then((response) => {
@@ -30,27 +49,12 @@ const NavBar = () => {
     }
 
     useEffect(() => {
-        getHubs(); 
+        getHubs();
     }, []);
 
     async function createHub() {
         let path = `/hubs/create-hub`; 
         navigate(path);
-    }
-
-    async function signedIn() {
-        //console.log("this ones for you");
-        const url = `${baseUrl}/authenticate`;
-        await axios.post(url, JSON.stringify({ "sessionID": localStorage.getItem("sessionID") })).then((response) => {
-            if (response.data[0] && response.data[0].uid == "-1") { // I changed the way backend sends data, and had to make this change
-                //console.log("index.js signedIn() returning false");
-                return false;
-            }
-            else {
-                //console.log("index.js signedIn() returning true");
-                return true;
-            }
-        });
     }
 
     async function joinHub(event) {
@@ -87,7 +91,8 @@ const NavBar = () => {
                             alt=""
                             src="/smb-logo.png"
                         /></NavLink><br></br><br></br><br></br>
-                        {!loggedIn && <div>
+                        {/* {loggedIn &&  */}
+                        <div>
                             {/* <NavLink to="/createProfile">Create Profile</NavLink> */}
                             <NavLink to="/profile">Profile</NavLink>
                             <NavLink to="/editProfile">Edit Profile</NavLink>
@@ -133,7 +138,8 @@ const NavBar = () => {
                                     <p style={{color:"white"}}>{joinHubMessage}</p>
                                 </ul>
                             )}
-                        </div>}
+                        </div>
+                        {/* } */}
                     </NavMenu>
                 </Nav>
             </>

@@ -190,23 +190,24 @@ app.get('/get-filenames', async (req, res) => {
     else res.json(ret);
 });
 
-app.post('/check-logged-in', async (req, res) => {
-    const fields = JSON.parse(Object.keys(req.fields)[0]);
-    const sessionID = fields.sessionID;
-    let uid = getUID(sessionID);
-    var userId = await mongoHelpers.isLoggedIn(uid); 
+// app.post('/check-logged-in', async (req, res) => {
+//     const fields = JSON.parse(Object.keys(req.fields)[0]);
+//     const sessionID = fields.sessionID;
+//     let uid = await getUID(sessionID);
+//     res.json(uid);
+//     // var userId = await mongoHelpers.isLoggedIn(uid); 
 
-    if (userId == null) {
-        req.session.isLoggedIn = false;
-        req.session.userId = "-1";
-    }
-    else {
-        req.session.isLoggedIn = true;
-        req.session.userId = userId.uid;
-    }
-    console.log(req.sessionID);
-    res.json(req.sessionID);
-});
+//     // if (userId === null) {
+//     //     req.session.isLoggedIn = false;
+//     //     req.session.userId = "-1";
+//     // }
+//     // else {
+//     //     req.session.isLoggedIn = true;
+//     //     req.session.userId = userId;
+//     // }
+//     // console.log(req.sessionID);
+//     // res.json(req.session.userId);
+// });
 
 app.post('/create-hub', async (req, res) => {
     const formData = JSON.parse(Object.keys(req.fields)[0]);

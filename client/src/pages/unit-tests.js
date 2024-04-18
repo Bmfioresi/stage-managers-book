@@ -6,6 +6,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 const baseUrl = 'http://localhost:8000';
 
+//TRYING TO CHANGE STUFF FOR auto-test DB, CHECK LINES 57, 63, 72, 97
+
 const UnitTests = () => {
     const [connectStatus, setConnectStatus] = useState("");
     const [connectLoading, setConnectLoading] = useState(false);
@@ -52,13 +54,13 @@ const UnitTests = () => {
         };
         try {
             // check for file (in case of accidental upload/error) and delete it to avoid errors
-            let names = await axios.get(`${baseUrl}/get-filenames?hub=unit-tests&bucket=unit-tests`);
+            let names = await axios.get(`${baseUrl}/get-filenames?hub=auto-test&bucket=auto-test`);
             //console.log(names);
             for (let i = 0; i < names.data.length; i++) {
                 //console.log(names.data[i]);
                 if (names.data[i] === "unit-test-file.jpg") {
                     //console.log("deleting file");
-                    await axios.get(`${baseUrl}/delete-file?name=unit-test-file.jpg&hub=unit-tests&bucket=unit-tests`);
+                    await axios.get(`${baseUrl}/delete-file?name=unit-test-file.jpg&hub=auto-test&bucket=auto-test`);
                 }
             }
             axios.post(url, data, headers).then((response) => {
@@ -67,7 +69,7 @@ const UnitTests = () => {
                 } else if (response.data.name === "unit-test-file.jpg") {
                     setUploadStatus(<p>&#10003;</p>);
                     setUploadLoading(false);
-                    url = `${baseUrl}/delete-file?name=${response.data.name}&hub=unit-tests&bucket=unit-tests`; // delete created file
+                    url = `${baseUrl}/delete-file?name=${response.data.name}&hub=auto-test&bucket=auto-test`; // delete created file
                     axios.get(url).then((response) => {
                         if (response.status === 200) {
                             setDeleteStatus(<p>&#10003;</p>);
@@ -92,7 +94,7 @@ const UnitTests = () => {
 
     async function fileDownload() {
         setDownloadLoading(true);
-        const url = `${baseUrl}/download-file?name=unit-test-download-file.jpg&hub=unit-tests&bucket=unit-tests`;
+        const url = `${baseUrl}/download-file?name=unit-test-download-file.jpg&hub=auto-test&bucket=auto-test`;
         try {
             let res = await fetch(url);
             let blob = await res.blob();

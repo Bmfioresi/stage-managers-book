@@ -110,6 +110,7 @@ const ProfileEdit = () => {
                         <input type="text" id="resume" name="resume" value={formData.resume} onChange={handleChange} /> */}
                     </div>
                     <button type="submit" onClick={handleSubmit} className="profile-button">Save Changes</button>
+                    <p>Refresh to see updates!</p>
                 </div>
             </div>
         </div>

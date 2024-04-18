@@ -26,6 +26,7 @@ import SignIn from "./pages/sign-in.js";
 import SignUp from "./pages/sign-up.js";
 import ForgotPassword from "./pages/forgot-password.js";
 import UnitTests from './pages/unit-tests.js';
+import EmailForm from "./pages/email-form.js";
 
 function App() {
   return (
@@ -47,23 +48,24 @@ function App() {
           <Route path="/createAccount" element={<InputFrame />} />
           <Route path="/editProfile" element={<ProfileEdit />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/emailForm" element={<EmailForm />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/unit-tests" element={<UnitTests />} />
         </Routes>
       </Router>
-      <ToastContainer 
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

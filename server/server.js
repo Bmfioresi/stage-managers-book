@@ -17,6 +17,17 @@ const MongoStore = require('connect-mongo'); // May need to change to const Mong
 const { body, validationResult } = require('express-validator'); // For validating user input
 const router = express.Router();
 
+// const crypto = require('crypto'); // for generating random token
+// const nodemailer = require('nodemailer'); // for sending emails
+// // create a transporter object for nodemailer
+// let transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: (process.env.EMAIL),
+//         pass: (process.env.EMAIL_PASSWORD)
+//     }
+// });
+
 const app = express();
 
 const thisMongoStore = new MongoStore({
@@ -77,7 +88,6 @@ app.get('/test', (req, res) => { // don't delete, necessary for unit tests
 // creating a new user from the sign-up form
 app.post('/register', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-
     try{
         // hash the password
         const hashedPassword = await bcrypt.hash(fields.password, saltrounds);
@@ -386,11 +396,9 @@ app.post('/authenticate',
             res.json({ status: 423, message: "Account is locked. Please try again later." });
             return;
         }
-
         // FOR DEBUGGING
         // console.log("GOT FIELDS");
         // console.log(fields);
-
         try {
             // var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
 
@@ -470,3 +478,50 @@ app.post('/loadProfile', async (req, res) => {
 app.listen(8000, () => {
     console.log('Server is running on port 8000.');
 });
+
+// Need to get OAuth to work for this to be able to send a password reset email from our Google account
+// app.post('/forgot-password', async (req, res) => {
+//     const fields = JSON.parse(Object.keys(req.fields)[0]);
+//     const email = fields.email;
+//     console.log(email);
+//     try {
+//         const user = await mongoHelpers.authenticateUser(email);
+//         if (!user) {
+//             res.json({ status: 404, message: "Email not found" });
+//             return;
+//         }
+
+//         // Generate a random token
+//         const token = crypto.randomBytes(20).toString('hex');
+//         // Set token expiration
+//         const tokenExpiration = Date.now() + 3600000; // 1 hour from now
+
+//         // Update user in the database with token and expiration
+//         await mongoHelpers.updatePasswordResetToken(email, token, tokenExpiration);
+//         console.log('Token:', token);
+//         // Send email to user with token
+//         const resetURL = `http://localhost:3000/reset-password/${token}`;
+//         const mailOptions = {
+//             to: email,
+//             from: 'your-email@gmail.com', // should match the transporter user
+//             subject: 'Password Reset Request',
+//             text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
+//             Please click on the following link, or paste this into your browser to complete the process:\n\n
+//             ${resetURL}\n\n
+//             If you did not request this, please ignore this email and your password will remain unchanged.\n`
+//         };
+
+//         transporter.sendMail(mailOptions, function(error, info) {
+//             if (error) {
+//                 console.log('Error in sending email:', error);
+//                 res.json({ status: 500, message: 'Error in sending email' });
+//             } else {
+//                 console.log('Email sent: ' + info.response);
+//                 res.json({ status: 201, message: 'Email sent' });
+//             }
+//         });
+//     } catch (error) {
+//         console.error('Error in /forgot-password:', error);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// });

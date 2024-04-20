@@ -1,14 +1,16 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import "../../css/input.css";
 
 const Input = ({
-  placeholderPlaceholder,
+  placeholderPlaceholder: placeholderPlaceholder,
+  value: placeholderTextValue,
+  onChange: onChange,
   propPadding,
   propDisplay,
   propPadding1,
   propWidth,
 }) => {
-  const [placeholderTextValue, setPlaceholderTextValue] = useState("");
+  // const [placeholderTextValue, setPlaceholderTextValue] = useState("");
   const inputStyle = useMemo(() => {
     return {
       padding: propPadding,
@@ -24,12 +26,14 @@ const Input = ({
   const input1Style = useMemo(() => {
     return {
       padding: propPadding1,
+      height: "50px"
     };
   }, [propPadding1]);
 
   const placeholderStyle = useMemo(() => {
     return {
       width: propWidth,
+      height: "50px"
     };
   }, [propWidth]);
 
@@ -44,7 +48,7 @@ const Input = ({
           className="placeholder-input"
           placeholder={placeholderPlaceholder}
           value={placeholderTextValue}
-          onChange={(event) => setPlaceholderTextValue(event.target.value)}
+          onChange={onChange}
           style={placeholderStyle}
         />
       </div>

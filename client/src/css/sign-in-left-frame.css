@@ -63,7 +63,7 @@
     border: 1px solid var(--color-lightgray);
     box-sizing: border-box;
   }
-  .placeholder-sign-in {
+  .placeholder-signin {
     border: none;
     outline: none;
     font-family: var(--font-roboto);

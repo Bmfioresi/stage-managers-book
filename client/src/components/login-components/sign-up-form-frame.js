@@ -10,7 +10,8 @@ const LineFrame = ({
   type: inputType,
   value,
   onChange,
-  name
+  name, 
+  criteria = "" // criteria for the input field
 }) => {
   const placeholder2Style = useMemo(() => {
     return {
@@ -36,6 +37,11 @@ const LineFrame = ({
             onChange={onChange}
           />
         </div>
+        {inputType === "password" && (
+            <div className="password-criteria">
+              {criteria}
+            </div>
+          )}
       </div>
     </div>
   );

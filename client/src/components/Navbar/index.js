@@ -95,7 +95,7 @@ const NavBar = () => {
                     <div>
                         {/* <NavLink to="/createProfile">Create Profile</NavLink> */}
                         <NavLink to="/profile">Profile</NavLink>
-                        <NavLink to="/editProfile">Edit Profile</NavLink>
+                        {/* <NavLink to="/editProfile">Edit Profile</NavLink> */}
                         <NavLink to="/unit-tests">Unit Tests</NavLink>
                         <NavLink to="/emailForm">Email Signup</NavLink>
                         {/* <NavLink to="/createAccount">Create Account</NavLink> */}

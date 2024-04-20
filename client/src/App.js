@@ -8,6 +8,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  useLocation
 } from "react-router-dom";
 import Test from "./pages/test.js";
 import Hubs from './pages/hubs.js';
@@ -27,12 +28,26 @@ import SignUp from "./pages/sign-up.js";
 import ForgotPassword from "./pages/forgot-password.js";
 import UnitTests from './pages/unit-tests.js';
 import EmailForm from "./pages/email-form.js";
+// import PasswordReset from './pages/reset-password.js'; // this will be needed when we implement the reset password feature
+
+function Layout() {
+  const location = useLocation(); // Access the location object
+
+  // Check if the current path is the forgot password page
+  const showNavbar = location.pathname !== "/forgotpassword";
+
+  return (
+    <>
+      {showNavbar && <Navbar />}
+    </>
+  );
+}
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
+      <Layout />
         <Routes>
           <Route exact path="/" element={<SignIn />} />
           <Route path="/test" element={<Test />} />
@@ -53,6 +68,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/unit-tests" element={<UnitTests />} />
+          {/* <Route path="/reset-password/:token" element={<PasswordReset />} /> */}
         </Routes>
       </Router>
       <ToastContainer

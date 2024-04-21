@@ -64,9 +64,11 @@ const UnitTests = () => {
                 }
             }
             axios.post(url, data, headers).then((response) => {
+                console.log(response);
                 if (response == null || response.data == null) {
                     throw Error("Data not received properly");
-                } else if (response.data.name === "unit-test-file.jpg") {
+                } else if (response.data.name === "auto-test-file.jpg") {
+                    console.log("here");
                     setUploadStatus(<p>&#10003;</p>);
                     setUploadLoading(false);
                     url = `${baseUrl}/delete-file?name=${response.data.name}&hub=auto-test&bucket=auto-test`; // delete created file

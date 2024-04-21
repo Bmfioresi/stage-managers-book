@@ -7,8 +7,8 @@ const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.
 const mongoclient = new MongoClient(uri);
 mongoclient.connect();
 
-
-async function createTestDB() {
+module.exports = {
+createTestDB : async function () {
   const { MongoClient } = require("mongodb");
   
   // Replace the uri string with your connection string.
@@ -27,7 +27,7 @@ async function createTestDB() {
       const authenticateResult = await authenticateCollection.insertOne(authenticateDoc);
 
       // CREATE FILE TEST COLLECTION
-      const fileCollection = testDatabase.collection("file-test");
+      const fileCollection = testDatabase.collection("auto-test");
       const fileDoc = {"name":"testing"};
       const fileResult = await fileCollection.insertOne(fileDoc);
 
@@ -35,9 +35,10 @@ async function createTestDB() {
       // Close the MongoDB client connection
       await client.close();
   }
-}
+},
 
-async function destroyTestDB() {
+destroyTestDB : async function () {
+  // console.log("destroying");
   const { MongoClient } = require("mongodb");
   
   // Replace the uri string with your connection string.
@@ -48,7 +49,7 @@ async function destroyTestDB() {
   try {
     const testDatabase = client.db("auto-test");
     testDatabase.dropDatabase().then(result => { // THIS SHOULD NOT BREAK ANYTHING BUT IM TOO SCARED TO RUN IT RN
-      console.log(result);
+      // console.log(result);
       client.close();
     }).catch(err => {
       console.error(err);
@@ -56,9 +57,10 @@ async function destroyTestDB() {
   } finally {
     await client.close();
   }
+},
 }
 
-createTestDB();
-console.log("created");
-// destroyTestDB();
-console.log("dropped");
+// createTestDB();
+// console.log("created");
+// // destroyTestDB();
+// console.log("dropped");

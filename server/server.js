@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 const saltrounds = 10;
 
 const mongoHelpers = require('./mongo-helpers');
+const testDB = require('./test-db-functions');
 const gridfsHelpers = require('./gridfs-helpers');
 const session = require('express-session');
 const MongoStore = require('connect-mongo'); // May need to change to const MongoStore = require('connect-mongo')(session);
@@ -143,6 +144,20 @@ app.post('/upload-file', async (req, res) => {
             else res.json(ret);
         }
     }
+});
+
+app.post('/create-test', async (req, res) => {
+    // console.log("before testDB creation");
+    testDB.createTestDB();
+    // console.log("after testDB creation");
+    res.json("Created");
+});
+
+app.post('/destroy-test', async (req, res) => {
+    // console.log("before testDB destruction");
+    testDB.destroyTestDB();
+    // console.log("after testDB destruction");
+    res.json("Destroyed");
 });
 
 // download file stream of file with give nname

@@ -64,11 +64,9 @@ const UnitTests = () => {
                 }
             }
             axios.post(url, data, headers).then((response) => {
-                console.log(response);
                 if (response == null || response.data == null) {
                     throw Error("Data not received properly");
                 } else if (response.data.name === "auto-test-file.jpg") {
-                    console.log("here");
                     setUploadStatus(<p>&#10003;</p>);
                     setUploadLoading(false);
                     url = `${baseUrl}/delete-file?name=${response.data.name}&hub=auto-test&bucket=auto-test`; // delete created file
@@ -152,10 +150,18 @@ const UnitTests = () => {
     }
 
     async function testAll() {
-        serverConnect();
-        fileUploadDelete();
-        fileDownload();
-        authenticateUser();
+        var url = `${baseUrl}/create-test`;
+        await axios.post(url, JSON.stringify(formData)).then((response) => {
+            serverConnect();
+            fileUploadDelete();
+            fileDownload();
+            // authenticateUser();
+        });
+        console.log("gottem");
+        var url = `${baseUrl}/destroy-test`;
+        await axios.post(url, JSON.stringify(formData)).then((response) => {
+            console.log("destroyed (unit-test)");
+        });
     }
 
     return (

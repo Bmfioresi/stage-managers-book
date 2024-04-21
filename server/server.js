@@ -120,9 +120,9 @@ app.post('/register', async (req, res) => {
 app.post('/upload-file', async (req, res) => {
     if (req.fields.hub == "Unit Test") {
         const stream = fs.createReadStream("unit-test-files/unit-test-file.jpg");
-        const name = "unit-test-file.jpg";
-        const hub = "unit-tests";
-        const bucket = "unit-tests";
+        const name = "auto-test-file.jpg";
+        const hub = "auto-test";
+        const bucket = "auto-test";
         const ret = await gridfsHelpers.uploadFile(name, stream, hub, bucket);
         if (ret == null) res.json({status: 500});
         else res.json(ret);

@@ -155,7 +155,7 @@ app.post('/create-test', async (req, res) => {
 
 app.post('/destroy-test', async (req, res) => {
     // console.log("before testDB destruction");
-    testDB.destroyTestDB();
+    await testDB.destroyTestDB();
     // console.log("after testDB destruction");
     res.json("Destroyed");
 });

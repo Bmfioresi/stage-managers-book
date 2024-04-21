@@ -377,8 +377,7 @@ module.exports = {
             return userProfile.hids;
         
         } catch (err) {
-            console.log(err);
-            console.log("HIDS NOT FOUND");
+            // console.log("HIDS NOT FOUND");
             return {'uid': "-1"};
         }
     },

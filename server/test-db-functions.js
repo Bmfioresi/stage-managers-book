@@ -2,6 +2,9 @@
 // mongoexport --uri mongodb+srv://<username>:<password>@stagemanagersbook.mv9wrc2.mongodb.net/profiles --collection profiles --type json --out profilesdata.json
 require('dotenv').config();
 
+const fs = require('fs');
+const gridfsHelpers = require('./gridfs-helpers');
+
 const { MongoClient } = require("mongodb");
 const uri = "mongodb+srv://" + process.env.MONGODB_USERNAME + ":" + process.env.MONGODB_PASSWORD + "@stagemanagersbook.mv9wrc2.mongodb.net/auto-tests";
 const mongoclient = new MongoClient(uri);
@@ -28,8 +31,13 @@ createTestDB : async function () {
 
       // CREATE FILE TEST COLLECTION
       const fileCollection = testDatabase.collection("auto-test");
-      const fileDoc = {"name":"testing"};
-      const fileResult = await fileCollection.insertOne(fileDoc);
+      // const fileDoc = {"name":"auto-test-file", };
+      // const fileResult = await fileCollection.insertOne(fileDoc);
+      const stream = fs.createReadStream("unit-test-files/unit-test-file.jpg");
+      const name = "auto-test-file.jpg";
+      const hub = "auto-test";
+      const bucket = "auto-test";
+      const ret = await gridfsHelpers.uploadFile(name, stream, hub, bucket);
 
   } finally {
       // Close the MongoDB client connection

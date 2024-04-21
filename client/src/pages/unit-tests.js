@@ -20,9 +20,14 @@ const UnitTests = () => {
     const [authenticateStatus, setAuthenticateStatus] = useState("");
     const [authenticateLoading, setAuthenticateLoading] = useState(false);
 
-    async function serverConnect() {
+    async function serverConnect(testAllVal) {
+        var url;
+        if(testAllVal === true) {
+            url = `${baseUrl}/create-test`;
+            await axios.post(url, JSON.stringify(formData));
+        }
         setConnectLoading(true);
-        const url = `${baseUrl}/test`;
+        url = `${baseUrl}/test`;
         try {
             axios.get(url).then((response) => {
                 if (response == null || response.data == null) {
@@ -38,13 +43,25 @@ const UnitTests = () => {
             setConnectStatus(<p>&#10005;</p>);
             console.log(err);
             setConnectLoading(false);
+        } finally {
+            if(testAllVal === false) {
+                url = `${baseUrl}/destroy-test`;
+                await axios.post(url, JSON.stringify(formData)).then((response) => {
+                // console.log("destroyed (auto-test)");
+                });
+            }
         }
     }
 
-    async function fileUploadDelete() {
+    async function fileUploadDelete(testAllVal) {
+        var url;
+        if(testAllVal === true) {
+            url = `${baseUrl}/create-test`;
+            await axios.post(url, JSON.stringify(formData));
+        }
         setUploadLoading(true);
         setDeleteLoading(true);
-        var url = `${baseUrl}/upload-file`;
+        url = `${baseUrl}/upload-file`;
         const data = new FormData();
         data.append('hub', "Unit Test");
         const headers = {
@@ -58,12 +75,12 @@ const UnitTests = () => {
             //console.log(names);
             for (let i = 0; i < names.data.length; i++) {
                 //console.log(names.data[i]);
-                if (names.data[i] === "unit-test-file.jpg") {
+                if (names.data[i] === "auto-test-file.jpg") {
                     //console.log("deleting file");
-                    await axios.get(`${baseUrl}/delete-file?name=unit-test-file.jpg&hub=auto-test&bucket=auto-test`);
+                    await axios.get(`${baseUrl}/delete-file?name=auto-test-file.jpg&hub=auto-test&bucket=auto-test`);
                 }
             }
-            axios.post(url, data, headers).then((response) => {
+            await axios.post(url, data, headers).then((response) => {
                 if (response == null || response.data == null) {
                     throw Error("Data not received properly");
                 } else if (response.data.name === "auto-test-file.jpg") {
@@ -89,12 +106,24 @@ const UnitTests = () => {
             setUploadLoading(false);
             setDeleteStatus(<p>&#10005;</p>);
             setDeleteLoading(false);
+        } finally {
+            if(testAllVal === false) {
+                url = `${baseUrl}/destroy-test`;
+                await axios.post(url, JSON.stringify(formData)).then((response) => {
+                // console.log("destroyed (auto-test)");
+                });
+            }
         }
     }
 
-    async function fileDownload() {
+    async function fileDownload(testAllVal) {
+        var url;
+        if(testAllVal === true) {
+            url = `${baseUrl}/create-test`;
+            await axios.post(url, JSON.stringify(formData));
+        }
         setDownloadLoading(true);
-        const url = `${baseUrl}/download-file?name=unit-test-download-file.jpg&hub=auto-test&bucket=auto-test`;
+        url = `${baseUrl}/download-file?name=auto-test-download-file.jpg&hub=auto-test&bucket=auto-test`;
         try {
             let res = await fetch(url);
             let blob = await res.blob();
@@ -109,6 +138,13 @@ const UnitTests = () => {
             setDownloadStatus(<p>&#10005;</p>);
             console.log(err);
             setDownloadLoading(false);
+        } finally {
+            if(testAllVal === false) {
+                url = `${baseUrl}/destroy-test`;
+                await axios.post(url, JSON.stringify(formData)).then((response) => {
+                // console.log("destroyed (auto-test)");
+                });
+            }
         }
     }
 
@@ -117,9 +153,14 @@ const UnitTests = () => {
         password: "Pass1Word",
     });
 
-    async function authenticateUser() {
+    async function authenticateUser(testAllVal) {
+        var url;
+        if(testAllVal === true) {
+            url = `${baseUrl}/create-test`;
+            await axios.post(url, JSON.stringify(formData));
+        }
         setAuthenticateLoading(true);
-        const url = `${baseUrl}/authenticate`;
+        url = `${baseUrl}/authenticate`;
 
         // Converting form to json format
         try {
@@ -146,22 +187,19 @@ const UnitTests = () => {
             setAuthenticateStatus(<p>&#10005;</p>);
             console.log(err);
             setAuthenticateLoading(false);
+        } finally {
+            if(testAll === false) {
+                url = `${baseUrl}/destroy-test`;
+                await axios.post(url, JSON.stringify(formData)); 
+            }
         }
     }
 
     async function testAll() {
-        var url = `${baseUrl}/create-test`;
-        await axios.post(url, JSON.stringify(formData)).then((response) => {
-            serverConnect();
-            fileUploadDelete();
-            fileDownload();
-            // authenticateUser();
-        });
-        console.log("gottem");
-        var url = `${baseUrl}/destroy-test`;
-        await axios.post(url, JSON.stringify(formData)).then((response) => {
-            console.log("destroyed (unit-test)");
-        });
+        await serverConnect(true);
+        await fileUploadDelete(true);
+        await fileDownload(true);
+        // await authenticateUser();
     }
 
     return (

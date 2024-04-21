@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { Nav, NavLink, NavMenu } from "./elements";
 import axios from 'axios';
 
@@ -51,6 +51,11 @@ const NavBar = () => {
     useEffect(() => {
         getHubs();
     }, []);
+
+    function logout() {
+        localStorage.setItem("sessionID", "-1");
+        return <Navigate to='/' />;
+    }
 
     async function createHub() {
         let path = `/hubs/create-hub`;
@@ -141,6 +146,7 @@ const NavBar = () => {
                         )}
                     </div>
                     {/* } */}
+                    <NavLink to="/logout">Sign Out</NavLink>  
                 </NavMenu>
             </Nav>
         </>

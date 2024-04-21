@@ -28,6 +28,7 @@ import SignUp from "./pages/sign-up.js";
 import ForgotPassword from "./pages/forgot-password.js";
 import UnitTests from './pages/unit-tests.js';
 import EmailForm from "./pages/email-form.js";
+import Logout from './pages/logout.js'
 // import PasswordReset from './pages/reset-password.js'; // this will be needed when we implement the reset password feature
 
 function Layout() {
@@ -68,6 +69,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/unit-tests" element={<UnitTests />} />
+          <Route path="/logout" element={<Logout />} />
           {/* <Route path="/reset-password/:token" element={<PasswordReset />} /> */}
         </Routes>
       </Router>

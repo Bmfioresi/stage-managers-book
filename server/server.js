@@ -93,8 +93,8 @@ app.post('/register', async (req, res) => {
         // hash the password
         const hashedPassword = await bcrypt.hash(fields.password, saltrounds);
 
-        // Attempt to create a user  
-        const userCreationResult = await mongoHelpers.createUser(fields.fullName, fields.email, hashedPassword, fields.isTest);
+        // Attempt to create a user
+        const userCreationResult = await mongoHelpers.createUser(fields.fullName, fields.email, hashedPassword);
         if (userCreationResult.success) {
             res.status(201).send('User created successfully');
         }
@@ -102,7 +102,7 @@ app.post('/register', async (req, res) => {
             //res.status(400).send(userCreationResult.message);
             res.json({ status: 400, message: userCreationResult.message });
         }
-    } catch (error) { 
+    } catch (error) {
         res.json({ status: 500, message: 'Server Error' });
     }
 });
@@ -400,7 +400,7 @@ app.post('/authenticate',
         }
 
         const fields = JSON.parse(Object.keys(req.fields)[0]);
-        const lockoutStatus = await mongoHelpers.checkLockout(fields.email, fields.isTest); // Check if user is locked out
+        const lockoutStatus = await mongoHelpers.checkLockout(fields.email); // Check if user is locked out
 
         if (!lockoutStatus.exists) {
             res.json({ status: 401, message: "Invalid Credentials. Please try again." });
@@ -419,7 +419,7 @@ app.post('/authenticate',
 
             // implementing hashed passwords
             // fetch user's hashed password from the database
-            const user = await mongoHelpers.authenticateUser(fields.email, fields.isTest);
+            const user = await mongoHelpers.authenticateUser(fields.email);
             if (!user) {
                 res.json({ status: 401, message: "Invalid Credentials. Please try again." });
                 return;
@@ -432,11 +432,11 @@ app.post('/authenticate',
                 // console.log("Invalid Credentials. Please try again.");
                 req.session.isLoggedIn = false;
                 req.session.userId = "-1";
-                await mongoHelpers.incrementLoginAttempts(fields.email, fields.isTest); // Increment login attempts
+                await mongoHelpers.incrementLoginAttempts(fields.email); // Increment login attempts
                 res.json({ status: 401, message: "Invalid Credentials. Please try again.", sessionID: req.sessionID});
                 return;
             } else {
-                await mongoHelpers.resetLoginAttempts(fields.email, fields.isTest); // Reset login attempts
+                await mongoHelpers.resetLoginAttempts(fields.email); // Reset login attempts
 
                 req.session.isLoggedIn = true;
                 req.session.userId = user.uid;
@@ -486,7 +486,7 @@ app.post('/loadProfile', async (req, res) => {
     if (userID == "-1") {
         console.log("Could not verify user's identity.");
     }
-    const profileData = await mongoHelpers.loadProfile(userID, fields.isTest); 
+    const profileData = await mongoHelpers.loadProfile(userID); 
     res.json(profileData);
 });
  

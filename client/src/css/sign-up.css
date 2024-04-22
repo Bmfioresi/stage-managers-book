@@ -22,9 +22,9 @@
   letter-spacing: normal;
 }
 
-@media screen and (min-width: 1260px) and (max-height: 900px) {
+@media screen and (min-width: 1260px) and (max-height: 1091px) {
   .art-icon-sign-up {
-    height: 900px;
+    height: 1091px;
     min-width: 100px;
   }
 }

@@ -4,8 +4,25 @@ import { Nav, NavLink, NavMenu } from "../components/Navbar/elements";
 import axios from 'axios';
 import '../css/pages.css';
 import '../css/hub-pages.css';
+import { toast } from 'react-toastify';
 
 const baseUrl = "http://localhost:8000";
+
+const sanitizeInput = (input) => {
+    // Remove any script tags or HTML tags to prevent XSS
+    return input.replace(/<\/?[^>]+(>|$)/g, "");
+};
+
+const validateInput = (input, type) => {
+    switch (type) {
+        case 'name':
+            return input.trim().length > 0 && input.trim().length <= 300; // I know this is a bit long, but production names can be long
+        case 'description':
+            return input.trim().length <= 500;
+        default:
+            return true;
+    }
+};
 
 const CreateHub = () => {
     const navigate = useNavigate();
@@ -17,19 +34,48 @@ const CreateHub = () => {
         sessionID: localStorage.getItem("sessionID"),
     };
 
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     formData.name = nameInputRef.current.value;
+    //     formData.sessionID =  localStorage.getItem("sessionID"); // passing it session
+    //     formData.description = descriptionInputRef.current.value;
+    //     createHub();
+    // };
+
+    // What's new -->
     const handleSubmit = (e) => {
         e.preventDefault();
-        formData.name = nameInputRef.current.value;
-        formData.sessionID =  localStorage.getItem("sessionID"); // passing it session
-        formData.description = descriptionInputRef.current.value;
+    
+        let name = sanitizeInput(nameInputRef.current.value);
+        let description = sanitizeInput(descriptionInputRef.current.value);
+    
+        if (!validateInput(name, 'name')) {
+            toast.error("Invalid name: Name cannot be empty and must be under 300 characters.");
+            return;
+        }
+    
+        if (!validateInput(description, 'description')) {
+            toast.error("Invalid description: Description must be under 500 characters.");
+            return;
+        }
+    
+        formData = {
+            ...formData,
+            name: name,
+            description: description,
+            sessionID: localStorage.getItem("sessionID")
+        };
+    
         createHub();
     };
+    // <-- What's new    
     
     async function createHub() {
         const url = `${baseUrl}/create-hub`;
         await axios.post(url, JSON.stringify(formData)).then((response) => {
-            // console.log(response);
+            //console.log(response);
             let path = `/hubs/${response.data.hid}`; 
+            //toast.success("Hub created successfully");
             navigate(path);
         });
     }

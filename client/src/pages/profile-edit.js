@@ -64,7 +64,7 @@ const ProfileEdit = () => {
             // Updating data
             setFormData({
                 ...formData, name: response.data.name, roles: response.data.roles, pronouns: response.data.pronouns,
-                bio: response.data.bio, email: response.data.email, phoneNumber: response.data.phone_number
+                bio: response.data.bio, email: response.data.email_address, phoneNumber: response.data.phone_number
             });
             console.log("UPDATED FORM DATAS");
             console.log(formData);

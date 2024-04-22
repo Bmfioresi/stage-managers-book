@@ -391,11 +391,13 @@ module.exports = {
             const db = mongoclient.db("hubs");
             const collection = db.collection("hub_info");
             var hubInfo = [];
-            for(let i = 0; i < hids.length; i++) {
-                const query = { hid: Number(hids[i]) };
-                const hub = await collection.findOne(query);
-                hubInfo.push(hub);
-            }
+            if (hids != null) {
+                for(let i = 0; i < hids.length; i++) {
+                    const query = { hid: Number(hids[i]) };
+                    const hub = await collection.findOne(query);
+                    hubInfo.push(hub);
+                }
+            }   
             return hubInfo;
         } catch (err) {
             console.log(err);

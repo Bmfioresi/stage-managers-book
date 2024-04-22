@@ -24,10 +24,22 @@ createTestDB : async function () {
       // Create the "auto-test" database for automated testing
       const testDatabase = client.db("auto-test");
 
-      // CREATE AUTHENTICATE TEST INFO
-      const authenticateCollection = testDatabase.collection("authenticate-test");
-      const authenticateDoc = {"uid":101,"name":"DUMMY USER","bio":"DUMMY BIO","phone_number":"DUMMY PHONE","email_address":"DUMMY BIO","pronouns":"DUMMY PRONOUNS","roles":"DUMMY ROLE","hids":["D01","D02"],"headshotName":"DUMMY HEADSHOTNAME","resumeName":"DUMMY RESUMENAME"}
-      const authenticateResult = await authenticateCollection.insertOne(authenticateDoc);
+      // CREATE credentials db 
+      const credentialsCollection = testDatabase.collection("credentials");
+      const credentialsCountDoc = {"count":12110050,"password":"UNIQUE_COUNT_DOCUMENT_IDENTIFIER","username":"UNIQUE_COUNT_DOCUMENT_IDENTIFIER"};
+      const credentialsDoc1 = {"uid":12110023,"username":"dummyUser@gmail.com","password":"$2b$10$iZDaS.MiFRdpDQt1ZreZmuywjL9EAsfNKE5j4ECLDjwS8ZxhD0/rS","failedLoginAttempts":{"$numberInt":"0"}};
+      const credentialsDoc2 = {"uid":12110024,"username":"editDummyUser@gmail.com","password":"$2b$10$G16oK6VNX2nDp3V.D2a6YeRk4dJ7rPTUng5VWleB2hhL5DFPRqtSe","failedLoginAttempts":{"$numberInt":"0"}};
+      const credentialsResult = await credentialsCollection.insertMany([credentialsDoc1, credentialsDoc2, credentialsCountDoc]);
+      // console.log("JUST CREATED CREDENTIALS COLLECTION");
+      // console.log(credentialsResult)
+
+      // CREATE profiles db
+      const profilesCollection = testDatabase.collection("profiles");
+      const profilesDoc1 = {"uid":12110024,"name":"ET NAME","bio":"Sat Apr 20 2024 22:42:22 GMT-0500 (Central Daylight Time)","phone_number":"ET PHONE ","email_address":"ET EMAIL","pronouns":"ET PRONOUNS","roles":"ET EMAIL","hids":null};
+      const profilesDoc2 = {"uid":12110023,"name":"Test User","bio":"dummyBio","phone_number":"dummyPhone","email_address":"dummyEmail","pronouns":"dummyPronouns","roles":"dummyRoles","hids":null};
+      const profilesResult = await profilesCollection.insertMany([profilesDoc1, profilesDoc2]);
+      // console.log("JUST CREATED PROFILES COLLECTION");
+      // console.log(profilesResult);
 
       // CREATE FILE TEST COLLECTION
       const fileCollection = testDatabase.collection("auto-test");
@@ -56,7 +68,7 @@ destroyTestDB : async function () {
 
   try {
     const testDatabase = client.db("auto-test");
-    testDatabase.dropDatabase().then(result => { // THIS SHOULD NOT BREAK ANYTHING BUT IM TOO SCARED TO RUN IT RN
+    testDatabase.dropDatabase().then(result => { 
       // console.log(result);
       client.close();
     }).catch(err => {

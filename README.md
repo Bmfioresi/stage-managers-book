@@ -27,3 +27,6 @@ Front-end react client.
 
 ### server
 Back-end node server.
+
+### Dockerfiles
+There are three files in this app related to dockers: `docker_compose.yml`, which is used to build and manage the docker containers, and `client/Dockerfile` and `server/Dockerfile`, which contain the instructions for building the client and server docker files. The docker is not being constructed correctly; the server cannot receive posts from the client.

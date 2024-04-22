@@ -1,0 +1,50 @@
+version: "3"
+services:
+    client:
+        container_name: client
+        build:
+            context: ./client
+            dockerfile: Dockerfile # -client
+        environment:
+          REACT_APP_HOST_IP_ADDRESS: 'http://cs495-spring2024-13.ua.edu:443'
+          DOCKER_PATH: 'mongodb://mongo-db'
+        # image: node:20
+        # hostname: client-hostname
+        restart: unless-stopped
+        ports:
+          - "10.8.97.26:80:3000"
+        networks:
+          - client-server-network
+        depends_on:
+          - server
+    server:
+        container_name: server
+        # hostname: server-hostname
+        restart: unless-stopped
+        build:
+            context: ./server
+            dockerfile: Dockerfile # -server
+        # image: node:20
+        command: npm run dev
+        ports:
+          - "10.8.97.26:443:8000"
+        networks:
+          - client-server-network
+        depends_on:
+          - mongo-db
+    mongo-db:
+        image: mongo
+        ports:
+            - 27017:27017
+        container_name: mongo-db
+        volumes:
+            - /home/letucker/db-data:/data/db
+        networks:
+            - client-server-network
+
+# volumes:
+#     db-data:
+
+networks:
+    client-server-network:
+        driver: bridge

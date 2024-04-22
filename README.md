@@ -30,3 +30,9 @@ Back-end node server.
 
 ### Dockerfiles
 There are three files in this app related to dockers: `docker_compose.yml`, which is used to build and manage the docker containers, and `client/Dockerfile` and `server/Dockerfile`, which contain the instructions for building the client and server docker files. The docker is not being constructed correctly; the server cannot receive posts from the client.
+
+### Database
+We are using a MongoDB backend for this project. Currently, we connect to a Mongo Atlas DB. The URI is hardcoded in `server.js` and `mongo-helpers.js`, although it should be moved to an environment variable. There is a file called `schema.js` which defines the current DB schema. This is not executed at any point during this project execution; it exists only as documentation.
+
+### Env Variables
+There must be a file caller `server/env.js` which defines environment variables called MAX_ATTEMPTS, LOCKOUT_TIME, MONGODB_USERNAME, and MONGODB_PASSWORD.

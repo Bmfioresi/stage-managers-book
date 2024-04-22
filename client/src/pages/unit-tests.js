@@ -170,9 +170,9 @@ const UnitTests = () => {
             });
             await axios.post(`${baseUrl}/loadProfile`, JSON.stringify({ "sessionID": thisSessionID })).then((response) => {
 
-                console.log("BACK TO PROFILE PAGE");
-                console.log(response);
-                console.log(response.data);
+                // console.log("BACK TO PROFILE PAGE");
+                // console.log(response);
+                // console.log(response.data);
 
                 if (response.data.uid == "101" && response.data.name == "DUMMY USER" && response.data.phone_number == "DUMMY PHONE") {
                     setAuthenticateStatus(<p>&#10003;</p>);

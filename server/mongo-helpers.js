@@ -349,9 +349,9 @@ module.exports = {
         try {
             const hubsBase = mongoclient.db('hubs');
             const hubs = hubsBase.collection('hub_info');
-            console.log(accessCode);
+            // console.log(accessCode);
             let hub = await hubs.findOne({access_code: Number(accessCode)});
-            console.log(hub);
+            // console.log(hub);
             if (hub === null) return {status: 404}; // not found
             else return {status: 200, hid: hub.hid};
         } catch (err) {
@@ -491,7 +491,7 @@ module.exports = {
             // Connecting to profiles database
             const profilesBase = mongoclient.db('profiles');
             const profiles = profilesBase.collection('profiles');
-            console.log(uid);
+            // console.log(uid);
             // Updating record
             const result = await profiles.updateOne(
                 { uid: uid },
@@ -499,7 +499,7 @@ module.exports = {
                     $push: { hids : hid }
                 }
             );
-            console.log(result);
+            // console.log(result);
             return {'hids': result.hids};
         
         } catch (err) {

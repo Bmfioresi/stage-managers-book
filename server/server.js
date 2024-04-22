@@ -282,7 +282,7 @@ app.get('/add-join-request', async (req, res) => {
     const accessCode = req.query.accessCode;
     const uid = Number(req.query.uid);
     const hub = await mongoHelpers.findHub(accessCode);
-    console.log(hub);
+    // console.log(hub);
     if (uid === "-1") hub.status = 500;
     if (hub.status === 200) {
         let hid = hub.hid;
@@ -320,7 +320,7 @@ app.get('/add-member', async (req, res) => {
         res.json({status: 403}); // status code for already exists
     } else {
         let profile = await mongoHelpers.loadProfile(Number(uid));
-        console.log(profile);
+        // console.log(profile);
         if (profile.hids === null) profile.hids = [];
         profile.hids.push(Number(hid));
         await mongoHelpers.updateProfile(profile);
@@ -334,11 +334,11 @@ app.get('/kick-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     let profile = await mongoHelpers.loadProfile(uid);
-    console.log(profile);
+    // console.log(profile);
     profile.hids = profile.hids?.filter((phid) => phid !== Number(hid));
     await mongoHelpers.updateProfile(profile);
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    console.log(hubInfo);
+    // console.log(hubInfo);
     hubInfo[0].whitelist = hubInfo[0].whitelist?.filter((wluid) => wluid !== Number(uid));
     let ret = await mongoHelpers.updateHub(hubInfo[0]);
     res.json(ret);

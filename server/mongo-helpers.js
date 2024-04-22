@@ -372,7 +372,7 @@ module.exports = {
             //console.log(userId);
 
             // query
-            const query = { uid: userId }; // DECIDE IF WE STORING UID AS NUMBER OR STRING
+            const query = { uid: Number(userId) }; // DECIDE IF WE STORING UID AS NUMBER OR STRING
             const userProfile = await profiles.findOne(query);
         
             //console.log(userProfile.uid);
@@ -503,7 +503,7 @@ module.exports = {
                     $push: { hids : hid }
                 }
             );
-            console.log(result);
+            // console.log(result);
             return {'hids': result.hids};
         
         } catch (err) {

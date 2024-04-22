@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios, { formToJSON } from 'axios';
 import { useNavigate, Navigate } from "react-router-dom";
 import '../css/profile-page.css';
+import { toast } from 'react-toastify';
 
 const ProfileForm = () => {
     const [formData, setFormData] = useState({
@@ -15,16 +16,58 @@ const ProfileForm = () => {
     const [toProfile, setToProfile] = useState("FALSE");
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
+        let sanitizedValue = value;
+    
+        switch (name) {
+            case 'name':
+            case 'roles':
+            case 'pronouns':
+                // Strip out any script tags or HTML tags to prevent XSS
+                sanitizedValue = sanitizedValue.replace(/<\/?[^>]+(>|$)/g, "");
+                break;
+                case 'bio':
+                    // Remove all HTML tags from bio, allowing only plain text
+                    sanitizedValue = sanitizedValue.replace(/<\/?[^>]+(>|$)/g, "");
+                    break;
+            case 'email':
+                // Trim spaces and remove any illegal characters that are not typically found in emails
+                sanitizedValue = sanitizedValue.trim().replace(/[^a-zA-Z0-9@._-]/g, '');
+                break;
+            case 'phoneNumber':
+                // Ensure only numbers are entered, remove any other characters
+                sanitizedValue = sanitizedValue.replace(/\D/g, '');
+                break;
+            default:
+                break;
+        }
+    
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: sanitizedValue
         });
+    };
+
+    const validateForm = () => {
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const regexPhone = /^\d{10}$/;
+
+        if (formData.email && !regexEmail.test(formData.email)) {
+            toast.error("Invalid email format");
+            return false;
+        }
+        if (formData.phoneNumber && !regexPhone.test(formData.phoneNumber)) {
+            toast.error("Phone number must be 10 digits");
+            return false;
+        }
+        return true;
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
-        console.log(formData);
+        if (!validateForm()) return;
+        // console.log(formData);
+        // console.log(formData);
 
         const url = 'http://localhost:8000/createProfile';
 
@@ -32,8 +75,8 @@ const ProfileForm = () => {
         axios.post(url, JSON.stringify(formData)).then((response) => {
 
             // Updating current userID
-            console.log("NEW LOCAL STORAGE UID");
-            console.log(response.data.uid);
+            //console.log("NEW LOCAL STORAGE UID");
+            //console.log(response.data.uid);
             localStorage.setItem('uid', response.data.uid);
             setToProfile("TRUE");
         });

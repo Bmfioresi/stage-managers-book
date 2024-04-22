@@ -5,6 +5,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import '../css/pages.css';
 import '../css/hub-pages.css';
 import { NavLink } from "../components/Navbar/elements";
+import { toast } from 'react-toastify';
 
 const baseUrl = 'http://localhost:8000';
 const bucket = "designer";
@@ -24,7 +25,8 @@ const Designer = () => {
         event.preventDefault();
 
         if (file == null) {
-            alert("Make sure to select a file");
+            //alert("Make sure to select a file");
+            toast.error("Make sure to select a file");
             return;
         }
 
@@ -34,7 +36,8 @@ const Designer = () => {
         if (ext !== 'jpg' && ext !== 'png' && ext !== 'mov' && 
             ext !== 'mp4' && ext !== 'pdf' && ext !== 'dwg' &&
             ext !== 'dxf' && ext !== 'dwf') {
-                alert(`Invalid file format .${ext}`);
+                // alert(`Invalid file format .${ext}`);
+                toast.error(`Invalid file format .${ext}`);
                 return;
         }
 
@@ -53,11 +56,13 @@ const Designer = () => {
                 // console.log(response.data);
                 if (response.data.status == 500) throw("Something went wrong");
                 if (response.data.status == 413) throw("File size is too large");
-                alert(`Successfully uploaded ${response.data.name}`);
+                // alert(`Successfully uploaded ${response.data.name}`);
+                toast.success(`Successfully uploaded ${response.data.name}`);
                 getFileLinks();
             } catch (err) {
                 //console.log(err);
-                alert(err);
+                //alert(err);
+                toast.error(err);
             }
         });
     }
@@ -67,12 +72,16 @@ const Designer = () => {
             try {
                 let res = await fetch(`http://localhost:8000/delete-file?name=${name}&hub=${hub}&bucket=${bucket}`);
                 res = await res.json();
-                if (res.status === 200) alert("File " + name + " deleted");
+                if (res.status === 200) {
+                    //alert("File " + name + " deleted");
+                    toast.success("File " + name + " deleted");
+                }
                 else throw res;
                 getFileLinks();
             } catch (err) {
-                console.log(err);
-                alert("Something went wrong");
+                //console.log(err);
+                //alert("Something went wrong");
+                toast.error("Something went wrong");
             }
         };
 

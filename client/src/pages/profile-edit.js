@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios, { formToJSON } from 'axios';
 import { useNavigate, Navigate } from "react-router-dom";
 import '../css/new-profile-page.css';
+import { toast } from 'react-toastify';
 
 const ProfileEdit = () => {
     const [formData, setFormData] = useState({
@@ -15,16 +16,58 @@ const ProfileEdit = () => {
     const [toProfile, setToProfile] = useState("FALSE");
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
+        let sanitizedValue = value;
+    
+        switch (name) {
+            case 'name':
+            case 'roles':
+            case 'pronouns':
+                // Strip out any script tags or HTML tags to prevent XSS
+                sanitizedValue = sanitizedValue.replace(/<\/?[^>]+(>|$)/g, "");
+                break;
+                case 'bio':
+                    // Remove all HTML tags from bio, allowing only plain text
+                    sanitizedValue = sanitizedValue.replace(/<\/?[^>]+(>|$)/g, "");
+                    break;
+            case 'email':
+                // Trim spaces and remove any illegal characters that are not typically found in emails
+                sanitizedValue = sanitizedValue.trim().replace(/[^a-zA-Z0-9@._-]/g, '');
+                break;
+            case 'phoneNumber':
+                // Ensure only numbers are entered, remove any other characters
+                sanitizedValue = sanitizedValue.replace(/\D/g, '');
+                break;
+            default:
+                break;
+        }
+    
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: sanitizedValue
         });
+    };
+
+    const validateForm = () => {
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const regexPhone = /^\d{10}$/;
+
+        if (formData.email && !regexEmail.test(formData.email)) {
+            toast.error("Invalid email format");
+            return false;
+        }
+        if (formData.phoneNumber && !regexPhone.test(formData.phoneNumber)) {
+            toast.error("Phone number must be 10 digits");
+            return false;
+        }
+        return true;
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
-        console.log(formData);
+        if (!validateForm()) return;
+        //console.log(formData);
+        //console.log(formData);
 
         const url = 'http://localhost:8000/updateProfile';
 
@@ -34,20 +77,21 @@ const ProfileEdit = () => {
             email: formData.email, roles: formData.roles, sessionID: localStorage.getItem('sessionID')
         };
 
-        console.log("Trying to change profile");
-        console.log(allData);
+        // console.log("Trying to change profile");
+        //console.log(allData);
 
         axios.post(url, JSON.stringify(allData)).then((response) => {
 
             // TODO: Modify function so this only includes error handling
-            console.log("NEW LOCAL STORAGE UID EDIT PROFILE");
-            console.log(response.data.uid);
+            // console.log("NEW LOCAL STORAGE UID EDIT PROFILE");
+            // console.log(response.data.uid);
             setToProfile("TRUE");
             localStorage.setItem('uid', response.data.uid);
         });
 
         // Displaying newly created profile
-        console.log("About to redirect to profile");
+        //console.log("About to redirect to profile");
+        toast.success("Profile updated successfully!");
         return <Navigate to='/profile' />;
 
     }
@@ -55,19 +99,19 @@ const ProfileEdit = () => {
     useEffect(() => {
         // Loading current profile into template
         var thisSessionID = localStorage.getItem('sessionID');
-        console.log("ABOUT TO SEND POST REQUEST HERE");
+        //console.log("ABOUT TO SEND POST REQUEST HERE");
         axios.post('http://localhost:8000/loadProfile', JSON.stringify({ sessionID: thisSessionID })).then((response) => {
 
-            console.log("BACK TO PROFILE EDIT PAGE")
-            console.log(response.data);
+            //console.log("BACK TO PROFILE EDIT PAGE")
+            //console.log(response.data);
 
             // Updating data
             setFormData({
                 ...formData, name: response.data.name, roles: response.data.roles, pronouns: response.data.pronouns,
                 bio: response.data.bio, email: response.data.email_address, phoneNumber: response.data.phone_number
             });
-            console.log("UPDATED FORM DATAS");
-            console.log(formData);
+            //console.log("UPDATED FORM DATAS");
+            //console.log(formData);
             // setFormData(name, response.data.name);
             // setFormData(bio, response.data.bio);
             // setFormData(email, response.data.email_address);

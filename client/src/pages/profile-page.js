@@ -17,6 +17,15 @@ const ProfilePage = () => {
 
     const [isEditing, setIsEditing] = useState(false);
 
+    function formatPhoneNumber(phoneNumberString) { // Formats phone number to (xxx)-xxx-xxxx
+        const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+        const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+        if (match) {
+            return `(${match[1]})-${match[2]}-${match[3]}`;
+        }
+        return null;
+    }  
+
     const handleEditClick = () => {
         setIsEditing(true);
     };
@@ -38,8 +47,8 @@ const ProfilePage = () => {
 
     const handleSubmit = async (event) => {
         // event.preventDefault();
-        console.log(formData);
-        console.log(formData);
+        // console.log(formData);
+        // console.log(formData);
 
         const url = 'http://localhost:8000/updateProfile';
 
@@ -49,14 +58,14 @@ const ProfilePage = () => {
             email: formData.email, roles: formData.roles, sessionID: localStorage.getItem('sessionID')
         };
 
-        console.log("Trying to change profile");
-        console.log(allData);
+        // console.log("Trying to change profile");
+        // console.log(allData);
 
         axios.post(url, JSON.stringify(allData)).then((response) => {
 
             // TODO: Modify function so this only includes error handling
-            console.log("NEW LOCAL STORAGE UID EDIT PROFILE");
-            console.log(response.data.uid);
+            // console.log("NEW LOCAL STORAGE UID EDIT PROFILE");
+            // console.log(response.data.uid);
             // setToProfile("TRUE");
             localStorage.setItem('uid', response.data.uid);
             // Update local state variables immediately
@@ -70,7 +79,7 @@ const ProfilePage = () => {
         });
 
         // Displaying newly created profile
-        console.log("About to redirect to profile");
+        //console.log("About to redirect to profile");
         return <Navigate to='/profile' />;
 
     }
@@ -120,7 +129,7 @@ const ProfilePage = () => {
                     <div className="contact-info">
                         <h2 className="header-style">Contact Information</h2>
                         <p className="description-style" htmlFor="email">{email}</p>
-                        <p className="description-style" htmlFor="phoneNumber">{phoneNumber}</p>
+                        <p className="description-style" htmlFor="phoneNumber">{formatPhoneNumber(phoneNumber)}</p>
                     </div>
                     <div className="gallery">
                         <h2 className="header-style">Gallery</h2>

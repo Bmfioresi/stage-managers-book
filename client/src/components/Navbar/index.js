@@ -144,7 +144,15 @@ const NavBar = () => {
                         )}
                     </div>
                     {/* } */}
-                    <NavLink to="/logout">Sign Out</NavLink>  
+                    <NavLink
+                        style={{
+                            position: "absolute",
+                            width: "100%",
+                            bottom: "0"
+                        }}
+                        to="/logout">
+                        Sign Out
+                    </NavLink> 
                 </NavMenu>
             </Nav>
         </>

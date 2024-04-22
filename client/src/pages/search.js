@@ -7,7 +7,7 @@ const Search = () => {
     async function search() {
         const url = 'http://localhost:8000/search';
         const res = await axios.get(url).then((response) => {
-            console.log(response.data);
+            //console.log(response.data);
         });
         // setName(await res.json());
     }

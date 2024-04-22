@@ -6,6 +6,7 @@ import "../../css/global.css";
 // import { Tooltip as ReactTooltip } from 'react-tooltip'; // couldn't get this to work 
 import { toast } from 'react-toastify'; 
 import LineFrame from "./sign-up-form-frame";
+import validator from 'validator';
 
 const SignUpFrame = () => {
   const navigate = useNavigate(); 
@@ -19,7 +20,30 @@ const SignUpFrame = () => {
 
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
-    setFormData(prevState => ({ ...prevState, [name]: value}));
+    let sanitizedValue = value;
+
+    // general escape to prevent any HTML/JS code from being executed
+    sanitizedValue = validator.escape(sanitizedValue);
+
+    switch (name) {
+      case 'email':
+        sanitizedValue = validator.normalizeEmail(sanitizedValue, { gmail_remove_subaddress:true, outlookdotcom_remove_subaddress:true,
+          yahoo_remove_subaddress: true, icloud_remove_subaddress: true }) ? sanitizedValue : '';
+        // Remove any characters that are not typical in email addresses as a user types
+        sanitizedValue = sanitizedValue.replace(/[^a-zA-Z0-9@.-]/g, '');
+        break;
+      case 'fullName':
+        sanitizedValue = sanitizedValue.replace(/[\{\}\[\]\$]/g, '');
+        break;
+      default:
+        break;
+    }
+
+    if (sanitizedValue) {
+      setFormData(prevState => ({ ...prevState, [name]: sanitizedValue }));
+    } else { // handle the error
+      setFormData(prevState => ({ ...prevState, [name]: '' }));
+    }
 };
 
 function isValidEmail(email) { // Function to check if the email is valid
@@ -29,6 +53,12 @@ function isValidEmail(email) { // Function to check if the email is valid
 function isValidPassword(password) { // Function to check if the password is valid
   const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   return strongPasswordRegex.test(password);
+}
+
+function containsPersonalInfo(password, email, fullName) {
+  const emailParts = email.split('@')[0];
+  const nameParts = fullName.toLowerCase().split(' ');
+  return nameParts.some(part => password.toLowerCase().includes(part)) || password.toLowerCase().includes(emailParts.toLowerCase());
 }
   
 async function handleLoginSubmit(event) {
@@ -52,6 +82,11 @@ async function handleLoginSubmit(event) {
   if (formData.password !== formData.verifyPassword) { // If the passwords do not match
     toast.error('Passwords do not match. Please try again.');
     return; // stop submission
+  }
+
+  if (containsPersonalInfo(formData.password, formData.email, formData.fullName)) {
+    toast.error('Password should not contain your email or parts of your full name.');
+    return; // stop submission 
   }
 
   const url = 'http://localhost:8000/register'; // URL for registration

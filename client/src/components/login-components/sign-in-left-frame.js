@@ -4,6 +4,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import axios, { formToJSON } from 'axios';
 import "../../css/sign-in-left-frame.css";
 import "../../css/global.css";
+import validator from 'validator';
 
 const LeftSide8Column = () => {
   const navigate = useNavigate();
@@ -29,7 +30,27 @@ const LeftSide8Column = () => {
 
   const handleLoginChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    let sanitizedValue = value;
+
+    // general escape to prevent any HTML/JS code from being executed
+    sanitizedValue = validator.escape(sanitizedValue);
+
+    switch (name) {
+      case 'email':
+        sanitizedValue = validator.normalizeEmail(sanitizedValue, { gmail_remove_subaddress:true, outlookdotcom_remove_subaddress:true,
+          yahoo_remove_subaddress: true, icloud_remove_subaddress: true }) ? sanitizedValue : '';
+        // Remove any characters that are not typical in email addresses as a user types
+        sanitizedValue = sanitizedValue.replace(/[^a-zA-Z0-9@.-]/g, '');
+        break;
+      default:
+        break;
+    }
+
+    if (sanitizedValue) {
+      setFormData(prevState => ({ ...prevState, [name]: sanitizedValue }));
+    } else { // handle the error
+      setFormData(prevState => ({ ...prevState, [name]: '' }));
+    }
   };
 
   const handleLoginSubmit = async (event) => {

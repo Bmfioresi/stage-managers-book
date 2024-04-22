@@ -71,7 +71,7 @@ const UnitTests = () => {
 
         setUploadLoading(true);
         setDeleteLoading(true);
-        if(testAllVal === true) await new Promise(resolve => setTimeout(resolve, 1000)); 
+        if(testAllVal === true) await new Promise(resolve => setTimeout(resolve, 2000)); 
 
         url = `${baseUrl}/upload-file`;
         const data = new FormData();
@@ -121,7 +121,7 @@ const UnitTests = () => {
         } finally {
             if(testAllVal === true) {
                 await deleteTestDB();
-                await new Promise(resolve => setTimeout(resolve, 1000)); 
+                await new Promise(resolve => setTimeout(resolve, 2000)); 
             }
         }
     }
@@ -364,7 +364,7 @@ const UnitTests = () => {
 
         // Loading Test Data
         await axios.post(`${baseUrl}/create-test`, JSON.stringify(formData));
-        await new Promise(resolve => setTimeout(resolve, 1000)); 
+        await new Promise(resolve => setTimeout(resolve, 2000)); 
         
         // Running Tests
         await serverConnect();

@@ -39,7 +39,7 @@ function HubAdmin() {
           setAnnouncements(response.data[0].announcements);
           setAccessCode(response.data[0].access_code);
           joinRequests = response.data[0].join_requests;
-          console.log(response.data[0].whitelist);
+        //   console.log(response.data[0].whitelist);
           whitelist = response.data[0].whitelist;
           blacklist = response.data[0].blacklist;
         }));
@@ -54,7 +54,7 @@ function HubAdmin() {
     async function retrieveMembers() {
         await getHubInfo();
         let isAdmin = await checkAdmin();
-        console.log(isAdmin);
+        // console.log(isAdmin);
         if (!isAdmin) navigate(`/hubs/${params.hub}`);
         else await setAccess(true);
         

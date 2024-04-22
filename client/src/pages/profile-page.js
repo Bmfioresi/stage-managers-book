@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from "react-dom/client";
+import { useNavigate, Navigate } from "react-router-dom";
 import axios from 'axios';
 import '../css/new-profile-page.css';
 import ProfileEdit from './profile-edit.js'; // Import the ProfileEdit component
@@ -36,7 +37,7 @@ const ProfilePage = () => {
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         console.log(formData);
         console.log(formData);
 
@@ -70,7 +71,7 @@ const ProfilePage = () => {
 
         // Displaying newly created profile
         console.log("About to redirect to profile");
-        // return <Navigate to='/profile' />;
+        return <Navigate to='/profile' />;
 
     }
 
@@ -142,7 +143,7 @@ const ProfilePage = () => {
                         <form onSubmit={handleSubmit}>
                             <ProfileEdit formData={formData} onChange={handleChange} />
                             <button type="button" onClick={handleCancelClick}>Cancel</button>
-                            <button type="submit">Save Changes</button>
+                            {/* <button type="submit">Save Changes</button> */}
                         </form>
                     ) : (
                         <button className="profile-button" onClick={handleEditClick}>Edit Profile</button>

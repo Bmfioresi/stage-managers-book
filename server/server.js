@@ -10,12 +10,24 @@ const bcrypt = require('bcrypt');
 const saltrounds = 10;
 
 const mongoHelpers = require('./mongo-helpers');
+const testDB = require('./test-db-functions');
 const gridfsHelpers = require('./gridfs-helpers');
 const session = require('express-session');
 const MongoStore = require('connect-mongo'); // May need to change to const MongoStore = require('connect-mongo')(session);
 
 const { body, validationResult } = require('express-validator'); // For validating user input
 const router = express.Router();
+
+// const crypto = require('crypto'); // for generating random token
+// const nodemailer = require('nodemailer'); // for sending emails
+// // create a transporter object for nodemailer
+// let transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: (process.env.EMAIL),
+//         pass: (process.env.EMAIL_PASSWORD)
+//     }
+// });
 
 const app = express();
 
@@ -77,13 +89,12 @@ app.get('/test', (req, res) => { // don't delete, necessary for unit tests
 // creating a new user from the sign-up form
 app.post('/register', async (req, res) => {
     const fields = JSON.parse(Object.keys(req.fields)[0]);
-
     try{
         // hash the password
         const hashedPassword = await bcrypt.hash(fields.password, saltrounds);
 
-        // Attempt to create a user
-        const userCreationResult = await mongoHelpers.createUser(fields.fullName, fields.email, hashedPassword);
+        // Attempt to create a user  
+        const userCreationResult = await mongoHelpers.createUser(fields.fullName, fields.email, hashedPassword, fields.isTest);
         if (userCreationResult.success) {
             res.status(201).send('User created successfully');
         }
@@ -91,7 +102,7 @@ app.post('/register', async (req, res) => {
             //res.status(400).send(userCreationResult.message);
             res.json({ status: 400, message: userCreationResult.message });
         }
-    } catch (error) {
+    } catch (error) { 
         res.json({ status: 500, message: 'Server Error' });
     }
 });
@@ -110,9 +121,9 @@ app.post('/register', async (req, res) => {
 app.post('/upload-file', async (req, res) => {
     if (req.fields.hub == "Unit Test") {
         const stream = fs.createReadStream("unit-test-files/unit-test-file.jpg");
-        const name = "unit-test-file.jpg";
-        const hub = "unit-tests";
-        const bucket = "unit-tests";
+        const name = "auto-test-file.jpg";
+        const hub = "auto-test";
+        const bucket = "auto-test";
         const ret = await gridfsHelpers.uploadFile(name, stream, hub, bucket);
         if (ret == null) res.json({status: 500});
         else res.json(ret);
@@ -133,6 +144,20 @@ app.post('/upload-file', async (req, res) => {
             else res.json(ret);
         }
     }
+});
+
+app.post('/create-test', async (req, res) => {
+    // console.log("before testDB creation");
+    testDB.createTestDB();
+    // console.log("after testDB creation");
+    res.json("Created");
+});
+
+app.post('/destroy-test', async (req, res) => {
+    // console.log("before testDB destruction");
+    await testDB.destroyTestDB();
+    // console.log("after testDB destruction");
+    res.json("Destroyed");
 });
 
 // download file stream of file with give nname
@@ -190,6 +215,25 @@ app.get('/get-filenames', async (req, res) => {
     else res.json(ret);
 });
 
+// app.post('/check-logged-in', async (req, res) => {
+//     const fields = JSON.parse(Object.keys(req.fields)[0]);
+//     const sessionID = fields.sessionID;
+//     let uid = await getUID(sessionID);
+//     res.json(uid);
+//     // var userId = await mongoHelpers.isLoggedIn(uid); 
+
+//     // if (userId === null) {
+//     //     req.session.isLoggedIn = false;
+//     //     req.session.userId = "-1";
+//     // }
+//     // else {
+//     //     req.session.isLoggedIn = true;
+//     //     req.session.userId = userId;
+//     // }
+//     // console.log(req.sessionID);
+//     // res.json(req.session.userId);
+// });
+
 app.post('/create-hub', async (req, res) => {
     const formData = JSON.parse(Object.keys(req.fields)[0]);
     const userIDResponse = await mongoHelpers.getUserID(formData.sessionID);
@@ -238,7 +282,7 @@ app.get('/add-join-request', async (req, res) => {
     const accessCode = req.query.accessCode;
     const uid = Number(req.query.uid);
     const hub = await mongoHelpers.findHub(accessCode);
-    console.log(hub);
+    // console.log(hub);
     if (uid === "-1") hub.status = 500;
     if (hub.status === 200) {
         let hid = hub.hid;
@@ -276,7 +320,7 @@ app.get('/add-member', async (req, res) => {
         res.json({status: 403}); // status code for already exists
     } else {
         let profile = await mongoHelpers.loadProfile(Number(uid));
-        console.log(profile);
+        // console.log(profile);
         if (profile.hids === null) profile.hids = [];
         profile.hids.push(Number(hid));
         await mongoHelpers.updateProfile(profile);
@@ -290,11 +334,11 @@ app.get('/kick-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     let profile = await mongoHelpers.loadProfile(uid);
-    console.log(profile);
+    // console.log(profile);
     profile.hids = profile.hids?.filter((phid) => phid !== Number(hid));
     await mongoHelpers.updateProfile(profile);
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
-    console.log(hubInfo);
+    // console.log(hubInfo);
     hubInfo[0].whitelist = hubInfo[0].whitelist?.filter((wluid) => wluid !== Number(uid));
     let ret = await mongoHelpers.updateHub(hubInfo[0]);
     res.json(ret);
@@ -356,7 +400,7 @@ app.post('/authenticate',
         }
 
         const fields = JSON.parse(Object.keys(req.fields)[0]);
-        const lockoutStatus = await mongoHelpers.checkLockout(fields.email); // Check if user is locked out
+        const lockoutStatus = await mongoHelpers.checkLockout(fields.email, fields.isTest); // Check if user is locked out
 
         if (!lockoutStatus.exists) {
             res.json({ status: 401, message: "Invalid Credentials. Please try again." });
@@ -367,17 +411,15 @@ app.post('/authenticate',
             res.json({ status: 423, message: "Account is locked. Please try again later." });
             return;
         }
-
         // FOR DEBUGGING
         // console.log("GOT FIELDS");
         // console.log(fields);
-
         try {
             // var userId = await mongoHelpers.authenticateUser(fields.email, fields.password); 
 
             // implementing hashed passwords
             // fetch user's hashed password from the database
-            const user = await mongoHelpers.authenticateUser(fields.email);
+            const user = await mongoHelpers.authenticateUser(fields.email, fields.isTest);
             if (!user) {
                 res.json({ status: 401, message: "Invalid Credentials. Please try again." });
                 return;
@@ -390,11 +432,11 @@ app.post('/authenticate',
                 // console.log("Invalid Credentials. Please try again.");
                 req.session.isLoggedIn = false;
                 req.session.userId = "-1";
-                await mongoHelpers.incrementLoginAttempts(fields.email); // Increment login attempts
+                await mongoHelpers.incrementLoginAttempts(fields.email, fields.isTest); // Increment login attempts
                 res.json({ status: 401, message: "Invalid Credentials. Please try again.", sessionID: req.sessionID});
                 return;
             } else {
-                await mongoHelpers.resetLoginAttempts(fields.email); // Reset login attempts
+                await mongoHelpers.resetLoginAttempts(fields.email, fields.isTest); // Reset login attempts
 
                 req.session.isLoggedIn = true;
                 req.session.userId = user.uid;
@@ -444,10 +486,57 @@ app.post('/loadProfile', async (req, res) => {
     if (userID == "-1") {
         console.log("Could not verify user's identity.");
     }
-    const profileData = await mongoHelpers.loadProfile(userID); 
+    const profileData = await mongoHelpers.loadProfile(userID, fields.isTest); 
     res.json(profileData);
 });
  
 app.listen(8000, () => {
     console.log('Server is running on port 8000.');
 });
+
+// Need to get OAuth to work for this to be able to send a password reset email from our Google account
+// app.post('/forgot-password', async (req, res) => {
+//     const fields = JSON.parse(Object.keys(req.fields)[0]);
+//     const email = fields.email;
+//     console.log(email);
+//     try {
+//         const user = await mongoHelpers.authenticateUser(email);
+//         if (!user) {
+//             res.json({ status: 404, message: "Email not found" });
+//             return;
+//         }
+
+//         // Generate a random token
+//         const token = crypto.randomBytes(20).toString('hex');
+//         // Set token expiration
+//         const tokenExpiration = Date.now() + 3600000; // 1 hour from now
+
+//         // Update user in the database with token and expiration
+//         await mongoHelpers.updatePasswordResetToken(email, token, tokenExpiration);
+//         console.log('Token:', token);
+//         // Send email to user with token
+//         const resetURL = `http://localhost:3000/reset-password/${token}`;
+//         const mailOptions = {
+//             to: email,
+//             from: 'your-email@gmail.com', // should match the transporter user
+//             subject: 'Password Reset Request',
+//             text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
+//             Please click on the following link, or paste this into your browser to complete the process:\n\n
+//             ${resetURL}\n\n
+//             If you did not request this, please ignore this email and your password will remain unchanged.\n`
+//         };
+
+//         transporter.sendMail(mailOptions, function(error, info) {
+//             if (error) {
+//                 console.log('Error in sending email:', error);
+//                 res.json({ status: 500, message: 'Error in sending email' });
+//             } else {
+//                 console.log('Email sent: ' + info.response);
+//                 res.json({ status: 201, message: 'Email sent' });
+//             }
+//         });
+//     } catch (error) {
+//         console.error('Error in /forgot-password:', error);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// });

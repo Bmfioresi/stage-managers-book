@@ -45,7 +45,7 @@ async function handleLoginSubmit(event) {
   }
 
   if (!isValidPassword(formData.password)) { // If the password is not valid
-    toast.error('Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character.');
+    toast.error('Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.');
     return; // stop submission
   }
 
@@ -113,6 +113,12 @@ async function handleLoginSubmit(event) {
             onChange={handleLoginChange} // Pass the handler
             type = "password" // to hide the password
             // tooltipText="Your password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
+            criteria={`Password must contain:
+            - at least 8 characters
+            - one uppercase letter
+            - one lowercase letter
+            - one number
+            - one special character`}
           />
           <LineFrame
             label1="Verify Password"

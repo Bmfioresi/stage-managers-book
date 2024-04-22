@@ -3,13 +3,42 @@ import Input from "./input";
 import { useNavigate } from "react-router-dom";
 import "../../css/frame-forgot-password.css";
 import "../../css/global.css";
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const FrameForgotPassword = () => {
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  const onMainButtonClick = useCallback(() => {
-    navigate("/signin");
-  }, [navigate]);
+  // const onMainButtonClick = useCallback(() => {
+  //   navigate("/signin");
+  // }, [navigate]);
+
+  // I needed to get OAuth2 working before I could use this
+  const onMainButtonClick = useCallback(async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    //console.log("Sending API request with email:", email);
+    try {
+      //console.log("Email state before sending request:", email);
+      const response = await axios.post("http://localhost:8000/forgot-password", JSON.stringify({ email }));
+      //console.log("API response:", response);
+
+      if (response.status === 201) {
+        toast.success(response.data.message);
+        navigate("/signin");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("This page isn't implemented yet. Please try again later.");
+    }
+  }, [email]);
+
+  const onInputChange = useCallback((event) => {
+    setEmail(event.target.value);
+  }, []);
 
   const onReturnToTheClick = useCallback(() => {
     navigate("/signin");
@@ -45,6 +74,7 @@ const FrameForgotPassword = () => {
               <p className="forgot">address associated with your account.</p>
             </span>
           </h3>
+          <form onSubmit={(event) => onMainButtonClick(event)} method="POST">
           <div className="frame-help">
             <Input
               placeholderPlaceholder="JohnSmith@email.com"
@@ -52,11 +82,15 @@ const FrameForgotPassword = () => {
               propDisplay="inline-block"
               propWidth="500px"
               type="email"
+              name="email"
+              onChange={onInputChange}
+              value={email}
             />
-            <button className="main-button2" onClick={onMainButtonClick}>
+            <button type="submit" className="main-button2">
               <div className="sign-in2">Submit</div>
             </button>
           </div>
+        </form>
         </div>
         <div className="return-frame">
           <div className="return-frame-child" />

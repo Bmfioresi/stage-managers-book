@@ -38,10 +38,36 @@ module.exports = {
         } 
     },
 
+    // isLoggedIn: async function (uid) {
+    //     try {
+    //         const credentialsBase = mongoclient.db('credentials');
+    //         const credentials = credentialsBase.collection('credentials');
+        
+    //         // query
+    //         const query = { uid: uid };
+    //         const userProfile = await credentials.findOne(query);
+        
+    //         // no user found with this uid
+    //         if (!userProfile) {
+    //             return null;
+    //         }
+
+    //         // returning user data
+    //         return userProfile.uid;
+        
+    //     } catch (err) {
+    //         console.log(err);
+    //         console.log("PROFILE NOT FOUND");
+    //         return {'uid': "-1"};
+    //     }
+    // },
+
     // updated to just search for email... trying to use hashed passwords
-    authenticateUser: async function (uname) {
+    authenticateUser: async function (uname, isTest) {
         try {
-            const credentialsBase = mongoclient.db('credentials');
+            var credentialsBase;
+            if (!isTest) {credentialsBase = mongoclient.db('credentials');}
+            else {credentialsBase = mongoclient.db('auto-test');}
             const credentials = credentialsBase.collection('credentials');
         
             // query
@@ -64,9 +90,11 @@ module.exports = {
     },
 
     // Function to check lockout status
-    checkLockout: async function (username) {
+    checkLockout: async function (username, isTest) {
         // console.log("Checking lockout status for " + username);
-        const credentialsBase = mongoclient.db('credentials');
+        var credentialsBase;
+        if (!isTest) {credentialsBase = mongoclient.db('credentials');}
+        else {credentialsBase = mongoclient.db('auto-test');}
         const credentials = credentialsBase.collection('credentials');
         const userProfile = await credentials.findOne({ username: username });
 
@@ -84,9 +112,11 @@ module.exports = {
     },
 
     // Function to increment login attempts and possibly lock the account
-    incrementLoginAttempts: async function (username) {
+    incrementLoginAttempts: async function (username, isTest) {
         // console.log("Incrementing login attempts for " + username);
-        const credentialsBase = mongoclient.db('credentials');
+        var credentialsBase;
+        if (!isTest) {credentialsBase = mongoclient.db('credentials');}
+        else {credentialsBase = mongoclient.db('auto-test');}
         const credentials = credentialsBase.collection('credentials');
         const userProfile = await credentials.findOne({ username: username });
 
@@ -109,17 +139,21 @@ module.exports = {
     },
 
     // Function to reset login attempts
-    resetLoginAttempts: async function (username) {
-        const credentialsBase = mongoclient.db('credentials');
+    resetLoginAttempts: async function (username, isTest) {
+        var credentialsBase;
+        if (!isTest) {credentialsBase = mongoclient.db('credentials');}
+        else {credentialsBase = mongoclient.db('auto-test');}
         const credentials = credentialsBase.collection('credentials');
         // console.log("Resetting login attempts for " + username)
         await credentials.updateOne({ username: username }, { $set: { failedLoginAttempts: 0 } });
         // console.log("Reset login attempts");
     },
 
-    loadProfile: async function (userId) {
+    loadProfile: async function (userId, isTest) {
         try {
-            const profilesBase = mongoclient.db('profiles');
+            var profilesBase;
+            if (!isTest) {profilesBase = mongoclient.db('profiles');}
+            else {profilesBase = mongoclient.db('auto-test');}
             const profiles = profilesBase.collection('profiles');
         
             // query
@@ -137,7 +171,7 @@ module.exports = {
 
             // RETURNING BLANK PROFILE
             if (userProfile == null) {
-                console.log("USER PROFILE IS NULL.");
+                // console.log("USER PROFILE IS NULL.");
                 userProfile = {'uid': "-1", 'name': "NOT FOUND", 'bio': "NOT FOUND", 'email_address': "NOT FOUND", 
                 'phone_number': "NOT FOUND", 'pronouns': "NOT FOUND", 'roles': "NOT FOUND"};
             }
@@ -166,10 +200,6 @@ module.exports = {
             );
             thisUID = countResult.count;
 
-            // FOR DEBUGGING PURPOSES
-            console.log("COUNT RESULT");
-            console.log(countResult);
-
             // Connecting to profiles database
             const profilesBase = mongoclient.db('profiles');
             const profiles = profilesBase.collection('profiles');
@@ -193,12 +223,12 @@ module.exports = {
     },
 
     // currently, password is stored in plaintext
-    createUser: async function (fullName, email, hashedPassword) {
+    createUser: async function (fullName, email, hashedPassword, isTest) {
         try {
-            const credentialsBase = mongoclient.db('credentials');
+            var credentialsBase;
+            if (!isTest) credentialsBase = mongoclient.db('credentials');
+            else {credentialsBase = mongoclient.db('auto-test');}
             const credentials = credentialsBase.collection('credentials');
-
-            //console.log("Creating a user");
     
             // Check if user already exists
             const existingUser = await credentials.findOne({ username: email});
@@ -216,13 +246,9 @@ module.exports = {
                 { $inc: { count : 1 } }
             );
             thisUID = countResult.count;
-
-            //console.log("After getting next UID");
     
             // Insert authentication details with the generated UID
             const userResult = await credentials.insertOne({ uid: thisUID, username: email, password: hashedPassword });
-    
-            //console.log("AFter inserting user credentials");
 
             // Check if the user was inserted correctly
             if (!userResult.acknowledged) {
@@ -241,8 +267,6 @@ module.exports = {
                 pronouns: "", 
                 roles: "" 
             });
-
-            //console.log("After inserting user profile");
     
             // Check if the profile was inserted correctly
             if (!profileResult.acknowledged) {
@@ -259,7 +283,11 @@ module.exports = {
     updateProfile: async function (f, userId) {
         try {
             // Connecting to profiles database
-            const profilesBase = mongoclient.db('profiles');
+            var profilesBase;
+            if (!f.isTest) {profilesBase = mongoclient.db('profiles');}
+            else {
+                profilesBase = mongoclient.db('auto-test');
+            }
             const profiles = profilesBase.collection('profiles');
 
             // Updating record
@@ -284,7 +312,7 @@ module.exports = {
             // console.log(userProfile.uid);
             // console.log(result);
             // console.log("UPDATE PROFILE ABOUT TO RETURN");
-            return {'uid': f.uid};
+            return {'uid': userId};
         
         } catch (err) {
             console.log(err);
@@ -325,9 +353,9 @@ module.exports = {
         try {
             const hubsBase = mongoclient.db('hubs');
             const hubs = hubsBase.collection('hub_info');
-            console.log(accessCode);
+            // console.log(accessCode);
             let hub = await hubs.findOne({access_code: Number(accessCode)});
-            console.log(hub);
+            // console.log(hub);
             if (hub === null) return {status: 404}; // not found
             else return {status: 200, hid: hub.hid};
         } catch (err) {
@@ -344,7 +372,7 @@ module.exports = {
             //console.log(userId);
 
             // query
-            const query = { uid: userId }; // DECIDE IF WE STORING UID AS NUMBER OR STRING
+            const query = { uid: Number(userId) }; // DECIDE IF WE STORING UID AS NUMBER OR STRING
             const userProfile = await profiles.findOne(query);
         
             //console.log(userProfile.uid);
@@ -353,8 +381,7 @@ module.exports = {
             return userProfile.hids;
         
         } catch (err) {
-            console.log(err);
-            console.log("HIDS NOT FOUND");
+            // console.log("HIDS NOT FOUND");
             return {'uid': "-1"};
         }
     },
@@ -468,7 +495,7 @@ module.exports = {
             // Connecting to profiles database
             const profilesBase = mongoclient.db('profiles');
             const profiles = profilesBase.collection('profiles');
-            console.log(uid);
+            // console.log(uid);
             // Updating record
             const result = await profiles.updateOne(
                 { uid: uid },
@@ -476,7 +503,7 @@ module.exports = {
                     $push: { hids : hid }
                 }
             );
-            console.log(result);
+            // console.log(result);
             return {'hids': result.hids};
         
         } catch (err) {

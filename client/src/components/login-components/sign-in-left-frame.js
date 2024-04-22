@@ -79,7 +79,7 @@ const LeftSide8Column = () => {
             <div className="input4">
               <div className="input5" />
               <input
-                className="placeholder-sign-in"
+                className="placeholder-signin"
                 placeholder="stageManagersBook@email.com"
                 type="email"
                 name="email"
@@ -95,7 +95,7 @@ const LeftSide8Column = () => {
             <div className="input4">
               <div className="input5" />
               <input
-                className="placeholder-sign-in"
+                className="placeholder-signin"
                 placeholder="Enter Password"
                 type="password"
                 name="password"
@@ -107,7 +107,7 @@ const LeftSide8Column = () => {
             </div>
           </div>
           <div className="forgot-password" onClick={onForgotPasswordTextClick}>
-            Forgot Password?
+            Forgot Password? (Not implemented yet)
           </div>
           <button className="main-button1" onClick={handleLoginSubmit}>
             <div className="sign-in1">Sign in</div>

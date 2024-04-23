@@ -24,7 +24,7 @@ const ProfilePage = () => {
             return `(${match[1]})-${match[2]}-${match[3]}`;
         }
         return null;
-    }  
+    }
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -46,9 +46,6 @@ const ProfilePage = () => {
     };
 
     const handleSubmit = async (event) => {
-        // event.preventDefault();
-        // console.log(formData);
-        // console.log(formData);
 
         const url = 'http://localhost:8000/updateProfile';
 
@@ -58,15 +55,8 @@ const ProfilePage = () => {
             email: formData.email, roles: formData.roles, sessionID: localStorage.getItem('sessionID')
         };
 
-        // console.log("Trying to change profile");
-        // console.log(allData);
-
         axios.post(url, JSON.stringify(allData)).then((response) => {
 
-            // TODO: Modify function so this only includes error handling
-            // console.log("NEW LOCAL STORAGE UID EDIT PROFILE");
-            // console.log(response.data.uid);
-            // setToProfile("TRUE");
             localStorage.setItem('uid', response.data.uid);
             // Update local state variables immediately
             setName(formData.name);
@@ -84,23 +74,12 @@ const ProfilePage = () => {
 
     }
 
-    // TODO: FIX BUG WHERE NULL PROFILE LOADS IMMEDIATELY BEFORE TARGET PROFILE
     useEffect(() => {
         const url = 'http://localhost:8000/loadProfile';
         // Preparing data to send to axios
         setFormData({ ...formData, sessionID: localStorage.getItem("sessionID") });
 
-        // FOR DEBUGGING PURPOSES
-        // console.log("profile-page sending axios post");
-        // console.log("SessionID");
-        // console.log(localStorage.getItem("sessionID"));
-
         axios.post(url, JSON.stringify({ "sessionID": localStorage.getItem("sessionID") })).then((response) => {
-
-            // FOR DEBUGGING PURPOSES
-            // console.log("BACK TO PROFILE PAGE");
-            // console.log(response);
-            // console.log(response.data);
 
             // Updating data
             setName(response.data.name);
@@ -139,20 +118,10 @@ const ProfilePage = () => {
                             <img src="https://source.unsplash.com/600x600/?abstract" alt="Gallery Image" className="gallery-image-style" />
                         </div>
                     </div>
-                    {/* {isEditing ? (
-                        <div>
-                            <ProfileEdit />
-                            <button onClick={handleCancelClick}>Cancel</button>
-                            <button onClick={handleChange}>Save Changes</button>
-                        </div>
-                    ) : (
-                        <button onClick={handleEditClick}>Edit Profile</button>
-                    )} */}
                     {isEditing ? (
                         <form onSubmit={handleSubmit}>
                             <ProfileEdit formData={formData} onChange={handleChange} />
                             <button type="button" onClick={handleCancelClick}>Cancel</button>
-                            {/* <button type="submit">Save Changes</button> */}
                         </form>
                     ) : (
                         <button className="profile-button" onClick={handleEditClick}>Edit Profile</button>

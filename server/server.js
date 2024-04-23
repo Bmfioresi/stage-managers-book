@@ -319,7 +319,7 @@ app.get('/add-member', async (req, res) => {
     if (hubInfo[0].whitelist?.includes(uid)) {
         res.json({status: 403}); // status code for already exists
     } else {
-        let profile = await mongoHelpers.loadProfile(Number(uid));
+        let profile = await mongoHelpers.loadProfile(Number(uid), false);
         // console.log(profile);
         if (profile.hids === null) profile.hids = [];
         profile.hids.push(Number(hid));
@@ -333,7 +333,7 @@ app.get('/add-member', async (req, res) => {
 app.get('/kick-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
-    let profile = await mongoHelpers.loadProfile(uid);
+    let profile = await mongoHelpers.loadProfile(uid, false);
     // console.log(profile);
     profile.hids = profile.hids?.filter((phid) => phid !== Number(hid));
     await mongoHelpers.updateProfile(profile);
@@ -351,7 +351,7 @@ app.get('/ban-member', async (req, res) => {
     if (hubInfo[0].blacklist?.includes(uid)) {
         res.json({status: 403}); // status code for already exists
     } else {
-        let profile = await mongoHelpers.loadProfile(uid);
+        let profile = await mongoHelpers.loadProfile(uid, false);
         profile.hids = profile.hids?.filter((phid) => phid !== Number(hid));
         await mongoHelpers.updateProfile(profile);
         hubInfo[0].blacklist.push(Number(uid));

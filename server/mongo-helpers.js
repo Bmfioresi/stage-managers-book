@@ -476,7 +476,8 @@ module.exports = {
         try {
             const db = mongoclient.db("hubs");
             const collection = db.collection("hub_info");
-            const query = { hid: hid };
+            const query = { hid: Number(hid) };
+            const hub = await collection.findOne({hid : Number(hid)});
             await collection.updateOne(
                 query,
                 {

@@ -16,6 +16,7 @@ const SignUpFrame = () => {
     email: "",
     password: "",
     verifyPassword: "",
+    isTest: false,
   });
 
   const handleLoginChange = (event) => {

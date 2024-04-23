@@ -32,6 +32,7 @@ const CreateHub = () => {
         name: 'Default',
         description: 'Default',
         sessionID: localStorage.getItem("sessionID"),
+        isTest: false,
     };
 
     // const handleSubmit = (e) => {

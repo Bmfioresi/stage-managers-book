@@ -323,7 +323,10 @@ app.get('/add-member', async (req, res) => {
         // console.log(profile);
         if (profile.hids === null) profile.hids = [];
         profile.hids.push(Number(hid));
-        await mongoHelpers.updateProfile(profile);
+        // console.log("Profile in add-member");
+        // console.log(profile);
+        // await mongoHelpers.addToProfileHids(uid, hid);
+        await mongoHelpers.updateProfile(profile, uid);
         hubInfo[0].whitelist.push(Number(uid));
         let ret = await mongoHelpers.updateHub(hubInfo[0]);
         res.json(ret);
@@ -334,9 +337,9 @@ app.get('/kick-member', async (req, res) => {
     const hid = req.query.hid;
     const uid = req.query.uid;
     let profile = await mongoHelpers.loadProfile(uid, false);
-    // console.log(profile);
+    console.log(profile);
     profile.hids = profile.hids?.filter((phid) => phid !== Number(hid));
-    await mongoHelpers.updateProfile(profile);
+    await mongoHelpers.updateProfile(profile, uid);
     const hubInfo = await mongoHelpers.getIndividualHubInfo(hid);
     // console.log(hubInfo);
     hubInfo[0].whitelist = hubInfo[0].whitelist?.filter((wluid) => wluid !== Number(uid));
@@ -353,7 +356,7 @@ app.get('/ban-member', async (req, res) => {
     } else {
         let profile = await mongoHelpers.loadProfile(uid, false);
         profile.hids = profile.hids?.filter((phid) => phid !== Number(hid));
-        await mongoHelpers.updateProfile(profile);
+        await mongoHelpers.updateProfile(profile, uid);
         hubInfo[0].blacklist.push(Number(uid));
         let ret = await mongoHelpers.updateHub(hubInfo[0]);
         res.json(ret);
@@ -465,8 +468,9 @@ app.post('/updateProfile', async (req, res) => {
     //TODO: Handle Errors
     const fields = JSON.parse(Object.keys(req.fields)[0]);
     const userID = await getUID(fields.sessionID);
-    const userId = await mongoHelpers.updateProfile(fields, userID); 
-
+    const profile = await mongoHelpers.loadProfile(userID);
+    fields.hids = profile.hids;
+    const userId = await mongoHelpers.updateProfile(fields, userID);
     // FOR DEBUGGING
     // console.log("Got back from updateProfile");
     // console.log(userId);

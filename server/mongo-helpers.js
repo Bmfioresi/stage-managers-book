@@ -259,13 +259,14 @@ module.exports = {
             const profilesBase = mongoclient.db('profiles');
             const profiles = profilesBase.collection('profiles');
             const profileResult = await profiles.insertOne({ 
-                uid: thisUID, 
+                uid: Number(thisUID), 
                 name: fullName, 
                 bio: "", 
                 phone_number: "", 
                 email_address: email, 
                 pronouns: "", 
-                roles: "" 
+                roles: "",
+                hids: [],
             });
     
             // Check if the profile was inserted correctly
@@ -283,16 +284,26 @@ module.exports = {
     updateProfile: async function (f, userId) {
         try {
             // Connecting to profiles database
+
+            // console.log(f);
             var profilesBase;
-            if (!f.isTest) {profilesBase = mongoclient.db('profiles');}
+            if (!f.isTest) {profilesBase = mongoclient.db('profiles'); console.log("ACCESSING PROFILES");}
             else {
                 profilesBase = mongoclient.db('auto-test');
             }
             const profiles = profilesBase.collection('profiles');
 
+
             // Updating record
+            // console.log(userId);
+            // console.log(f.hids);
+
+            // const getResult = await profiles.find({uid:{ $gt : 1 } });
+            // console.log("\n\n\n\n\n\n\n");
+            // console.log(getResult);
+
             const result = await profiles.updateOne(
-                { uid: userId },
+                { uid: Number(userId) },
                 {
                     $set: {
                         name: f.name,
@@ -305,6 +316,7 @@ module.exports = {
                     }
                 }
             );
+            // console.log(result);
 
             // TODO: Error handling if "result" is not created properly
         

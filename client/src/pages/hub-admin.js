@@ -47,7 +47,7 @@ function HubAdmin() {
 
     async function checkAdmin() {
         let url = `${baseUrl}/loadProfile`;
-        let profile = await axios.post(url, JSON.stringify({sessionID: localStorage.getItem("sessionID")}));
+        let profile = await axios.post(url, JSON.stringify({sessionID: localStorage.getItem("sessionID"), isTest: false}));
         return profile.data.uid === owneruid;
     }
 

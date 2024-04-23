@@ -13,6 +13,7 @@ const LeftSide8Column = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    isTest: false,
   });
   const [loggedIn, setLoggedIn] = useState("FALSE");
 
